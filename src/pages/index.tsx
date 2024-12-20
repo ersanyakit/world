@@ -24,38 +24,16 @@ const Home = () => (
         <Leaf size={AppConfig.ui.bigIconSize} className="mt-2" />
       </span>
       <div>
-        <h2 className="text-4xl font-bold ">Next.js starter for leaflet-react</h2>
-        <h3 className="mb-16 text-3xl">written in Typescript</h3>
+        <h2 className="text-4xl font-bold ">KEWL WORLD</h2>
+        <h3 className="mb-16 text-3xl">KEWL WORLD by KEWL EXCHANGE</h3>
       </div>
     </header>
     <section>
-      <p className="mb-2">
-        <span>An extensible </span>
-        <Link className="text-primary" target="_blank" href="https://nextjs.org/">
-          next.js
-        </Link>
-        <span> starter for the </span>
-        <Link className="text-primary" target="_blank" href="https://react-leaflet.js.org/">
-          leaflet-react
-        </Link>
-        <span> plugin. Written in </span>
-        <Link className="text-primary" target="_blank" href="https://www.typescriptlang.org/">
-          typescript
-        </Link>
-        <span>, visually enhanced by </span>
-        <Link className="text-primary" target="_blank" href="https://tailwindcss.com/">
-          tailwind
-        </Link>
-        <span> and </span>
-        <Link className="text-primary" target="_blank" href="https://lucide.dev/">
-          lucide icons
-        </Link>
-        <span>. ✨</span>
-      </p>
+ 
       <p className="my-3">
         <span> 🤝 Feel free to contribute on </span>
         <Link
-          href="https://github.com/richard-unterberg/typescript-next-leaflet-starter"
+          href="https://github.com/kewlexchange/world"
           className="text-primary"
         >
           Github
@@ -70,13 +48,13 @@ const Home = () => (
     </section>
     <footer className="mt-16 flex justify-between rounded bg-light p-3 text-sm">
       <div>
-        2023, Richard Unterberg
+        2024, KEWL EXCHANGE
         <br />
         <Link
-          href="https://github.com/richard-unterberg/typescript-next-leaflet-starter"
+          href="https://github.com/kewlexchange/world"
           className="text-primary"
         >
-          typescript-next-leaflet-starter
+          KEWL WORLD
         </Link>
       </div>
       <div className="text-primary">
