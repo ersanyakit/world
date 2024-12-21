@@ -11,6 +11,7 @@ import LeafleftMapContextProvider from './LeafletMapContextProvider'
 import useMapContext from './useMapContext'
 import useMarkerData from './useMarkerData'
 import DrawerPanel from './ui/DrawerPanel'
+import BottomBar from '#components/BottomBar'
 
 
 const LeafletCluster = dynamic(async () => (await import('./LeafletCluster')).LeafletCluster(), {
@@ -128,6 +129,7 @@ const LeafletMapInner = () => {
           </LeafletMapContainer>
         )}
       </div>
+      <BottomBar/>
     </div>
   )
 }
