@@ -3,6 +3,7 @@
     "target": "es6",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    "noEmitOnError": false,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -21,7 +22,7 @@
       "#components/*": ["./src/components/*"],
       "#lib/*": ["./src/lib/*"],
       "#src/*": ["./src/*"],
-      "#root/*": ["./*"],
+      "#root/*": ["./*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

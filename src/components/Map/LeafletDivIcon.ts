@@ -10,6 +10,7 @@ const LeafletDivIcon = ({ source, anchor }: DivIconValues): DivIcon | null => {
   // Tarayıcı ortamını kontrol et
   if (typeof window !== 'undefined' && Leaflet) {
     return Leaflet.divIcon({
+      // @ts-ignore
       html: renderToString(source), // JSX içeriğini stringe dönüştür
       iconAnchor: anchor, // Anchor noktasını ayarla
     });

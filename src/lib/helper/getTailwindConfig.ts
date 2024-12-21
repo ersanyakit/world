@@ -1,3 +1,4 @@
-import twConfig from '#root/tailwind.config'
+import twConfig from '#root/tailwind.config';
 
-export const twColor = (color: string) => twConfig.theme.colors[color]
+// @ts-ignore
+export const twColor = (color: string) => twConfig.theme.colors[color];

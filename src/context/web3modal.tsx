@@ -1,28 +1,41 @@
-'use client'
+'use client';
 
-import { createAppKit } from '@reown/appkit/react'
-import { EthersAdapter } from '@reown/appkit-adapter-ethers'
-import { mainnet, arbitrum,chiliz } from '@reown/appkit/networks'
+import { EthersAdapter } from '@reown/appkit-adapter-ethers';
+import { chiliz } from '@reown/appkit/networks';
+import { createAppKit } from '@reown/appkit/react';
+import { ReactNode } from 'react';
 
-// 1. Get projectId at https://cloud.reown.com
-const projectId = '041abdda4ad706f9d40a41491d39737c'
+const projectId = 'projectId';
 
-// 2. Create a metadata object
 const metadata = {
-  name: 'KEWL',
-  description: 'KEWL WORLD',
-  url: 'https://kewl.exchange', // origin must match your domain & subdomain
-  icons: ['https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0xed5740209fcf6974d6f3a5f11e295b5e468ac27c/logo.svg']
-}
+  name: 'My Website',
+  description: 'My Website description',
+  url: 'website linki',
+  icons: ['https://avatars.mywebsite.com/'],
+};
 
-// 3. Create the AppKit instance
 createAppKit({
   adapters: [new EthersAdapter()],
   metadata,
-  networks: [chiliz, mainnet, arbitrum],
+  networks: [chiliz],
+  defaultNetwork: chiliz,
   projectId,
   features: {
-    analytics: true // Optional - defaults to your Cloud configuration
-  }
-})
+    email: false,
+    allWallets: false,
+  },
 
+  allWallets: 'HIDE',
+  featuredWalletIds: [
+    'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96', // Metamask
+    'e7c4d26541a7fd84dbdfa9922d3ad21e936e13a7a0e44385d44f006139e44d3b', // WalletConnect
+  ],
+});
+
+export function Web3Provider({
+  children,
+}: {
+  children: ReactNode;
+}): JSX.Element {
+  return <>{children}</>; // Ensure it returns a valid JSX element
+}
