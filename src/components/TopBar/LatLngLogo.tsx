@@ -32,9 +32,7 @@ const LatLngLogo = () => {
         <Compass size={48} className="text-slate-50 hidden md:block" />
       </div>
       <div className="flex items-center">
-        {lat}
-        <br />
-        {lng}
+        {lat}<span>,</span>{lng}
       </div>
     </div>
   )
