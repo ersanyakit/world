@@ -7,6 +7,7 @@ import { Category } from '#lib/MarkerCategories'
 
 import { CustomMarker } from '../LeafletMarker'
 import useMapContext from '../useMapContext'
+import { Button } from '@nextui-org/react'
 
 export const LocateButton = () => {
   const { map } = useMapContext()
@@ -30,14 +31,18 @@ export const LocateButton = () => {
 
   return (
     <>
-      <button
-        type="button"
+      <Button
+          size='lg'
+          color='primary'
+          variant='shadow'
+          isIconOnly
+          radius='full'
         style={{ zIndex: 400 }}
-        className="button absolute top-16 right-3 rounded bg-white p-2 text-dark shadow-md"
+        className=" absolute top-16 right-3 p-2  "
         onClick={() => handleClick()}
       >
         <LocateFixed size={AppConfig.ui.mapIconSize} />
-      </button>
+      </Button>
       {userPosition && (
         <CustomMarker
           place={{

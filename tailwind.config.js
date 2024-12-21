@@ -1,8 +1,11 @@
 const colors = require('tailwindcss/colors')
 const { fontFamily } = require('tailwindcss/defaultTheme')
+const {nextui} = require("@nextui-org/react");
 
 module.exports = {
-  content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx}', 
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
+],
   theme: {
     colors: {
       transparent: 'transparent',
@@ -24,5 +27,5 @@ module.exports = {
     },
 
   },
-  plugins: [],
+  plugins: [nextui()],
 }

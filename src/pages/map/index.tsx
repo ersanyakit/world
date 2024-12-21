@@ -1,14 +1,15 @@
 import Head from 'next/head'
 
 import Map from '#components/Map'
+import { Button } from '@nextui-org/react'
 
 const MapPage = () => (
   <div>
     <Head>
-      <title>Map Example | Jumpstart your new leaflet mapping Project with next.js and typescript 🤩</title>
+      <title>KEWL WORLD 🤩</title>
       <meta
         property="og:title"
-        content="Map Example | Jumpstart your new leaflet mapping Project with next.js and typescript 🤩"
+        content="KEWL World🤩"
         key="title"
       />
       <meta
@@ -17,7 +18,13 @@ const MapPage = () => (
       visually enhanced by tailwind and lucide-react icons."
       />
     </Head>
+
+
+    <div className='w-full'>
+
     <Map />
+    </div>
+
   </div>
 )
 

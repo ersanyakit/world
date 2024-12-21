@@ -1,3 +1,5 @@
+import { Button } from '@nextui-org/react'
+
 import { LatLngExpression } from 'leaflet'
 import { Shrink } from 'lucide-react'
 import { useCallback, useState } from 'react'
@@ -41,15 +43,18 @@ export const CenterButton = ({ center, zoom }: CenterButtonProps) => {
   }, [map, isTouched, zoom, center])
 
   return (
-    <button
-      type="button"
-      style={{ zIndex: 400 }}
-      className={`button absolute top-2 right-3 rounded bg-white p-2 shadow-md ${
-        isTouched ? 'text-dark' : 'text-light'
-      } `}
-      onClick={() => handleClick()}
+    <Button
+    isIconOnly
+    size='lg'
+    color='primary'
+    variant='shadow'
+    radius='full'
+    style={{ zIndex: 400 }}
+
+      className={`absolute top-2 right-3   p-2 `}
+      onPress={() => handleClick()}
     >
       <Shrink size={AppConfig.ui.mapIconSize} />
-    </button>
+    </Button>
   )
 }

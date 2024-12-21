@@ -1,4 +1,5 @@
 import 'leaflet/dist/leaflet.css'
+import {NextUIProvider} from "@nextui-org/react";
 
 import type { AppProps } from 'next/app'
 import { Catamaran } from 'next/font/google'
@@ -14,6 +15,7 @@ const catamaran = Catamaran({
 
 const App = ({ Component, pageProps }: AppProps) => (
   <>
+    <NextUIProvider>
     <Head>
       <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,6 +23,7 @@ const App = ({ Component, pageProps }: AppProps) => (
     <main className={`${catamaran.variable} font-sans text-base`}>
       <Component {...pageProps} />
     </main>
+    </NextUIProvider>
   </>
 )
 

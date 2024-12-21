@@ -60,11 +60,18 @@ const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMap
     if (!allMarkerBounds || !map) return
     if (!viewportWidth || !viewportHeight) return
 
-    map.invalidateSize()
-    setAllMarkersBoundCenter({
-      minZoom: map.getBoundsZoom(allMarkerBounds),
-      centerPos: [allMarkerBounds.getCenter().lat, allMarkerBounds.getCenter().lng],
-    })
+
+    try{
+      map.invalidateSize()
+      setAllMarkersBoundCenter({
+        minZoom: map.getBoundsZoom(allMarkerBounds),
+        centerPos: [allMarkerBounds.getCenter().lat, allMarkerBounds.getCenter().lng],
+      })
+  } catch (error) {
+    console.error("Error in map or bounds handling:", error);
+  }
+
+ 
   }, [allMarkerBounds, map, viewportWidth, viewportHeight])
 
   return { clustersByCategory, allMarkersBoundCenter }

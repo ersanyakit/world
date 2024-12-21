@@ -2,8 +2,8 @@ import dynamic from 'next/dynamic'
 import { useEffect } from 'react'
 import { useResizeDetector } from 'react-resize-detector'
 
-import MapTopBar from '#components/TopBar'
-import { AppConfig } from '#lib/AppConfig'
+import MapTopBar from "../TopBar"
+import { AppConfig } from '../../lib/AppConfig'
 import MarkerCategories, { Category } from '#lib/MarkerCategories'
 import { Places } from '#lib/Places'
 
@@ -55,15 +55,20 @@ const LeafletMapInner = () => {
       map.off('moveend', moveEnd)
     }
 
-    map.flyTo(allMarkersBoundCenter.centerPos, allMarkersBoundCenter.minZoom, { animate: false })
-    map.once('moveend', moveEnd)
+    try{
+      map.flyTo(allMarkersBoundCenter.centerPos, allMarkersBoundCenter.minZoom, { animate: false })
+      map.once('moveend', moveEnd)
+    }catch(e){
+
+    }
+
   }, [allMarkersBoundCenter, map])
 
   return (
-    <div className="absolute h-full w-full overflow-hidden" ref={viewportRef}>
-      <MapTopBar />
+    <div className="w-screen h-screen h-full w-full overflow-hidden" ref={viewportRef}>
+      {/* <MapTopBar /> */}
       <div
-        className={`absolute left-0 w-full transition-opacity ${isLoading ? 'opacity-0' : 'opacity-1 '}`}
+        className={`w-screen h-screen left-0 w-full transition-opacity ${isLoading ? 'opacity-0' : 'opacity-1 '}`}
         style={{
           top: AppConfig.ui.topBarHeight,
           width: viewportWidth ?? '100%',
@@ -79,11 +84,12 @@ const LeafletMapInner = () => {
           >
             {!isLoading ? (
               <>
+                <LocateButton />
                 <CenterToMarkerButton
                   center={allMarkersBoundCenter.centerPos}
                   zoom={allMarkersBoundCenter.minZoom}
                 />
-                <LocateButton />
+              
                 {Object.values(clustersByCategory).map(item => (
                   <LeafletCluster
                     key={item.category}

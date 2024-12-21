@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 import NavMenu from '#components/common/NavMenu'
 import { AppConfig } from '#lib/AppConfig'
+import { Button } from '@nextui-org/react'
 
 const Home = () => (
   <div className="container mx-auto max-w-2xl p-3 max-md:max-w-none">
@@ -57,6 +58,7 @@ const Home = () => (
           KEWL WORLD
         </Link>
       </div>
+
       <div className="text-primary">
         <Leaf size={AppConfig.ui.mapIconSize} className="mt-1" />
       </div>
