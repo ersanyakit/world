@@ -13,7 +13,7 @@ const ConnectButton = () => {
         size="lg"
         disableRipple
         aria-label="connect-btn"
-        radius="full"
+        radius="sm"
         color="primary"
         style={{
           transition: 'all 0.3s ease',
