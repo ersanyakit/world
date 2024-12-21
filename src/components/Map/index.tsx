@@ -10,6 +10,7 @@ import { Places } from '#lib/Places'
 import LeafleftMapContextProvider from './LeafletMapContextProvider'
 import useMapContext from './useMapContext'
 import useMarkerData from './useMarkerData'
+import DrawerPanel from './ui/DrawerPanel'
 
 
 const LeafletCluster = dynamic(async () => (await import('./LeafletCluster')).LeafletCluster(), {
@@ -78,14 +79,16 @@ const LeafletMapInner = () => {
   return (
     <div className="w-screen h-screen h-full  w-full overflow-hidden" ref={viewportRef}>
       <MapTopBar /> 
+    
       <div
-        className={`w-screen h-screen absolute top-0 left-0 w-full transition-opacity ${isLoading ? 'opacity-0' : 'opacity-1 '}`}
+        className={`w-screen h-screen z-20 absolute top-0 left-0 w-full transition-opacity `}
         style={{
           width: viewportWidth ?? '100%',
           height: viewportHeight ? viewportHeight - AppConfig.ui.topBarHeight : '100%',
         }}
       >
-        { allMarkersBoundCenter && clustersByCategory && (
+  <DrawerPanel/>
+        { true && allMarkersBoundCenter && clustersByCategory && (
           <LeafletMapContainer
             center={allMarkersBoundCenter.centerPos}
             zoom={allMarkersBoundCenter.minZoom}

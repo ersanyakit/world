@@ -5,7 +5,7 @@ import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Button, Link } from '@n
 import NavMenu from '../common/NavMenu'
 
 const MapTopBar = () => (
-  <div className='absolute top-0 w-full z-[9999999]'>
+  <div className='absolute top-0 w-full z-40'>
   <Navbar  isBlurred={true} isBordered={true}>
       <NavbarBrand>
         <p className="font-bold text-inherit">KEWL</p>
@@ -18,9 +18,7 @@ const MapTopBar = () => (
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
-        </NavbarItem>
+
         <NavbarItem>
           <Button as={Link} color="primary" href="#" variant="flat">
             Sign Up
