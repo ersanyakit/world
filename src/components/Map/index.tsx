@@ -11,6 +11,7 @@ import LeafleftMapContextProvider from './LeafletMapContextProvider'
 import useMapContext from './useMapContext'
 import useMarkerData from './useMarkerData'
 
+
 const LeafletCluster = dynamic(async () => (await import('./LeafletCluster')).LeafletCluster(), {
   ssr: false,
 })
@@ -24,6 +25,16 @@ const LocateButton = dynamic(async () => (await import('./ui/LocateButton')).Loc
   ssr: false,
 })
 const LeafletMapContainer = dynamic(async () => (await import('./LeafletMapContainer')).LeafletMapContainer, {
+  ssr: false,
+})
+
+
+
+const ZoomInButton = dynamic(async () => (await import('./ui/ZoomInButton')).ZoomInButton, {
+  ssr: false,
+})
+
+const ZoomOutButton = dynamic(async () => (await import('./ui/ZoomOutButton')).ZoomOutButton, {
   ssr: false,
 })
 
@@ -65,17 +76,16 @@ const LeafletMapInner = () => {
   }, [allMarkersBoundCenter, map])
 
   return (
-    <div className="w-screen h-screen h-full w-full overflow-hidden" ref={viewportRef}>
-      {/* <MapTopBar /> */}
+    <div className="w-screen h-screen h-full  w-full overflow-hidden" ref={viewportRef}>
+      <MapTopBar /> 
       <div
-        className={`w-screen h-screen left-0 w-full transition-opacity ${isLoading ? 'opacity-0' : 'opacity-1 '}`}
+        className={`w-screen h-screen absolute top-0 left-0 w-full transition-opacity ${isLoading ? 'opacity-0' : 'opacity-1 '}`}
         style={{
-          top: AppConfig.ui.topBarHeight,
           width: viewportWidth ?? '100%',
           height: viewportHeight ? viewportHeight - AppConfig.ui.topBarHeight : '100%',
         }}
       >
-        {allMarkersBoundCenter && clustersByCategory && (
+        { allMarkersBoundCenter && clustersByCategory && (
           <LeafletMapContainer
             center={allMarkersBoundCenter.centerPos}
             zoom={allMarkersBoundCenter.minZoom}
@@ -84,11 +94,14 @@ const LeafletMapInner = () => {
           >
             {!isLoading ? (
               <>
+                
                 <LocateButton />
                 <CenterToMarkerButton
                   center={allMarkersBoundCenter.centerPos}
                   zoom={allMarkersBoundCenter.minZoom}
                 />
+                <ZoomInButton />
+                <ZoomOutButton/>
               
                 {Object.values(clustersByCategory).map(item => (
                   <LeafletCluster
@@ -108,6 +121,7 @@ const LeafletMapInner = () => {
               // eslint-disable-next-line react/jsx-no-useless-fragment
               <></>
             )}
+
           </LeafletMapContainer>
         )}
       </div>

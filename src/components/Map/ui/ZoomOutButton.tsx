@@ -1,5 +1,5 @@
 import { LatLngExpression } from 'leaflet'
-import { LocateFixed } from 'lucide-react'
+import { LocateFixed, ZoomOut } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 
 import { AppConfig } from '#lib/AppConfig'
@@ -9,18 +9,13 @@ import { CustomMarker } from '../LeafletMarker'
 import useMapContext from '../useMapContext'
 import { Button } from '@nextui-org/react'
 
-export const LocateButton = () => {
+export const ZoomOutButton = () => {
   const { map } = useMapContext()
   const [userPosition, setUserPosition] = useState<LatLngExpression | undefined>(undefined)
 
   const handleClick = useCallback(() => {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(position => {
-        setUserPosition([position.coords.latitude, position.coords.longitude])
-      })
-    } else {
-      setUserPosition(undefined)
-    }
+        map?.zoomOut()
+
   }, [])
 
   useEffect(() => {
@@ -38,22 +33,11 @@ export const LocateButton = () => {
           isIconOnly
           radius='full'
         style={{ zIndex: 400 }}
-        className=" absolute top-[138px] right-3 p-2  "
-        onClick={() => handleClick()}
+        className=" absolute top-[200px] right-3 p-2  "
+        onPress={() => handleClick()}
       >
-        <LocateFixed size={AppConfig.ui.mapIconSize} />
+        <ZoomOut size={AppConfig.ui.mapIconSize} />
       </Button>
-      {userPosition && (
-        <CustomMarker
-          place={{
-            id: 0,
-            title: 'Your location',
-            address: 'You are here',
-            position: userPosition,
-            category: Category.LOCATE,
-          }}
-        />
-      )}
     </>
   )
 }

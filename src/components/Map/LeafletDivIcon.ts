@@ -1,15 +1,21 @@
-import Leaflet, { PointExpression } from 'leaflet'
-import { renderToString } from 'react-dom/server'
+import Leaflet, { PointExpression, DivIcon } from 'leaflet';
+import { renderToString } from 'react-dom/server';
 
-interface divIconValues {
-  source: JSX.Element
-  anchor: PointExpression
+interface DivIconValues {
+  source: JSX.Element; // İkonun JSX içeriği
+  anchor: PointExpression; // İkonun anchor noktası
 }
 
-const LeafletDivIcon = ({ source, anchor }: divIconValues) =>
-  Leaflet?.divIcon({
-    html: renderToString(source),
-    iconAnchor: anchor,
-  })
+const LeafletDivIcon = ({ source, anchor }: DivIconValues): DivIcon | null => {
+  // Tarayıcı ortamını kontrol et
+  if (typeof window !== 'undefined' && Leaflet) {
+    return Leaflet.divIcon({
+      html: renderToString(source), // JSX içeriğini stringe dönüştür
+      iconAnchor: anchor, // Anchor noktasını ayarla
+    });
+  }
 
-export default LeafletDivIcon
+  return null; // Sunucu ortamında `null` döndür
+};
+
+export default LeafletDivIcon;

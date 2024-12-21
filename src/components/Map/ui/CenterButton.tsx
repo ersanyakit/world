@@ -51,7 +51,7 @@ export const CenterButton = ({ center, zoom }: CenterButtonProps) => {
     radius='full'
     style={{ zIndex: 400 }}
 
-      className={`absolute top-2 right-3   p-2 `}
+      className={`absolute top-[75px] right-3   p-2 `}
       onPress={() => handleClick()}
     >
       <Shrink size={AppConfig.ui.mapIconSize} />
