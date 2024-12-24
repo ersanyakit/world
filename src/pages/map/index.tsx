@@ -14,8 +14,7 @@ const MapPage = () => (
       />
       <meta
         name="description"
-        content="next-leaflet-starter-typescript is an extensible next.js starter template for the leaflet-maps-react plugin. Written in typescript,
-      visually enhanced by tailwind and lucide-react icons."
+        content="KEWL WORLD by KEWL EXCHANGE"
       />
     </Head>
 
