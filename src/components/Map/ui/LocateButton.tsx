@@ -8,6 +8,8 @@ import { Category } from '#lib/MarkerCategories'
 import { CustomMarker } from '../LeafletMarker'
 import useMapContext from '../useMapContext'
 import { Button } from '@nextui-org/react'
+import { encodeGeoHash } from '#lib/helper/geocoder'
+import { ethers } from 'ethers'
 
 export const LocateButton = () => {
   const { map } = useMapContext()
@@ -39,18 +41,29 @@ export const LocateButton = () => {
           radius='full'
         style={{ zIndex: 400 }}
         className=" absolute top-[138px] right-3 p-2  "
-        onClick={() => handleClick()}
+        onPress={() => handleClick()}
       >
         <LocateFixed size={AppConfig.ui.mapIconSize} />
       </Button>
       {userPosition && (
         <CustomMarker
           place={{
-            id: 0,
-            title: 'Your location',
-            address: 'You are here',
-            position: userPosition,
-            category: Category.LOCATE,
+            valid: true,
+            index: 0,
+            deposit: 0,
+            withdraw: 0,
+            claims: 0,
+            limit: 0,
+            timestamp: Date.now(),
+            contributor: ethers.ZeroAddress, // Varsayılan contributor adresi
+            token: ethers.ZeroAddress, // Varsayılan token adresi
+            geohash: encodeGeoHash(userPosition),
+            name: 'Your Location',
+            url: '', // Varsayılan URL
+            description: 'You are here.',
+            color: '#000000', // Varsayılan renk
+            image: '', // Varsayılan görsel
+            claimers: [], // Başlangıçta boş claimers
           }}
         />
       )}

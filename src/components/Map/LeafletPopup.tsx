@@ -4,7 +4,7 @@ import { Popup, PopupProps } from 'react-leaflet'
 
 import { AppConfig } from '#lib/AppConfig'
 import { MarkerCategoriesValues } from '#lib/MarkerCategories'
-import { PlaceValues } from '#lib/Places'
+import { Contribution } from '#src/types/Contribution'
 
 const MarkerIconWrapper = dynamic(() => import('#components/Map/LeafletMarker/MarkerIconWrapper'))
 const Button = dynamic(() => import('#components/common/Button'))
@@ -12,7 +12,7 @@ const Button = dynamic(() => import('#components/common/Button'))
 interface LeafletPopupProps extends PopupProps {
   handlePopupClose: (active?: boolean) => void
   handleOpenLocation: () => void
-  item: PlaceValues
+  item: Contribution
   color: MarkerCategoriesValues['color']
   icon: MarkerCategoriesValues['icon']
 }

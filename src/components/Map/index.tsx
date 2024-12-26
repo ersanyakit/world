@@ -10,6 +10,7 @@ import LeafleftMapContextProvider from './LeafletMapContextProvider';
 import DrawerPanel from './ui/DrawerPanel';
 import useMapContext from './useMapContext';
 import useMarkerData from './useMarkerData';
+import { useContributionContext } from '#src/context/GlobalStateContext';
 
 const LeafletCluster = dynamic(
   async () => (await import('./LeafletCluster')).LeafletCluster(),
@@ -58,6 +59,8 @@ const ZoomOutButton = dynamic(
 
 const LeafletMapInner = () => {
   const { map } = useMapContext();
+  const { contributions, addContribution, addContributions, addClaimer } = useContributionContext();
+
   const {
     width: viewportWidth,
     height: viewportHeight,
@@ -68,7 +71,7 @@ const LeafletMapInner = () => {
   });
 
   const { clustersByCategory, allMarkersBoundCenter } = useMarkerData({
-    locations: Places,
+    locations: contributions,
     map,
     viewportWidth,
     viewportHeight,
@@ -130,12 +133,12 @@ const LeafletMapInner = () => {
                 {Object.values(clustersByCategory).map((item) => (
                   <LeafletCluster
                     key={item.category}
-                    icon={MarkerCategories[item.category as Category].icon}
-                    color={MarkerCategories[item.category as Category].color}
+                    icon={MarkerCategories[Category.CAT1].icon}
+                    color={MarkerCategories[Category.CAT1].color}
                     chunkedLoading
                   >
                     {item.markers.map((marker) => (
-                      <CustomMarker place={marker} key={marker.id} />
+                      <CustomMarker place={marker} key={marker.index} />
                     ))}
                   </LeafletCluster>
                 ))}

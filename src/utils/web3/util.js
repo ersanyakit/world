@@ -1,8 +1,9 @@
 import { BrowserProvider, Contract, JsonRpcProvider } from 'ethers';
 import { getContract } from 'viem';
-import { chilizClient } from './clients';
+import { chilizClient,hardhatClient } from './clients';
+import { HardhatContract } from './contracts';
 
-export const selectedClient = chilizClient;
+export const selectedClient = hardhatClient;
 
 export function GetContractAt(contract) {
   return new Contract(
@@ -77,5 +78,29 @@ export async function getERC20TotalSupply(contractInformation) {
   } catch (error) {
     console.log('getERC20TotalSupply : ', error);
     return totalSupply;
+  }
+}
+
+
+export async function getContributors() {
+  let response = [];
+  let contractInformation = HardhatContract
+  console.log("contractInformation.address,",contractInformation)
+  try {
+    if (contractInformation) {
+      const contract = getContract({
+        address: contractInformation.address,
+        abi: contractInformation.abi,
+        client: {
+          public: selectedClient,
+        },
+      });
+      const res = await contract.read.getContributors();
+      response = res;
+    }
+    return response;
+  } catch (error) {
+    console.log('getContributors : ', error);
+    return response;
   }
 }

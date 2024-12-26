@@ -9,18 +9,22 @@ import { PlaceValues } from '#lib/Places';
 import LeafletDivIcon from '../LeafletDivIcon';
 import useMapContext from '../useMapContext';
 import MarkerIconWrapper from './MarkerIconWrapper';
+import { Contribution } from '#src/types/Contribution';
+import Geohash from 'ngeohash';
+import { LatLngExpression } from 'leaflet';
+import { decodeGeoHash } from '#lib/helper/geocoder';
 
 const LeafletPopup = dynamic(() => import('../LeafletPopup'));
 
 export interface CustomMarkerProps {
-  place: PlaceValues;
+  place: Contribution;
 }
 
 export const CustomMarker = ({ place }: CustomMarkerProps) => {
   const { map } = useMapContext();
   const markerCategory = useMemo(
-    () => MarkerCategories[place.category],
-    [place.category]
+    () => place.token,
+    [place.token]
   );
 
   const handlePopupClose = useCallback(() => {
@@ -31,8 +35,8 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
   const handleMarkerClick = useCallback(() => {
     if (!map) return;
     const clampZoom = map.getZoom() < 14 ? 14 : undefined;
-    map.setView(place.position, clampZoom);
-  }, [map, place.position]);
+    map.setView(decodeGeoHash(place.geohash), clampZoom);
+  }, [map, place.geohash]);
 
   // some event for the inner popup cta
   const handleOpenLocation = useCallback(() => {
@@ -42,7 +46,7 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
 
   return (
     <ReactMarker
-      position={place.position}
+      position={decodeGeoHash(place.geohash)}
       // @ts-ignore
       icon={LeafletDivIcon({
         source: (

@@ -1,12 +1,14 @@
 import { LatLngExpression, Map } from 'leaflet'
 import { useEffect, useMemo, useState } from 'react'
+import Geohash from 'ngeohash';
 
 import useMapContext from '#components/Map/useMapContext'
 import { AppConfig } from '#lib/AppConfig'
 import { PlacesClusterType, PlacesType } from '#lib/Places'
+import { Contribution } from '#src/types/Contribution'
 
 interface useMapDataValues {
-  locations?: PlacesType
+  locations?: Contribution[]
   map?: Map
   viewportWidth?: number
   viewportHeight?: number
@@ -30,19 +32,22 @@ const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMap
 
     const coordsSum: LatLngExpression[] = []
     locations.forEach(item => {
-      coordsSum.push(item.position)
+      let decodedGeoHash = Geohash.decode(item.geohash)
+      let position: LatLngExpression = [decodedGeoHash.latitude, decodedGeoHash.longitude];
+      coordsSum.push(position)
     })
     return leafletLib.latLngBounds(coordsSum)
   }, [leafletLib, locations])
 
   const clustersByCategory = useMemo(() => {
     if (!locations) return undefined
+
     const groupedLocations = locations.reduce<PlacesClusterType>((acc, location) => {
-      const { category } = location
-      if (!acc[category]) {
-        acc[category] = []
+      const { token } = location
+      if (!acc[token]) {
+        acc[token] = []
       }
-      acc[category].push(location)
+      acc[token].push(location)
       return acc
     }, {})
 
