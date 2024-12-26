@@ -25,7 +25,7 @@ const LeafletPopup = ({
   item,
   ...props
 }: LeafletPopupProps) => {
-  const { title, address } = item
+  const { name, description } = item
 
   return (
     <Popup {...props}>
@@ -54,8 +54,8 @@ const LeafletPopup = ({
             className="flex w-full flex-col justify-center p-3 pt-6 text-center"
             style={{ marginTop: AppConfig.ui.markerIconSize * 2 + 8 }}
           >
-            <h3 className="m-0 text-lg font-bold leading-none">{title}</h3>
-            <p className="m-0 text-secondary">{address}</p>
+            <h3 className="m-0 text-lg font-bold leading-none">{name}</h3>
+            <p className="m-0 text-secondary">{description}</p>
             {/* todo: new component for button group */}
             <div className="mt-6 flex flex-row justify-between gap-2 p-2">
               <Button className="gap-2 bg-secondary text-white" onClick={() => handlePopupClose()} small>
