@@ -25,10 +25,13 @@ export const LeafletMapContainer = ({ children, ...props }: LeafletMapContainerP
       className="absolute h-full w-full text-white outline-0"
       {...props}
     >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://kewl.exchange">KEWL</a>'
-        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-      />
+ 
+ <TileLayer
+      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    />
+    
+
       {children}
     </MapContainer>
   )

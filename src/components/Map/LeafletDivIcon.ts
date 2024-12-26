@@ -7,7 +7,7 @@ interface DivIconValues {
   anchor: PointExpression;  // The anchor point of the icon
 }
 
-const LeafletDivIconEx = ({ source, anchor }: DivIconValues): DivIcon | null => {
+const LeafletDivIcon = ({ source, anchor }: DivIconValues): DivIcon | null => {
   // Ensure we're in the browser environment
   if (typeof window !== 'undefined' && Leaflet) {
     let htmlContent: string;
@@ -30,4 +30,4 @@ const LeafletDivIconEx = ({ source, anchor }: DivIconValues): DivIcon | null => 
   return null; // Return null if in a non-browser environment (like server-side)
 };
 
-export default LeafletDivIconEx;
+export default LeafletDivIcon;
