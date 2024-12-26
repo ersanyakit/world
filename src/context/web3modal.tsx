@@ -1,7 +1,7 @@
 'use client';
 
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
-import { chiliz } from '@reown/appkit/networks';
+import { chiliz, hardhat } from '@reown/appkit/networks';
 import { createAppKit } from '@reown/appkit/react';
 import { ReactNode } from 'react';
 
@@ -17,7 +17,7 @@ const metadata = {
 createAppKit({
   adapters: [new EthersAdapter()],
   metadata,
-  networks: [chiliz],
+  networks: [chiliz,hardhat],
   defaultNetwork: chiliz,
   projectId,
   features: {
