@@ -26,16 +26,6 @@ const MapPage = () => {
       </Head>
 
       <div className="w-full">
-      <ul>
-        {contributions.map((contribution, index) => (
-          <li key={contribution.index}>
-            <h2>{contribution.name}</h2>
-            <p>{contribution.description}</p>
-            <p>Claims: {contribution.claimers.length}</p>
-            <button onClick={() => addClaimer(index, '0x4567...')}>Add Claimer</button>
-          </li>
-        ))}
-      </ul>
        <Map /> 
       </div>
     </div>

@@ -69,8 +69,6 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
         autoClose
         closeButton={false}
         item={place}
-        color={place.color}
-        icon={MarkerCategories[1].icon}
         handleOpenLocation={handleOpenLocation}
         handlePopupClose={handlePopupClose}
       />

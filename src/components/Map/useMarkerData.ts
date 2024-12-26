@@ -59,8 +59,6 @@ const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMap
     return mappedClusters
   }, [locations])
 
-  // auto resize map to fit all markers on viewport change
-  // it's crucial to set viewport size as dependecy to trigger the map resize
   useEffect(() => {
     if (!allMarkerBounds || !map) return
     if (!viewportWidth || !viewportHeight) return

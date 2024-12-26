@@ -41,7 +41,7 @@ const CreateMarkerClusterGroup = (
     spiderLegPolylineOptions: {
       className: 'hidden',
     },
-    zoomToBoundsOnClick: false,
+    zoomToBoundsOnClick: true,
     // @ts-ignore
     iconCreateFunction: (cluster) =>
       LeafletDivIcon({

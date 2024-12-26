@@ -5,23 +5,20 @@ import { Popup, PopupProps } from 'react-leaflet'
 import { AppConfig } from '#lib/AppConfig'
 import { MarkerCategoriesValues } from '#lib/MarkerCategories'
 import { Contribution } from '#src/types/Contribution'
+import { IconTreasureBox } from '#components/Icons'
+import { Button } from '@nextui-org/react'
 
 const MarkerIconWrapper = dynamic(() => import('#components/Map/LeafletMarker/MarkerIconWrapper'))
-const Button = dynamic(() => import('#components/common/Button'))
 
 interface LeafletPopupProps extends PopupProps {
   handlePopupClose: (active?: boolean) => void
   handleOpenLocation: () => void
   item: Contribution
-  color: MarkerCategoriesValues['color']
-  icon: MarkerCategoriesValues['icon']
 }
 
 const LeafletPopup = ({
   handlePopupClose,
   handleOpenLocation,
-  color,
-  icon,
   item,
   ...props
 }: LeafletPopupProps) => {
@@ -30,39 +27,38 @@ const LeafletPopup = ({
   return (
     <Popup {...props}>
       <div
-        className="absolute bg-white shadow"
+        className="absolute bg-white shadow rounded-lg shadow-lg p-2"
         style={{
-          // todo: rework the offsets at some point
           marginLeft: `calc(-150px + ${AppConfig.ui.markerIconSize - 5}px)`,
-
-          // todo: some offest to align with the marker icon
-          marginTop: -1,
+          marginTop: -140,
         }}
       >
         <div className="flex flex-row justify-center pt-3" style={{ width: '300px' }}>
           <Button
-            className="absolute right-3 top-3 inline-block text-dark"
-            onClick={() => handlePopupClose(false)}
-            small
-          >
-            <X size={AppConfig.ui.markerIconSize} />
+            radius='full'
+            isIconOnly
+            variant='light'
+            className="absolute right-3 top-3 inline-block text-dark z-[99999]"
+            onPress={() => handlePopupClose(false)}
+            size='sm'>
+            <X className='z-1' size={AppConfig.ui.markerIconSize} />
           </Button>
           <div className="absolute left-0 top-0 mt-5 flex w-full justify-center">
-            <MarkerIconWrapper color={color} icon={icon} />
+            <div className='w-full flex items-center justify-center gap-2'>
+              <IconTreasureBox width={96} height={0} />
+            </div>
           </div>
           <div
             className="flex w-full flex-col justify-center p-3 pt-6 text-center"
-            style={{ marginTop: AppConfig.ui.markerIconSize * 2 + 8 }}
-          >
+            style={{ marginTop: AppConfig.ui.markerIconSize * 2 + 8 }}>
             <h3 className="m-0 text-lg font-bold leading-none">{name}</h3>
             <p className="m-0 text-secondary">{description}</p>
-            {/* todo: new component for button group */}
             <div className="mt-6 flex flex-row justify-between gap-2 p-2">
-              <Button className="gap-2 bg-secondary text-white" onClick={() => handlePopupClose()} small>
+              <Button variant='shadow' className="gap-2 bg-secondary text-white" onPress={() => handlePopupClose()} size='md'>
                 <ChevronLeft size={AppConfig.ui.menuIconSize} />
                 Close
               </Button>
-              <Button className="gap-2 bg-primary text-white" onClick={() => handleOpenLocation()} small>
+              <Button variant='shadow' color='success' className="gap-2 text-white" onPress={() => handleOpenLocation()} size='md'>
                 Open
                 <ChevronRight size={AppConfig.ui.menuIconSize} />
               </Button>
