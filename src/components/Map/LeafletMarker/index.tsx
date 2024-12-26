@@ -51,8 +51,8 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
       icon={LeafletDivIcon({
         source: (
           <MarkerIconWrapper
-            color={markerCategory.color}
-            icon={markerCategory.icon}
+            color={place.color}
+            icon={MarkerCategories[1].icon}
           />
         ),
         anchor: [
@@ -69,8 +69,8 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
         autoClose
         closeButton={false}
         item={place}
-        color={markerCategory.color}
-        icon={markerCategory.icon}
+        color={place.color}
+        icon={MarkerCategories[1].icon}
         handleOpenLocation={handleOpenLocation}
         handlePopupClose={handlePopupClose}
       />
