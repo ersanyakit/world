@@ -1,38 +1,33 @@
 import Leaflet, { PointExpression, DivIcon } from 'leaflet';
 import { renderToString } from 'react-dom/server';
+import { ReactElement } from 'react';  // Import ReactElement type
 
 interface DivIconValues {
-  source: JSX.Element; // İkonun JSX içeriği
-  anchor: PointExpression; // İkonun anchor noktası
+  source: string | ReactElement<any>;  // Use ReactElement<any> for JSX content
+  anchor: PointExpression;  // The anchor point of the icon
 }
 
 const LeafletDivIconEx = ({ source, anchor }: DivIconValues): DivIcon | null => {
-  // Tarayıcı ortamını kontrol et
+  // Ensure we're in the browser environment
   if (typeof window !== 'undefined' && Leaflet) {
+    let htmlContent: string;
+
+    // Check if the source is a string (URL) or a ReactElement (JSX element)
+    if (typeof source === 'string') {
+      htmlContent = `<img src="${source}" style="width:32px; height:32px;" />`; // Image URL
+    } else {
+      // Cast source to ReactElement<any> to avoid the type error
+      const reactElement :any = source as ReactElement<any>; // Type casting
+      htmlContent = renderToString(reactElement); // Convert JSX to HTML string
+    }
+
     return Leaflet.divIcon({
-      // @ts-ignore
-      html: renderToString(source), // JSX içeriğini stringe dönüştür
-      iconAnchor: anchor, // Anchor noktasını ayarla
+      html: htmlContent, // HTML string content
+      iconAnchor: anchor, // Set the anchor point
     });
   }
 
-  return null; // Sunucu ortamında `null` döndür
+  return null; // Return null if in a non-browser environment (like server-side)
 };
 
-const LeafletDivIcon = ({ source, anchor }: DivIconValues): DivIcon | null => {
-  if (typeof window !== 'undefined' && Leaflet) {
-    const html =
-      typeof source === 'string'
-        ? `<img src="${source}" style="width:32px; height:32px;" />` // URL için img etiketi
-        : renderToString(source); // JSX içeriğini stringe dönüştür
-
-    return Leaflet.divIcon({
-      html, // HTML içeriği
-      iconAnchor: anchor, // Anchor noktası
-    });
-  }
-
-  return null; // Sunucu ortamında `null` döndür
-};
-
-export default LeafletDivIcon;
+export default LeafletDivIconEx;
