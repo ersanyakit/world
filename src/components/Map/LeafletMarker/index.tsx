@@ -6,22 +6,29 @@ import { AppConfig } from '#lib/AppConfig';
 import MarkerCategories from '#lib/MarkerCategories';
 import { PlaceValues } from '#lib/Places';
 
-import LeafletDivIcon from '../LeafletDivIcon';
 import useMapContext from '../useMapContext';
 import MarkerIconWrapper from './MarkerIconWrapper';
 import { Contribution } from '#src/types/Contribution';
 import Geohash from 'ngeohash';
 import { LatLngExpression } from 'leaflet';
 import { decodeGeoHash } from '#lib/helper/geocoder';
+import { claim } from '#src/utils/web3/util';
+import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
+
+import LeafletDivIcon from '../LeafletDivIcon';
 
 const LeafletPopup = dynamic(() => import('../LeafletPopup'));
 
+ 
 export interface CustomMarkerProps {
   place: Contribution;
 }
 
 export const CustomMarker = ({ place }: CustomMarkerProps) => {
   const { map } = useMapContext();
+      const { address, isConnected } = useAppKitAccount();
+      const { walletProvider } = useAppKitProvider('eip155');
+
   const markerCategory = useMemo(
     () => place.token,
     [place.token]
@@ -38,13 +45,18 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
     map.setView(decodeGeoHash(place.geohash), clampZoom);
   }, [map, place.geohash]);
 
-  // some event for the inner popup cta
   const handleOpenLocation = useCallback(() => {
-    // eslint-disable-next-line no-console
-
-
-    console.log('open location');
-  }, []);
+    const openLocation = async () => {
+      try {
+        await claim(walletProvider, isConnected, address, place.index);
+        console.log('open location');
+      } catch (error) {
+        console.error('Error in open location:', error);
+      }
+    };
+  
+    openLocation();
+  }, [place.index, claim]);
 
   return (
     <ReactMarker

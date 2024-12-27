@@ -10,28 +10,7 @@ const Home = () => {
   const { address, isConnected } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider('eip155');
 
-  const getCallContract = async () => {
-    if (isConnected === false) {
-      return;
-    }
-    // wait modal
-    try {
-      const contract = GetContractAt(DiamondContract);
-      const signer = await GetSigner(walletProvider);
-
-      const tx = await contract
-        .connect(signer)
-        // @ts-ignore
-        .claim(100n);
-
-      await tx.wait(1);
-      // close wait modal
-      // success modal
-    } catch (error) {
-      // close wait modal
-      // error modal
-    }
-  };
+ 
 
   return (
     <div className="container mx-auto max-w-2xl p-3 max-md:max-w-none">

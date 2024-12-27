@@ -1,3 +1,5 @@
+import { Address } from "@reown/appkit-adapter-ethers";
+
 export type Token = {
   chainId: number;
   address: string;
@@ -17,7 +19,7 @@ export type TNetwork = {
 };
 
 export type TContract = {
-  address: `0x${string}` | string;
+  address: Address;
   abi: object[];
   chainId: number;
   rpcUrl: string;

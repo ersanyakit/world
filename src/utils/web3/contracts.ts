@@ -12,7 +12,7 @@ export const DiamondContract: TContract = {
 };
 
 export const HardhatContract: TContract = {
-  address: DiamondAddress,
+  address:  DiamondAddress,
   abi: WorldDiamondABI.abi,
   chainId: HardhatTestnet.chainId,
   rpcUrl: HardhatTestnet.rpcUrl,

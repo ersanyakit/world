@@ -13,9 +13,9 @@ import React, { FunctionComponent } from 'react';
 
 import { AppConfig } from '#lib/AppConfig';
 
-import LeafletDivIcon from './LeafletDivIcon';
 import MarkerIconWrapper from './LeafletMarker/MarkerIconWrapper';
 import { ethers } from 'ethers';
+import LeafletDivIcon from './LeafletDivIcon';
 
 type ClusterEvents = {
   onClick?: LeafletMouseEventHandlerFn;

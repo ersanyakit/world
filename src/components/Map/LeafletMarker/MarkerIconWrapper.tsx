@@ -1,15 +1,13 @@
-import { LucideProps } from 'lucide-react'
-import { FunctionComponent, useMemo } from 'react'
 
-import { AppConfig } from '#lib/AppConfig'
 import { Contribution } from '#src/types/Contribution'
-import { MapIcon } from '#components/Icons'
+import { MapIcon } from '#components/Icons';
 
 export interface MarkerIconWrapperProps {
   contribution?: Contribution
   color: string
   label?: string
 }
+
 
 const MarkerIconWrapper = ({ contribution, color, label }: MarkerIconWrapperProps) => {
 

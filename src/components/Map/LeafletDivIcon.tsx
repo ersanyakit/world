@@ -1,6 +1,6 @@
 import Leaflet, { PointExpression, DivIcon } from 'leaflet';
 import { renderToString } from 'react-dom/server';
-import { ReactElement } from 'react';  // Import ReactElement type
+import { isValidElement, ReactElement } from 'react';  // Import ReactElement type
 
 interface DivIconValues {
   source: string | ReactElement<any>;  // Use ReactElement<any> for JSX content
@@ -10,16 +10,19 @@ interface DivIconValues {
 const LeafletDivIcon = ({ source, anchor }: DivIconValues): DivIcon | null => {
   // Ensure we're in the browser environment
   if (typeof window !== 'undefined' && Leaflet) {
-    let htmlContent: string;
+ 
+    
+let htmlContent: string;
 
-    // Check if the source is a string (URL) or a ReactElement (JSX element)
-    if (typeof source === 'string') {
-      htmlContent = `<img src="${source}" style="width:32px; height:32px;" />`; // Image URL
-    } else {
-      // Cast source to ReactElement<any> to avoid the type error
-      const reactElement :any = source as ReactElement<any>; // Type casting
-      htmlContent = renderToString(reactElement); // Convert JSX to HTML string
-    }
+// Handle the source, checking if it's a string (image URL) or a React element
+if (typeof source === 'string') {
+  htmlContent = `<img src="${source}" style="width:32px; height:32px;" />`; // Image URL
+} else if (isValidElement(source)) {
+  const reactElement :any = source as ReactElement<any>; // Type casting
+  htmlContent = renderToString(reactElement);
+} else {
+  return null;  // If source is neither a string nor a valid React element, return null
+}
 
     return Leaflet.divIcon({
       html: htmlContent, // HTML string content
