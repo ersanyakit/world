@@ -6,6 +6,7 @@ export enum Category {
   LOCATE = 0,
   CAT1 = 1,
   CAT2 = 2,
+  TREASURY = 3
 }
 
 export interface MarkerCategoriesValues {
@@ -33,6 +34,11 @@ const MarkerCategories: MarkerCategoryType = {
   },
   [Category.CAT2]: {
     name: 'Category 2',
+    icon: PersonStanding,
+    color: colors.red[400],
+  },
+  [Category.TREASURY]: {
+    name: 'Treasury',
     icon: PersonStanding,
     color: colors.red[400],
   },

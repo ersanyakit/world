@@ -5,10 +5,9 @@ import { Popup, PopupProps } from 'react-leaflet'
 import { AppConfig } from '#lib/AppConfig'
 import { MarkerCategoriesValues } from '#lib/MarkerCategories'
 import { Contribution } from '#src/types/Contribution'
-import { IconTreasureBox } from '#components/Icons'
 import { Button } from '@nextui-org/react'
+import { MapIcon } from '#components/Icons'
 
-const MarkerIconWrapper = dynamic(() => import('#components/Map/LeafletMarker/MarkerIconWrapper'))
 
 interface LeafletPopupProps extends PopupProps {
   handlePopupClose: (active?: boolean) => void
@@ -45,11 +44,11 @@ const LeafletPopup = ({
           </Button>
           <div className="absolute left-0 top-0 mt-5 flex w-full justify-center">
             <div className='w-full flex items-center justify-center gap-2'>
-              <IconTreasureBox width={96} height={0} />
+              <MapIcon contribution={item} width={64} height={86}/>
             </div>
           </div>
           <div
-            className="flex w-full flex-col justify-center p-3 pt-6 text-center"
+            className="flex w-full flex-col justify-center p-3 pt-10 text-center"
             style={{ marginTop: AppConfig.ui.markerIconSize * 2 + 8 }}>
             <h3 className="m-0 text-lg font-bold leading-none">{name}</h3>
             <p className="m-0 text-secondary">{description}</p>

@@ -15,6 +15,7 @@ import { AppConfig } from '#lib/AppConfig';
 
 import LeafletDivIcon from './LeafletDivIcon';
 import MarkerIconWrapper from './LeafletMarker/MarkerIconWrapper';
+import { ethers } from 'ethers';
 
 type ClusterEvents = {
   onClick?: LeafletMouseEventHandlerFn;
@@ -48,7 +49,24 @@ const CreateMarkerClusterGroup = (
         source: (
           <MarkerIconWrapper
             color={props.color}
-            icon={props.icon}
+            contribution={{
+                        valid: true,
+                        index: cluster.getChildCount(),
+                        deposit: 0,
+                        withdraw: 0,
+                        claims: 0,
+                        limit: 0,
+                        timestamp: Date.now(),
+                        contributor: ethers.ZeroAddress, // Varsayılan contributor adresi
+                        token: ethers.ZeroAddress, // Varsayılan token adresi
+                        geohash: "",
+                        name: '',
+                        url: '', // Varsayılan URL
+                        description: '',
+                        color: '#000000', // Varsayılan renk
+                        image: '', // Varsayılan görsel
+                        claimers: [], // Başlangıçta boş claimers
+                      }}
             label={`${cluster.getChildCount()}`}
           />
         ),

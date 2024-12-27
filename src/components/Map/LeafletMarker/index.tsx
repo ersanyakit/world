@@ -41,6 +41,8 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
   // some event for the inner popup cta
   const handleOpenLocation = useCallback(() => {
     // eslint-disable-next-line no-console
+
+
     console.log('open location');
   }, []);
 
@@ -52,7 +54,7 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
         source: (
           <MarkerIconWrapper
             color={place.color}
-            icon={MarkerCategories[1].icon}
+            contribution={place}
           />
         ),
         anchor: [
