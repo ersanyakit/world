@@ -59,7 +59,7 @@ const ZoomOutButton = dynamic(
 
 const LeafletMapInner = () => {
   const { map } = useMapContext();
-  const { contributions, addContribution, addContributions, addClaimer } = useContributionContext();
+  const { contributions, addContributions } = useContributionContext();
 
   const {
     width: viewportWidth,
