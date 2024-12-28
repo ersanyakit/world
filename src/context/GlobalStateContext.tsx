@@ -1,15 +1,17 @@
 // context/GlobalStateContext.tsx
-import { Contribution } from '#src/types/Contribution';
+import { Asset, Claim, Contribution, Player } from '#src/types/Contribution';
 import React, { createContext, useReducer, useContext, ReactNode, useState } from 'react';
-
-
 
 
 interface ContributionContextType {
   contributions: Contribution[];
-  addContribution: (contribution: Contribution) => void;
+  claims:Claim[];
+  players:Player[];
+  assets:Asset[];
+  addClaims: (claims: Claim[]) => void;  // Toplu ekleme fonksiyonu
+  addAssets: (assets: Asset[]) => void;  // Toplu ekleme fonksiyonu
+  addPlayers: (players: Player[]) => void;  // Toplu ekleme fonksiyonu
   addContributions: (contributions: Contribution[]) => void;  // Toplu ekleme fonksiyonu
-  addClaimer: (contributionIndex: number, claimer: string) => void;
 }
 
 const ContributionContext = createContext<ContributionContextType | undefined>(undefined);
@@ -28,27 +30,30 @@ interface ContributionProviderProps {
 
 export const ContributionProvider: React.FC<ContributionProviderProps> = ({ children }) => {
   const [contributions, setContributions] = useState<Contribution[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [assets, setAssets] = useState<Asset[]>([]);
+  const [claims, setClaims] = useState<Claim[]>([]);
 
-  // Tek bir katkı ekleme fonksiyonu
-  const addContribution = (contribution: Contribution) => {
-    setContributions((prevContributions) => [...prevContributions, contribution]);
-  };
 
-  // Birden fazla katkıyı topluca ekleme fonksiyonu
   const addContributions = (contributions: Contribution[]) => {
     setContributions(contributions);
   };
 
-  const addClaimer = (contributionIndex: number, claimer: string) => {
-    setContributions((prevContributions) => {
-      const updatedContributions = [...prevContributions];
-      updatedContributions[contributionIndex].claimers.push(claimer);
-      return updatedContributions;
-    });
+  const addClaims = (claims: Claim[]) => {
+    setClaims(claims);
   };
 
+  const addAssets = (assets: Asset[]) => {
+    setAssets(assets);
+  };
+
+  const addPlayers = (players: Player[]) => {
+    setPlayers(players);
+  };
+
+
   return (
-    <ContributionContext.Provider value={{ contributions, addContribution, addContributions, addClaimer }}>
+    <ContributionContext.Provider value={{ contributions,claims,players,assets,addContributions, addClaims, addPlayers,addAssets }}>
       {children}
     </ContributionContext.Provider>
   );

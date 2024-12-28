@@ -65,7 +65,7 @@
           "type": "address"
         }
       ],
-      "name": "Claim",
+      "name": "HandleClaim",
       "type": "event"
     },
     {
@@ -160,7 +160,7 @@
           "type": "tuple"
         }
       ],
-      "name": "Contribute",
+      "name": "HandleContribute",
       "type": "event"
     },
     {
@@ -393,6 +393,97 @@
     },
     {
       "inputs": [],
+      "name": "getClaimHistory",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "contributionId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "fee",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "player",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct Claim[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "contributionId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "player",
+          "type": "address"
+        }
+      ],
+      "name": "getContributionInfo",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "totalContribution",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "playerContribution",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minimumContributionAmount",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct ContributionInfo",
+          "name": "contributionInfo",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "getContributors",
       "outputs": [
         {
@@ -617,6 +708,107 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "player",
+          "type": "address"
+        }
+      ],
+      "name": "getPlayerContributions",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "bool",
+              "name": "valid",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "index",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deposit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "withdraw",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "claims",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "limit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "contributor",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "geohash",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "url",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "color",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "image",
+              "type": "string"
+            },
+            {
+              "internalType": "address[]",
+              "name": "claimers",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct Contribution[]",
+          "name": "contributions",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "getPlayers",
       "outputs": [
@@ -715,107 +907,6 @@
           ],
           "internalType": "struct Player[]",
           "name": "",
-          "type": "tuple[]"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "user",
-          "type": "address"
-        }
-      ],
-      "name": "getUserContributions",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "bool",
-              "name": "valid",
-              "type": "bool"
-            },
-            {
-              "internalType": "uint256",
-              "name": "index",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "deposit",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "withdraw",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "claims",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "limit",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "timestamp",
-              "type": "uint256"
-            },
-            {
-              "internalType": "address",
-              "name": "contributor",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "token",
-              "type": "address"
-            },
-            {
-              "internalType": "string",
-              "name": "geohash",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "url",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "description",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "color",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "image",
-              "type": "string"
-            },
-            {
-              "internalType": "address[]",
-              "name": "claimers",
-              "type": "address[]"
-            }
-          ],
-          "internalType": "struct Contribution[]",
-          "name": "contributions",
           "type": "tuple[]"
         }
       ],

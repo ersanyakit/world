@@ -2,7 +2,7 @@ import { LatLngExpression } from 'leaflet'
 
 // FIXME: naming and structure
 export const AppConfig = {
-  minZoom: 1,
+  minZoom: 2,
   maxZoom: 18, // max zoom level of CARTO: 18
   ui: {
     topBarHeight: 0,
@@ -12,7 +12,7 @@ export const AppConfig = {
     menuIconSize: 16,
     topBarIconSize: 24,
   },
-  baseCenter: [52.02022592597971, 8.530780645829076] as LatLngExpression, // bielefeld lol
+  baseCenter: [41.9029, 12.4534] as LatLngExpression, // bielefeld lol
 }
 
 export enum NavMenuVariant {

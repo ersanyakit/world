@@ -3,6 +3,7 @@ import { getContract } from 'viem';
 import { chilizClient,hardhatClient } from './clients';
 import { HardhatContract } from './contracts';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
+import { Contribution } from '#src/types/Contribution';
 
 export const selectedClient = hardhatClient;
 
@@ -86,6 +87,7 @@ export async function getContributors() {
 }
 
 
+
 export async function getPlayers() {
   let response : any = [];
   let contractInformation = HardhatContract
@@ -130,6 +132,28 @@ export async function getAssets() {
   }
 }
 
+export async function getClaimHistory() {
+  let response : any = [];
+  let contractInformation = HardhatContract
+  try {
+    if (contractInformation) {
+      const contract = getContract({
+        address: contractInformation.address,
+        abi: contractInformation.abi,
+        client: {
+          public: selectedClient,
+        },
+      });
+      const res = await contract.read.getClaimHistory();
+      response = res;
+    }
+    return response;
+  } catch (error) {
+    console.log('getClaimHistory : ', error);
+    return response;
+  }
+}
+
 
 export const claim = async (walletProvider:any, isConnected:any, address:any, index:any) => {
 
@@ -158,3 +182,28 @@ export const claim = async (walletProvider:any, isConnected:any, address:any, in
     // error modal
   }
 };
+
+
+export const getContributionInfo = async (contribution:Contribution, walletProvider:any, isConnected:any, address:any) => {
+
+  let response : any = [];
+  let contractInformation = HardhatContract
+  try {
+    if (contractInformation) {
+      const contract = getContract({
+        address: contractInformation.address,
+        abi: contractInformation.abi,
+        client: {
+          public: selectedClient,
+        },
+      });
+      const res = await contract.read.getContributionInfo([contribution.index,contribution.token,address]);
+      response = res;
+    }
+    return response;
+  } catch (error) {
+    console.log('getContributionInfo : ', error);
+    return response;
+  }
+ 
+}

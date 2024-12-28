@@ -10,8 +10,6 @@ interface DivIconValues {
 const LeafletDivIcon = ({ source, anchor }: DivIconValues): DivIcon | null => {
   // Ensure we're in the browser environment
   if (typeof window !== 'undefined' && Leaflet) {
- 
-    
 let htmlContent: string;
 
 // Handle the source, checking if it's a string (image URL) or a React element

@@ -12,10 +12,11 @@ import { Contribution } from '#src/types/Contribution';
 import Geohash from 'ngeohash';
 import { LatLngExpression } from 'leaflet';
 import { decodeGeoHash } from '#lib/helper/geocoder';
-import { claim } from '#src/utils/web3/util';
+import { claim, getContributionInfo } from '#src/utils/web3/util';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 
 import LeafletDivIcon from '../LeafletDivIcon';
+import { formatEther } from 'ethers';
 
 const LeafletPopup = dynamic(() => import('../LeafletPopup'));
 
@@ -39,8 +40,20 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
     map?.closePopup();
   }, [map]);
 
+  const loadContributionInfo = async(place:Contribution)=>{
+    const contributionInfo = await getContributionInfo(place,walletProvider,isConnected,address)
+
+    console.log("minimumContributionAmount",formatEther(contributionInfo.minimumContributionAmount))
+    console.log("playerContribution",formatEther(contributionInfo.minimumContributionAmount))
+    console.log("totalContribution",formatEther(contributionInfo.totalContribution))
+    console.log("nextContributionAmount",formatEther(contributionInfo.nextContributionAmount))
+
+
+  }
+
   const handleMarkerClick = useCallback(() => {
     if (!map) return;
+    loadContributionInfo(place);
     const clampZoom = map.getZoom() < 14 ? 14 : undefined;
     map.setView(decodeGeoHash(place.geohash), clampZoom);
   }, [map, place.geohash]);

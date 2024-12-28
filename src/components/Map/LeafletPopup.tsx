@@ -7,6 +7,7 @@ import { MarkerCategoriesValues } from '#lib/MarkerCategories'
 import { Contribution } from '#src/types/Contribution'
 import { Button } from '@nextui-org/react'
 import { MapIcon } from '#components/Icons'
+import { useEffect } from 'react'
 
 
 interface LeafletPopupProps extends PopupProps {
@@ -22,6 +23,8 @@ const LeafletPopup = ({
   ...props
 }: LeafletPopupProps) => {
   const { name, description } = item
+
+
 
   return (
     <Popup {...props}>

@@ -2,16 +2,21 @@ import Head from 'next/head'
 import Map from '#components/Map'
 import { Button } from '@nextui-org/react'
 import { useEffect } from 'react'
-import { getContributors } from '#src/utils/web3/util'
+import { getAssets, getClaimHistory, getContributors, getPlayers } from '#src/utils/web3/util'
 import { useContributionContext } from '#src/context/GlobalStateContext'
 
 const MapPage = () => {
-  const { contributions, addContribution, addContributions, addClaimer } = useContributionContext();
+  const { contributions, addContributions, addPlayers , addAssets,addClaims} = useContributionContext();
 
   const initContributors = async () => {
-    let data = await getContributors()
-    addContributions(data)
-    console.log("contributors",data)
+    let _contributors = await getContributors()
+    addContributions(_contributors)
+    let _players = await getPlayers()
+    addPlayers(_players)
+    let _assets = await getAssets()
+    addAssets(_assets)
+    let _history = await getClaimHistory()
+    addClaims(_history)
   }
   useEffect(() => {
     initContributors();
