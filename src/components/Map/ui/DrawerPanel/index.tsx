@@ -22,7 +22,7 @@ interface DrawerPanelProps {
 }
 
 const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
-  const { contributions, addContribution, addContributions, addClaimer } = useContributionContext();
+  const { contributions,players,claims,assets } = useContributionContext();
 
   return (
     <>
