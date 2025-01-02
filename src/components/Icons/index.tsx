@@ -4,6 +4,7 @@ import { Contribution } from "#src/types/Contribution";
 import { Image } from "@nextui-org/react";
 import { useAppKitAccount } from '@reown/appkit/react';
 import { ethers } from 'ethers';
+import { getAvatar } from '#src/utils/helpers';
 
 interface IconProps {
   contribution?: Contribution;
@@ -27,6 +28,9 @@ export const MapIcon = ({ contribution = undefined, width = 24, height = 24 }: I
   }
   const getIcon : string = useMemo(() => {
     if(contribution){
+      if(contribution.index == ethers.MaxUint256){
+        return getAvatar(contribution?.contributor)
+      }
       if(ethers.isAddress(address)){
         const normalizedAddress = ethers.getAddress(address);
         let isClaimer = contribution.claimers.some((claimer) => ethers.getAddress(claimer) === normalizedAddress);

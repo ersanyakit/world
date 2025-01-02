@@ -7,25 +7,22 @@ import '#src/globals.css';
 import { Web3Provider } from '#src/context/web3modal';
 import { ContributionProvider } from '#src/context/GlobalStateContext';
 
- 
 
-const catamaran = Catamaran({
-  subsets: ['latin'],
-  variable: '--font-catamaran',
-});
+ 
 
 const App = ({ Component, pageProps }: AppProps) => (
   <>
         <NextUIProvider>
-    <Web3Provider>
-      <ContributionProvider>
+        <ContributionProvider>
 
-        <main className={`${catamaran.variable} font-sans text-base`}>
+    <Web3Provider>
+
+        <main className={`text-base`}>
           <Component {...pageProps} />
         </main>
+        </Web3Provider>
 
       </ContributionProvider>
-    </Web3Provider>
     </NextUIProvider>
   </>
 );

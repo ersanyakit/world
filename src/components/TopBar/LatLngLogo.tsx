@@ -19,16 +19,13 @@ const LatLngLogo = () => {
       setLocation(map.getCenter())
     })
 
-    // cleanup
-    return () => {
-      map.off()
-    }
+
   }, [map])
 
   return (
     <div className="flex gap-2 text-lg font-black leading-none  md:text-2xl md:leading-none">
       <div className="flex items-center">
-        <Compass size={36} className="text-slate-50 " />
+        <Compass size={36} className="text-primary-500 " />
       </div>
       <div className="flex items-center">
         {lat}<span>,</span>{lng}

@@ -9,11 +9,13 @@ import { CustomMarker } from '../LeafletMarker'
 import useMapContext from '../useMapContext'
 import { Button } from '@nextui-org/react'
 import { encodeGeoHash } from '#lib/helper/geocoder'
-import { ethers } from 'ethers'
+import { ethers, parseEther } from 'ethers'
+import { useAppKitAccount } from '@reown/appkit/react'
 
 export const LocateButton = () => {
   const { map } = useMapContext()
   const [userPosition, setUserPosition] = useState<LatLngExpression | undefined>(undefined)
+  const { address, isConnected } = useAppKitAccount();
 
   const handleClick = useCallback(() => {
     if ('geolocation' in navigator) {
@@ -49,19 +51,19 @@ export const LocateButton = () => {
         <CustomMarker
           place={{
             valid: true,
-            index: 0,
-            deposit: 0,
-            withdraw: 0,
-            claims: 0,
-            limit: 0,
+            index: ethers.MaxUint256,
+            deposit: parseEther("0"),
+            withdraw: parseEther("0"),
+            claims: parseEther("0"),
+            limit: parseEther("0"),
             timestamp: Date.now(),
-            contributor: ethers.ZeroAddress, // Varsayılan contributor adresi
+            contributor: isConnected ? ethers.getAddress(address as string) : ethers.ZeroAddress, // Varsayılan contributor adresi
             token: ethers.ZeroAddress, // Varsayılan token adresi
             geohash: encodeGeoHash(userPosition),
             name: 'Your Location',
             url: '', // Varsayılan URL
             description: 'You are here.',
-            color: '#000000', // Varsayılan renk
+            color: '#00FF0080', // Varsayılan renk
             image: '', // Varsayılan görsel
             claimers: [], // Başlangıçta boş claimers
           }}

@@ -6,7 +6,9 @@ import { getAssets, getClaimHistory, getContributors, getPlayers } from '#src/ut
 import { useContributionContext } from '#src/context/GlobalStateContext'
 
 const MapPage = () => {
-  const { contributions, addContributions, addPlayers , addAssets,addClaims} = useContributionContext();
+
+  const { addContributions, addPlayers , addAssets,addClaims} = useContributionContext();
+
 
   const initContributors = async () => {
     let _contributors = await getContributors()
@@ -18,6 +20,8 @@ const MapPage = () => {
     let _history = await getClaimHistory()
     addClaims(_history)
   }
+  
+
   useEffect(() => {
     initContributors();
   }, [])

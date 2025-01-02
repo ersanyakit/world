@@ -460,6 +460,11 @@
           "components": [
             {
               "internalType": "uint256",
+              "name": "nextContributionAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
               "name": "totalContribution",
               "type": "uint256"
             },
@@ -471,6 +476,16 @@
             {
               "internalType": "uint256",
               "name": "minimumContributionAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "playerBalance",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "playerAllowance",
               "type": "uint256"
             }
           ],

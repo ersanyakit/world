@@ -1,10 +1,10 @@
 export interface Contribution {
     valid: boolean;
-    index: number;
-    deposit: number;
-    withdraw: number;
-    claims: number;
-    limit: number;
+    index: bigint;
+    deposit: bigint;
+    withdraw: bigint;
+    claims: bigint;
+    limit: bigint;
     timestamp: number;
     contributor: string; // Contributor adresi
     token: string; // Token adresi
@@ -31,6 +31,7 @@ export interface Contribution {
     index: number;             // uint256
     lastaccess: number;        // uint256
     wallet: string;            // address
+    referral: string;            // address
     avatar: string;
     cover: string;
     name: string;
@@ -60,4 +61,6 @@ export interface Contribution {
     playerContribution: number;
     minimumContributionAmount: number;
     nextContributionAmount:number;
+    playerBalance : number;
+    playerAllowance:number;
 }

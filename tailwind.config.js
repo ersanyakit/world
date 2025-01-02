@@ -11,14 +11,16 @@ module.exports = {
   ],
   theme: {
     extend: {
-      extend: "light", // <- inherit default values from dark theme
+      extend: "dark", // <- inherit default values from dark theme
       fontSize: {
         base: ['18px', '24px'],
       },
       fontFamily: {
+        'orbitron': ['Orbitron', 'sans-serif'],
         sans: ['var(--font-catamaran)', ...fontFamily.sans],
       },
     },
   },
+  darkMode: "class",
   plugins: [nextui()],
 };

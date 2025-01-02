@@ -1,4 +1,10 @@
 import { Address } from "@reown/appkit-adapter-ethers";
+import { PublicClient } from "viem";
+
+export type NetworkClient = {
+  network: TNetwork;
+  client:PublicClient;
+};
 
 export type Token = {
   chainId: number;

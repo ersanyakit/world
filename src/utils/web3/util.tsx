@@ -1,11 +1,14 @@
 import { BrowserProvider, Contract, ethers, JsonRpcProvider } from 'ethers';
 import { getContract } from 'viem';
-import { chilizClient,hardhatClient } from './clients';
+import { chilizClient,hardhatClient, NETWORKS } from './clients';
 import { HardhatContract } from './contracts';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
-import { Contribution } from '#src/types/Contribution';
+import { Contribution, ContributionInfo } from '#src/types/Contribution';
+import { useContributionContext } from '#src/context/GlobalStateContext';
+import { Token } from '#src/types/web3.types';
 
-export const selectedClient = hardhatClient;
+
+export let selectedNetwork = NETWORKS.hardhat; // Varsayılan ağ
 
 export function GetContractAt(contract:any) {
   return new Contract(
@@ -13,6 +16,11 @@ export function GetContractAt(contract:any) {
     contract.abi,
     new JsonRpcProvider(contract.rpcUrl)
   );
+}
+
+export function getContractInstance(address: string, abi: any) {
+  const provider = new JsonRpcProvider(selectedNetwork.network.rpcUrl);
+  return new Contract(address, abi, provider);
 }
 
 export async function GetSigner(wallet : any) {
@@ -28,7 +36,7 @@ export async function getERC20Balance(contractInformation : any , user : any) {
         address: contractInformation.address,
         abi: contractInformation.abi,
         client: {
-          public: selectedClient,
+          public: selectedNetwork.client,
         },
       });
       const res = await contract.read.balanceOf([user]);
@@ -49,7 +57,7 @@ export async function getERC20Allowance(contractInformation : any , user : any ,
         address: contractInformation.address,
         abi: contractInformation.abi,
         client: {
-          public: selectedClient,
+          public: selectedNetwork.client,
         },
       });
       const res = await contract.read.allowance([user, to]);
@@ -73,7 +81,7 @@ export async function getContributors() {
         address: contractInformation.address,
         abi: contractInformation.abi,
         client: {
-          public: selectedClient,
+          public: selectedNetwork.client,
         },
       });
       const res = await contract.read.getContributors();
@@ -97,7 +105,7 @@ export async function getPlayers() {
         address: contractInformation.address,
         abi: contractInformation.abi,
         client: {
-          public: selectedClient,
+          public: selectedNetwork.client,
         },
       });
       const res = await contract.read.getPlayers();
@@ -119,7 +127,7 @@ export async function getAssets() {
         address: contractInformation.address,
         abi: contractInformation.abi,
         client: {
-          public: selectedClient,
+          public: selectedNetwork.client,
         },
       });
       const res = await contract.read.getAssets();
@@ -141,7 +149,7 @@ export async function getClaimHistory() {
         address: contractInformation.address,
         abi: contractInformation.abi,
         client: {
-          public: selectedClient,
+          public: selectedNetwork.client,
         },
       });
       const res = await contract.read.getClaimHistory();
@@ -184,9 +192,9 @@ export const claim = async (walletProvider:any, isConnected:any, address:any, in
 };
 
 
-export const getContributionInfo = async (contribution:Contribution, walletProvider:any, isConnected:any, address:any) => {
+export const getContributionInfo = async (contribution:Contribution, walletProvider:any, isConnected:any, address:any) : Promise<ContributionInfo | null>  => {
 
-  let response : any = [];
+  let response: ContributionInfo | null = null;
   let contractInformation = HardhatContract
   try {
     if (contractInformation) {
@@ -194,16 +202,97 @@ export const getContributionInfo = async (contribution:Contribution, walletProvi
         address: contractInformation.address,
         abi: contractInformation.abi,
         client: {
-          public: selectedClient,
+          public: selectedNetwork.client,
         },
       });
-      const res = await contract.read.getContributionInfo([contribution.index,contribution.token,address]);
-      response = res;
+      const res : any = await contract.read.getContributionInfo([contribution.index,contribution.token,address]);
+
+      response = {
+        totalContribution: res.totalContribution, // BigNumber'dan sayıya dönüştürme
+        playerContribution: res.playerContribution,
+        minimumContributionAmount: res.minimumContributionAmount,
+        nextContributionAmount: res.nextContributionAmount,
+        playerBalance: res.playerBalance,
+        playerAllowance: res.playerAllowance,
+      } as ContributionInfo;
     }
     return response;
   } catch (error) {
     console.log('getContributionInfo : ', error);
     return response;
+  }
+ 
+}
+
+
+export const getContributionInfoByToken = async (
+  token: Token,
+  walletProvider: any,
+  isConnected: any,
+  address: any
+): Promise<ContributionInfo | null> => {
+  let response: ContributionInfo | null = null;
+  const contractInformation = HardhatContract;
+
+  try {
+    if (contractInformation) {
+      const contract = getContract({
+        address: contractInformation.address,
+        abi: contractInformation.abi,
+        client: {
+          public: selectedNetwork.client,
+        },
+      });
+
+      const res : any = await contract.read.getContributionInfo([
+        ethers.MaxUint256, // ethers.MaxUint256 yerine bu kullanılır
+        token.address,
+        address,
+      ]);
+
+      response = {
+        totalContribution: res.totalContribution, // BigNumber'dan sayıya dönüştürme
+        playerContribution: res.playerContribution,
+        minimumContributionAmount: res.minimumContributionAmount,
+        nextContributionAmount: res.nextContributionAmount,
+        playerBalance: res.playerBalance,
+        playerAllowance: res.playerAllowance,
+      } as ContributionInfo;
+    }
+  } catch (error) {
+    console.log("getContributionInfoByToken : ", error);
+  }
+
+  return response; // Eğer hata oluşursa veya yanıt geçersizse null dönecek.
+};
+
+export const getContributionInfoByTokenEx = async (token:Token, walletProvider:any, isConnected:any, address:any) :  Promise<ContributionInfo | null>  => {
+
+  let response: ContributionInfo | null = null;
+  let contractInformation = HardhatContract
+  try {
+    if (contractInformation) {
+      const contract = getContract({
+        address: contractInformation.address,
+        abi: contractInformation.abi,
+        client: {
+          public: selectedNetwork.client,
+        },
+      });
+      const res : any = await contract.read.getContributionInfo([ethers.MaxUint256,token.address,address]);
+      response = {
+        totalContribution: res.totalContribution, // BigNumber'dan sayıya dönüştürme
+        playerContribution: res.playerContribution,
+        minimumContributionAmount: res.minimumContributionAmount,
+        nextContributionAmount: res.nextContributionAmount,
+        playerBalance: res.playerBalance,
+        playerAllowance: res.playerAllowance,
+      } as ContributionInfo;
+    }
+    return response;
+  } catch (error) {
+    console.log('getContributionInfoByToken : ', error);
+    return null;
   }
  
 }

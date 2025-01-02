@@ -2,6 +2,7 @@ import { Button } from '@nextui-org/react';
 import { useAppKit, useAppKitAccount } from '@reown/appkit/react';
 import { FormatAddressDesign } from '#src/utils/helpers';
 import React from 'react';
+import { Unicon } from '#components/Unicon';
 
 const ConnectButton = () => {
   const { open } = useAppKit();
@@ -11,16 +12,32 @@ const ConnectButton = () => {
     <>
       <Button
         size="lg"
-        disableRipple
         aria-label="connect-btn"
         radius="sm"
-        color="primary"
+        variant="light"
         style={{
           transition: 'all 0.3s ease',
         }}
         onPress={() => open()}
       >
-        {!isConnected ? 'Connect' : address && FormatAddressDesign(address)}
+    
+    {
+  isConnected && address && (
+    <div className='w-full flex flex-row gap-2 items-center justify-center'>
+      <Unicon address={address} size={32} randomSeed={32} />
+      <span>{FormatAddressDesign(address)}</span>
+    </div>
+  )
+}
+
+    
+{
+  !isConnected && (
+    <div className='w-full flex flex-row gap-2 items-center justify-center'>
+      <span className='font-bold'>Connect</span>
+    </div>
+  )
+}
       </Button>
     </>
   );

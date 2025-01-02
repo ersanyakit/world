@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Marker as ReactMarker } from 'react-leaflet';
 
 import { AppConfig } from '#lib/AppConfig';
@@ -8,7 +8,7 @@ import { PlaceValues } from '#lib/Places';
 
 import useMapContext from '../useMapContext';
 import MarkerIconWrapper from './MarkerIconWrapper';
-import { Contribution } from '#src/types/Contribution';
+import { Contribution, ContributionInfo, Player } from '#src/types/Contribution';
 import Geohash from 'ngeohash';
 import { LatLngExpression } from 'leaflet';
 import { decodeGeoHash } from '#lib/helper/geocoder';
@@ -29,6 +29,7 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
   const { map } = useMapContext();
       const { address, isConnected } = useAppKitAccount();
       const { walletProvider } = useAppKitProvider('eip155');
+      const [contributionInfo, setContributionInfo] = useState<ContributionInfo | null>(null);
 
   const markerCategory = useMemo(
     () => place.token,
@@ -41,14 +42,15 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
   }, [map]);
 
   const loadContributionInfo = async(place:Contribution)=>{
-    const contributionInfo = await getContributionInfo(place,walletProvider,isConnected,address)
-
-    console.log("minimumContributionAmount",formatEther(contributionInfo.minimumContributionAmount))
-    console.log("playerContribution",formatEther(contributionInfo.minimumContributionAmount))
-    console.log("totalContribution",formatEther(contributionInfo.totalContribution))
-    console.log("nextContributionAmount",formatEther(contributionInfo.nextContributionAmount))
-
-
+    const _contributionInfo = await getContributionInfo(place,walletProvider,isConnected,address)
+    setContributionInfo(_contributionInfo)
+    console.log("getContributionInfo",_contributionInfo);
+    if(_contributionInfo){
+      console.log("minimumContributionAmount",formatEther(_contributionInfo.minimumContributionAmount))
+      console.log("playerContribution",formatEther(_contributionInfo.minimumContributionAmount))
+      console.log("totalContribution",formatEther(_contributionInfo.totalContribution))
+      console.log("nextContributionAmount",formatEther(_contributionInfo.nextContributionAmount))
+    }
   }
 
   const handleMarkerClick = useCallback(() => {
@@ -91,11 +93,12 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
       autoPan={false}
       autoPanOnFocus={false}
     >
-      <LeafletPopup
+    <LeafletPopup
         autoPan={false}
         autoClose
         closeButton={false}
-        item={place}
+        contribution={place}
+        contributionInfo={contributionInfo}
         handleOpenLocation={handleOpenLocation}
         handlePopupClose={handlePopupClose}
       />

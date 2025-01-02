@@ -13,7 +13,7 @@ const Home = () => {
  
 
   return (
-    <div className="container mx-auto max-w-2xl p-3 max-md:max-w-none">
+    <div className="dark container mx-auto max-w-2xl p-3 max-md:max-w-none">
       <Head>
         <title>KEWL WORLD 🤩</title>
         <meta property="og:title" content="KEWL WORLD🤩" key="title" />
