@@ -23,9 +23,9 @@ const LatLngLogo = () => {
   }, [map])
 
   return (
-    <div className="flex gap-2 text-lg font-black leading-none  md:text-2xl md:leading-none">
+    <div className="w-full flex flex-row gap-2 text-md font-black">
       <div className="flex items-center">
-        <Compass size={36} className="text-primary-500 " />
+        <Compass size={24} className="text-primary-500 " />
       </div>
       <div className="flex items-center">
         {lat}<span>,</span>{lng}

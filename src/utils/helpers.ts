@@ -1,4 +1,5 @@
-import { keccak256 } from "ethers";
+import { Token } from "#src/types/web3.types";
+import { formatUnits, keccak256, parseEther, parseUnits } from "ethers";
 
 export function FormatAddressDesign(
   address: string | `0x${string}`,
@@ -22,4 +23,11 @@ export const getAvatar = (address : string) : string => {
   const bigNumber = parseInt(hashSegment, 16); // 16 tabanından 10 tabanına dönüştür
   let randNum = bigNumber % 57;
   return `https://raw.githubusercontent.com/ersanyakit/maggoo/refs/heads/main/maggoo-app/public/full/Worm_${randNum}.png`
+}
+
+export const forceFormatUnits = (value:any,token:Token): any => {
+  if(!value){
+    value = parseUnits("0",token.decimals);
+  }
+  return parseFloat(formatUnits(value,token.decimals));
 }

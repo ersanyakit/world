@@ -8,10 +8,12 @@ interface ContributionContextType {
   claims:Claim[];
   players:Player[];
   assets:Asset[];
+  player:Player | null
   addClaims: (claims: Claim[]) => void;  // Toplu ekleme fonksiyonu
   addAssets: (assets: Asset[]) => void;  // Toplu ekleme fonksiyonu
   addPlayers: (players: Player[]) => void;  // Toplu ekleme fonksiyonu
   addContributions: (contributions: Contribution[]) => void;  // Toplu ekleme fonksiyonu
+  addPlayer : (player:Player) => void
 }
 
 const ContributionContext = createContext<ContributionContextType | undefined>(undefined);
@@ -33,7 +35,7 @@ export const ContributionProvider: React.FC<ContributionProviderProps> = ({ chil
   const [players, setPlayers] = useState<Player[]>([]);
   const [assets, setAssets] = useState<Asset[]>([]);
   const [claims, setClaims] = useState<Claim[]>([]);
-
+  const [player, setPlayer] = useState<Player | null>(null);
 
   const addContributions = (contributions: Contribution[]) => {
     setContributions(contributions);
@@ -51,9 +53,12 @@ export const ContributionProvider: React.FC<ContributionProviderProps> = ({ chil
     setPlayers(players);
   };
 
+  const addPlayer = (player:Player) => {
+    setPlayer(player)
+  }
 
   return (
-    <ContributionContext.Provider value={{ contributions,claims,players,assets,addContributions, addClaims, addPlayers,addAssets }}>
+    <ContributionContext.Provider value={{ player, contributions,claims,players,assets,addPlayer,addContributions, addClaims, addPlayers,addAssets }}>
       {children}
     </ContributionContext.Provider>
   );

@@ -14,11 +14,7 @@ const Home = () => {
 
   return (
     <div className="dark container mx-auto max-w-2xl p-3 max-md:max-w-none">
-      <Head>
-        <title>KEWL WORLD 🤩</title>
-        <meta property="og:title" content="KEWL WORLD🤩" key="title" />
-        <meta name="description" content="KEWL WORLD." />
-      </Head>
+    
       <header className="items-top mt-10 gap-4 md:flex">
         <span className="text-primary">
           {/** @ts-ignore */}

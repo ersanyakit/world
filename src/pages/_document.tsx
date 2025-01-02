@@ -11,6 +11,10 @@ const Document = () => (
             href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap"
             rel="stylesheet"
           />
+
+        <title>KEWL WORLD 🤩</title>
+        <meta property="og:title" content="KEWL World🤩" key="title" />
+        <meta name="description" content="KEWL WORLD by KEWL EXCHANGE" />
     </Head>
     <body className="bg-white">
       <Main />

@@ -10,6 +10,27 @@
     },
     {
       "inputs": [],
+      "name": "AlreadyRegistered",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "requiredAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "providedAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "DepositAmountMismatch",
+      "type": "error"
+    },
+    {
+      "inputs": [],
       "name": "ExceedsMaximumClaim",
       "type": "error"
     },
@@ -161,6 +182,31 @@
         }
       ],
       "name": "HandleContribute",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "referral",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "registered_at",
+          "type": "uint256"
+        }
+      ],
+      "name": "HandleRegister",
       "type": "event"
     },
     {
@@ -629,6 +675,11 @@
               "type": "bool"
             },
             {
+              "internalType": "bool",
+              "name": "registered",
+              "type": "bool"
+            },
+            {
               "internalType": "uint256",
               "name": "index",
               "type": "uint256"
@@ -641,6 +692,11 @@
             {
               "internalType": "address",
               "name": "wallet",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "referral",
               "type": "address"
             },
             {
@@ -835,6 +891,11 @@
               "type": "bool"
             },
             {
+              "internalType": "bool",
+              "name": "registered",
+              "type": "bool"
+            },
+            {
               "internalType": "uint256",
               "name": "index",
               "type": "uint256"
@@ -847,6 +908,11 @@
             {
               "internalType": "address",
               "name": "wallet",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "referral",
               "type": "address"
             },
             {
@@ -931,6 +997,19 @@
     {
       "inputs": [
         {
+          "internalType": "address",
+          "name": "referral",
+          "type": "address"
+        }
+      ],
+      "name": "register",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "uint256",
           "name": "_fee",
           "type": "uint256"
@@ -977,6 +1056,11 @@
               "type": "bool"
             },
             {
+              "internalType": "bool",
+              "name": "registered",
+              "type": "bool"
+            },
+            {
               "internalType": "uint256",
               "name": "index",
               "type": "uint256"
@@ -989,6 +1073,11 @@
             {
               "internalType": "address",
               "name": "wallet",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "referral",
               "type": "address"
             },
             {
@@ -1068,6 +1157,19 @@
         }
       ],
       "name": "setProfile",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_registrationFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "setRegistrationPrice",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

@@ -28,11 +28,6 @@ const MapPage = () => {
 
   return (
     <div>
-      <Head>
-        <title>KEWL WORLD 🤩</title>
-        <meta property="og:title" content="KEWL World🤩" key="title" />
-        <meta name="description" content="KEWL WORLD by KEWL EXCHANGE" />
-      </Head>
       <div className="w-full">
        <Map /> 
       </div>

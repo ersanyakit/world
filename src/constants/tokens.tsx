@@ -4,6 +4,14 @@ import { Token } from "#src/types/web3.types";
   export const Tokens: Token[] = [
         {
             "chainId": 88888,
+            "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "name": "TESTTEST",
+            "symbol": "TESTTEST",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x60cfc65ba14c2f8b111fc7b152bb11486fdea822/logo.svg"
+        },
+        {
+            "chainId": 88888,
             "address": "0xEd5740209FcF6974d6f3a5F11e295b5E468aC27c",
             "name": "KEWL EXCHANGE",
             "symbol": "KWL",
@@ -97,5 +105,14 @@ import { Token } from "#src/types/web3.types";
             "symbol": "FANFAN",
             "decimals": 18,
             "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x60cfc65ba14c2f8b111fc7b152bb11486fdea822/logo.svg"
+        },
+        {
+            "chainId": 88888,
+            "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "name": "FanFanToken",
+            "symbol": "FANFAN",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x60cfc65ba14c2f8b111fc7b152bb11486fdea822/logo.svg"
         }
+        
 ]
