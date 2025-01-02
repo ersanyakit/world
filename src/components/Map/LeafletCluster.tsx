@@ -14,7 +14,7 @@ import React, { FunctionComponent } from 'react';
 import { AppConfig } from '#lib/AppConfig';
 
 import MarkerIconWrapper from './LeafletMarker/MarkerIconWrapper';
-import { ethers } from 'ethers';
+import { ethers, parseEther } from 'ethers';
 import LeafletDivIcon from './LeafletDivIcon';
 
 type ClusterEvents = {
@@ -51,11 +51,11 @@ const CreateMarkerClusterGroup = (
             color={props.color}
             contribution={{
                         valid: true,
-                        index: cluster.getChildCount(),
-                        deposit: 0,
-                        withdraw: 0,
-                        claims: 0,
-                        limit: 0,
+                        index: BigInt(cluster.getChildCount()),
+                        deposit: parseEther("0"),
+                        withdraw: parseEther("0"),
+                        claims: parseEther("0"),
+                        limit: parseEther("0"),
                         timestamp: Date.now(),
                         contributor: ethers.ZeroAddress, // Varsayılan contributor adresi
                         token: ethers.ZeroAddress, // Varsayılan token adresi
