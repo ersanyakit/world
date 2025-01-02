@@ -159,7 +159,7 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
                 <div className="flex flex-col w-full justify-center items-center pt-4 gap-2">
 
                   {contributions.map((contribution, index) => (
-                    <Card className='w-full' key={contribution.index}>
+                    <Card className='w-full' key={Number(contribution.index)}>
                       <CardBody>
                       <div className="flex flex-col gap-2 py-4">
 

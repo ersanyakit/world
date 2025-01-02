@@ -138,7 +138,7 @@ const LeafletMapInner = () => {
                     chunkedLoading
                   >
                     {item.markers.map((marker) => (
-                      <CustomMarker place={marker} key={marker.index} />
+                      <CustomMarker place={marker} key={Number(marker.index)} />
                     ))}
                   </LeafletCluster>
                 ))}
