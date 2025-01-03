@@ -1,5 +1,5 @@
 import { TNetwork } from '#src/types/web3.types';
-import { chiliz,hardhat,avalanche } from 'viem/chains';
+import { chiliz,spicy,hardhat,avalanche } from 'viem/chains';
 
 export const ChilizMainnet: TNetwork = {
   chainId: chiliz.id,
@@ -9,6 +9,17 @@ export const ChilizMainnet: TNetwork = {
   rpcUrl: 'https://rpc.chiliz.com',
   image: '/chainsLogos/arbitrum-logo.svg',
 };
+
+
+export const ChilizSpicyTestNet: TNetwork = {
+  chainId: spicy.id,
+  name: spicy.name,
+  currency: spicy.nativeCurrency.symbol,
+  explorerUrl: 'https://testnet.chiliscan.com',
+  rpcUrl: 'https://spicy-rpc.chiliz.com',
+  image: '/chainsLogos/arbitrum-logo.svg',
+};
+
 
 export const AvaxMainnet: TNetwork = {
   chainId: avalanche.id,

@@ -1,6 +1,6 @@
 import { createPublicClient, http, PublicClient } from 'viem';
-import { avalanche, chiliz, hardhat } from 'viem/chains';
-import { AvaxMainnet, ChilizMainnet, HardhatTestnet } from './chains';
+import { avalanche, chiliz, hardhat, spicy } from 'viem/chains';
+import { AvaxMainnet, ChilizMainnet, ChilizSpicyTestNet, HardhatTestnet } from './chains';
 import { NetworkClient, TNetwork } from '#src/types/web3.types';
 
 
@@ -13,6 +13,16 @@ export const chilizClient = createPublicClient({
   pollingInterval: 10_000,
   chain: chiliz,
   transport: http(ChilizMainnet.rpcUrl),
+});
+
+export const chilizSpicyClient = createPublicClient({
+  batch: {
+    multicall: true,
+  },
+  cacheTime: 10_000,
+  pollingInterval: 10_000,
+  chain: spicy,
+  transport: http(ChilizSpicyTestNet.rpcUrl),
 });
 
 
@@ -42,6 +52,7 @@ export const hardhatClient = createPublicClient({
 
 export const NETWORKS : Record<string, NetworkClient>= {
   chiliz:{client:chilizClient,network:ChilizMainnet},
+  spicy:{client:chilizSpicyClient,network:ChilizSpicyTestNet},
   hardhat:{client:hardhatClient,network:HardhatTestnet},
   avalanche:{client:avaxClient,network:AvaxMainnet}
 }

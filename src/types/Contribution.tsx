@@ -1,21 +1,21 @@
 export interface Contribution {
-    valid: boolean;
-    index: number;
-    deposit: number;
-    withdraw: number;
-    claims: number;
-    limit: number;
-    timestamp: number;
-    contributor: string; // Contributor adresi
-    token: string; // Token adresi
-    geohash: string;
-    name: string;
-    url: string;
-    description: string;
-    color: string;
-    image: string;
-    claimers: string[]; // Claim yapan adreslerin listesi
-  }
+  valid: boolean;
+  index: bigint; // uint256 için bigint kullanılır
+  deposit: bigint;
+  withdraw: bigint;
+  claims: bigint;
+  limit: bigint;
+  timestamp: bigint;
+  contributor: string; // Solidity address -> string
+  token: string;
+  geohash: string;
+  name: string;
+  url: string;
+  description: string;
+  color: string;
+  image: string;
+  claimers: string[]; // Solidity address[] -> string[]
+}
 
   export interface Claim {
     timestamp: number;         // uint256

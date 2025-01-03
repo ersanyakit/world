@@ -12,7 +12,7 @@ import { Token } from "#src/types/web3.types";
         },
         {
             "chainId": 88888,
-            "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+            "address": "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE",
             "name": "TESTTEST",
             "symbol": "TESTTEST",
             "decimals": 18,

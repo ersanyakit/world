@@ -1,3 +1,4 @@
+import { Tokens } from "#src/constants/tokens";
 import { Token } from "#src/types/web3.types";
 import { formatUnits, keccak256, parseEther, parseUnits } from "ethers";
 
@@ -36,4 +37,12 @@ export const generateHexColorFromAddress = (address: string): string => {
   const cleanAddress = address.toLowerCase().replace(/^0x/, "");
   const color = `#${cleanAddress.slice(0, 6)}`;
   return color;
+}
+
+export const getTokenByAddress = (address: string) : Token | null => {
+  const tokenInfo = Object.values(Tokens).find((token) => token.address && address);
+  if (!tokenInfo) {
+    return null
+  }
+  return tokenInfo;
 }

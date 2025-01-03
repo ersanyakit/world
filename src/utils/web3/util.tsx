@@ -1,4 +1,4 @@
-import { BrowserProvider, Contract, ethers, JsonRpcProvider } from 'ethers';
+import { BrowserProvider, Contract, ethers, JsonRpcProvider, parseEther } from 'ethers';
 import { getContract } from 'viem';
 import { chilizClient,hardhatClient, NETWORKS } from './clients';
 import { HardhatContract } from './contracts';
@@ -202,20 +202,22 @@ try {
   const signer = await GetSigner(walletProvider);
 
   const overrides = {
-    value: ethers.getAddress(contribution.token) == ethers.getAddress(ethers.ZeroAddress) ? contribution.deposit : 0
+    value:ethers.getAddress(contribution.token) == ethers.getAddress(ethers.ZeroAddress) ? contribution.deposit : 0
   }
 
+  console.log("Token Address:", ethers.getAddress(contribution.token));
+  console.log("Zero Address:", ethers.ZeroAddress);
 
   const tx = await contract
     .connect(signer)
     // @ts-ignore
     .contribute(contribution,overrides);
 
-  await tx.wait(1);
+  await tx.wait();
   // close wait modal
   // success modal
 } catch (error) {
-  console.log("claimError",error)
+  console.log("contributeError",error)
   // close wait modal
   // error modal
 }

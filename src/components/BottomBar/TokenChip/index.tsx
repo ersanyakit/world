@@ -65,7 +65,6 @@ const TokenChip = ({ token }: ChipProps) => {
     const _contributionInfo = await getContributionInfoByToken(token, walletProvider, isConnected, address)
     setContributionInfo(_contributionInfo)
     console.log("getContributionInfoByToken", _contributionInfo, token, isConnected, address)
-    console.log("ether",formatUnits(_contributionInfo.nextContributionAmount,token.decimals))
   }
 
   useEffect(() => { }, [contributionInfo?.playerBalance])
@@ -112,14 +111,14 @@ const TokenChip = ({ token }: ChipProps) => {
 
 
   const encodedGeohash = Geohash.encode(Number(lat ? lat :  21.4225), Number(lng ? lng : 39.8262));
-  let contribution: Contribution = {
+  let contribution : Contribution = {
     valid: false,
     index: BigInt(0),
     deposit: parseUnits(depositAmount.toString(),token.decimals),
     withdraw: BigInt(0),
     claims: BigInt(0),
     limit: BigInt(0),
-    timestamp: 0,
+    timestamp: BigInt(0),
     contributor: address || ethers.ZeroAddress,
     token: token.address,
     geohash: encodedGeohash,
@@ -233,6 +232,7 @@ const TokenChip = ({ token }: ChipProps) => {
           )}
         </ModalContent>
       </Modal>
+      <div>
       <Button
         className="w-full"
         size="lg"
@@ -247,6 +247,7 @@ const TokenChip = ({ token }: ChipProps) => {
           src={token.logoURI}
         />
       </Button>
+      </div>
 
     </>
 

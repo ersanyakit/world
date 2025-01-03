@@ -53,6 +53,7 @@ export const ContributionProvider: React.FC<ContributionProviderProps> = ({ chil
     setPlayers(players);
   };
 
+
   const addPlayer = (player:Player) => {
     setPlayer(player)
   }
