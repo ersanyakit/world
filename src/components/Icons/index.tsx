@@ -1,53 +1,62 @@
-"use client";
-import { useMemo } from 'react';
-import { Contribution } from "#src/types/Contribution";
-import { Image } from "@nextui-org/react";
-import { useAppKitAccount } from '@reown/appkit/react';
+import { FunctionComponent } from 'react';
+import { Contribution, Player } from '#src/types/Contribution';
+import {Image} from "@nextui-org/image";
 import { ethers } from 'ethers';
 import { getAvatar } from '#src/utils/helpers';
+import { generateLogo } from '#lib/helper/geocoder';
 
 interface IconProps {
-  contribution?: Contribution;
-  width?: number; // Boyut özelliği opsiyonel, varsayılan bir değer atanabilir
+  player?: Player | null;
+  contribution?: Contribution | null;
+  width?: number;
   height?: number;
 }
 
-export const MapIcon = ({ contribution = undefined, width = 24, height = 24 }: IconProps) => {
-    const { address, isConnected } = useAppKitAccount();
-  
-  // Use useMemo to memoize the icon generation logic
-  const iconIndex = useMemo(() => {
+// MapIcon FunctionComponent olarak tanımlandı
+export const MapIcon: FunctionComponent<IconProps> = ({
+  contribution,
+  player,
+  width = 24,
+  height = 24,
+}) => {
+  // Contribution index değerine göre bir ikon indexi hesaplar
+  const calculateIconIndex = (): string => {
     const totalIcons = 33;
-    const contributionIndex = Number(contribution?.index);
+    const contributionIndex = Number(contribution?.index || 0);
     return (contributionIndex % totalIcons).toString();
-  }, [contribution?.index]); // Only recompute when contribution?.index changes
-  
+  };
 
-  const getTokenLogoByAddress = (address:string) : string => {
-    return `https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/${address.toLowerCase()}/logo.svg`
-  }
-  const getIcon : string = useMemo(() => {
-    if(contribution){
-      if(contribution.index == ethers.MaxUint256){
-        return getAvatar(contribution?.contributor)
+  // Verilen adres için token logosunu döndürür
+  const getTokenLogoByAddress = (address: string): string => {
+    return generateLogo(0, address);
+  };
+
+  // İkon URL'sini belirler
+  const determineIconUrl = (): string => {
+    if (contribution) {
+      if (contribution.index === ethers.MaxUint256) {
+        return getAvatar(contribution.contributor);
       }
-      if(ethers.isAddress(address)){
-        const normalizedAddress = ethers.getAddress(address);
-        let isClaimer = contribution.claimers.some((claimer) => ethers.getAddress(claimer) === normalizedAddress);
-        let isContributor = normalizedAddress == ethers.getAddress(contribution?.contributor)
-        if(isClaimer || isContributor){
-            return getTokenLogoByAddress(contribution.token);
+      if (player && ethers.isAddress(player.wallet)) {
+        const normalizedAddress = ethers.getAddress(player.wallet);
+        const isClaimer = contribution.claimers.some(
+          (claimer) => ethers.getAddress(claimer) === normalizedAddress
+        );
+        const isContributor =
+          normalizedAddress === ethers.getAddress(contribution.contributor);
+        if (isClaimer || isContributor) {
+          return getTokenLogoByAddress(contribution.token);
         }
       }
     }
-    return `/assets/icons/${iconIndex}.png`;
-  }, [contribution?.index]); // Only recompute when contribution?.index changes
+    return `/assets/icons/${calculateIconIndex()}.png`;
+  };
 
   return (
     <div className="flex flex-col gap-2 items-center justify-center min-w-[60px] min-h-[60px] max-w-[60px] max-h-[60px]">
       <Image
-        src={getIcon}
-        alt={'Eggs'}
+        src={determineIconUrl()}
+        alt="Map Icon"
         className="rounded-full opacity-1"
         width={width}
         height={height}

@@ -1,3 +1,4 @@
+import { Tokens } from '#src/constants/tokens';
 import { LatLngExpression } from 'leaflet';
 import Geohash from 'ngeohash';
 
@@ -20,6 +21,12 @@ export const encodeGeoHash = (position: LatLngExpression): string => {
   };
   
 
-export const generateLogo = (chainId: number, asset:string): string => {
-    return "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0xed5740209fcf6974d6f3a5f11e295b5e468ac27c/logo.svg"
+  export const generateLogo = (chainId: number, address: string): string => {
+    console.log("generateLogo:Provided chainId:", chainId);
+    console.log("generateLogo:Provided address:", address.toLowerCase());
+    const token = Tokens.find(
+      (t) => t.address.toLowerCase() === address.toLowerCase()
+    );
+    console.log("generateLogo:Matched token:", token);
+    return token?.logoURI || "https://raw.githubusercontent.com/kewlexchange/assets/main/default-logo.svg";
   };

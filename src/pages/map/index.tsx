@@ -1,31 +1,26 @@
 import Head from 'next/head'
 import Map from '#components/Map'
 import { Button } from '@nextui-org/react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { getAssets, getClaimHistory, getContributors, getPlayers } from '#src/utils/web3/util'
 import { useContributionContext } from '#src/context/GlobalStateContext'
+import useInitContributors from '#src/hooks/useInitContributors'
 
 const MapPage = () => {
 
-  const { addContributions, addPlayers , addAssets,addClaims} = useContributionContext();
+  const [refreshTrigger, setRefreshTrigger] = useState(true);
 
 
-  const initContributors = async () => {
-    let _contributors = await getContributors()
-    addContributions(_contributors)
-    let _players = await getPlayers()
-    addPlayers(_players)
-    let _assets = await getAssets()
-    addAssets(_assets)
-    let _history = await getClaimHistory()
-    addClaims(_history)
-  }
-  
+  useInitContributors(refreshTrigger);
 
   useEffect(() => {
-    initContributors();
-  }, [])
+    if (refreshTrigger) {
+      setRefreshTrigger(false); // Veriler yüklendikten sonra refreshTrigger'ı false yapıyoruz
+    }
+  }, [refreshTrigger]); // refreshTrigger değiştiğinde çalışacak
 
+  
+ 
   return (
     <div>
       <div className="w-full">

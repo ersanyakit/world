@@ -192,6 +192,36 @@ export const claim = async (walletProvider:any, isConnected:any, address:any, in
 };
 
 
+export const contribute = async (walletProvider:any, isConnected:any, address:any, contribution:Contribution) => {
+  let contractInformation = HardhatContract
+  if (isConnected === false) {
+    return;
+  }
+try {
+  const contract = GetContractAt(contractInformation);
+  const signer = await GetSigner(walletProvider);
+
+  const overrides = {
+    value: ethers.getAddress(contribution.token) == ethers.getAddress(ethers.ZeroAddress) ? contribution.deposit : 0
+  }
+
+  console.log("contribute",contribution)
+
+  const tx = await contract
+    .connect(signer)
+    // @ts-ignore
+    .contribute(contribution,overrides);
+
+  await tx.wait(1);
+  // close wait modal
+  // success modal
+} catch (error) {
+  console.log("claimError",error)
+  // close wait modal
+  // error modal
+}
+};
+
 export const getContributionInfo = async (contribution:Contribution, walletProvider:any, isConnected:any, address:any) : Promise<ContributionInfo | null>  => {
 
   let response: ContributionInfo | null = null;

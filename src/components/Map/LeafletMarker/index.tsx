@@ -1,3 +1,4 @@
+"use client"
 import dynamic from 'next/dynamic';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Marker as ReactMarker } from 'react-leaflet';
@@ -20,7 +21,7 @@ import { formatEther } from 'ethers';
 
 const LeafletPopup = dynamic(() => import('../LeafletPopup'));
 
- 
+
 export interface CustomMarkerProps {
   place: Contribution;
 }

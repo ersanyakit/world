@@ -31,3 +31,9 @@ export const forceFormatUnits = (value:any,token:Token): any => {
   }
   return parseFloat(formatUnits(value,token.decimals));
 }
+
+export const generateHexColorFromAddress = (address: string): string => {
+  const cleanAddress = address.toLowerCase().replace(/^0x/, "");
+  const color = `#${cleanAddress.slice(0, 6)}`;
+  return color;
+}

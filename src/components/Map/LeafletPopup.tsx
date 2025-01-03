@@ -51,7 +51,7 @@ const LeafletPopup = ({
           </Button>
           <div className="absolute left-0 top-0 mt-5 flex w-full justify-center">
             <div className='w-full flex items-center justify-center gap-2'>
-              <MapIcon contribution={contribution} width={64} height={86}/>
+              <MapIcon player={null} contribution={contribution} width={64} height={86}/>
             </div>
           </div>
          

@@ -8,18 +8,18 @@ import { Web3Provider } from '#src/context/web3modal';
 import { ContributionProvider } from '#src/context/GlobalStateContext';
 
 
- 
+
 
 const App = ({ Component, pageProps }: AppProps) => (
   <>
-        <NextUIProvider>
-        <ContributionProvider>
+    <NextUIProvider>
+      <ContributionProvider>
 
-    <Web3Provider>
+        <Web3Provider>
 
-        <main className={`text-base`}>
-          <Component {...pageProps} />
-        </main>
+          <main className={`text-base`}>
+            <Component {...pageProps} />
+          </main>
         </Web3Provider>
 
       </ContributionProvider>

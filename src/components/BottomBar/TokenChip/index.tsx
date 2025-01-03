@@ -3,12 +3,15 @@ import { Avatar, Button, Input, Modal, ModalBody, ModalContent, ModalFooter, Mod
 import { useCallback, useEffect, useRef, useState } from 'react'
 import useMapContext from '../../Map/useMapContext'
 import L from 'leaflet'
-import { getContributionInfoByToken } from '#src/utils/web3/util'
+import { contribute, getContributionInfoByToken } from '#src/utils/web3/util'
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
-import { ContributionInfo } from '#src/types/Contribution'
-import { formatEther, formatUnits } from 'ethers'
+import { Contribution, ContributionInfo } from '#src/types/Contribution'
+import { ethers, formatEther, formatUnits, parseEther, parseUnits } from 'ethers'
 import LatLngLogo from '#components/TopBar/LatLngLogo'
-import { forceFormatUnits } from '#src/utils/helpers'
+import { forceFormatUnits, generateHexColorFromAddress } from '#src/utils/helpers'
+import Leaflet from 'leaflet'
+import Geohash from 'ngeohash';
+import useInitContributors from '#src/hooks/useInitContributors'
 
 export interface ChipProps {
   token: Token
@@ -26,6 +29,37 @@ const TokenChip = ({ token }: ChipProps) => {
   const [contributionInfo, setContributionInfo] = useState<ContributionInfo | null>(null);
 
 
+
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("")
+  const [url, setURL] = useState("");
+  const [depositAmount, setDepositAmount]  = useState<number>(0);
+
+
+    const [location, setLocation] = useState<Leaflet.LatLng | undefined>()
+    const lat = location?.lat
+    const lng = location?.lng
+    const [refreshTrigger, setRefreshTrigger] = useState(false);
+
+    useInitContributors(refreshTrigger);
+
+  
+    useEffect(() => {
+      if (!isOpen) return undefined
+
+      if (!map) return undefined
+  
+      setLocation(map.getCenter())
+  
+      map?.on('move', () => {
+        if (!isOpen) return 
+        setLocation(map.getCenter())
+      })
+  
+  
+    }, [map])
+  
+
   const initDefaults = async () => {
 
     const _contributionInfo = await getContributionInfoByToken(token, walletProvider, isConnected, address)
@@ -33,11 +67,11 @@ const TokenChip = ({ token }: ChipProps) => {
     console.log("getContributionInfoByToken", _contributionInfo, token, isConnected, address)
   }
 
-  useEffect(()=>{},[contributionInfo?.playerBalance])
+  useEffect(() => { }, [contributionInfo?.playerBalance])
   useEffect(() => {
-    if(isOpen){
+    if (isOpen) {
       initDefaults();
-    }else{
+    } else {
       console.log("Closed,TokenChip")
     }
 
@@ -73,6 +107,34 @@ const TokenChip = ({ token }: ChipProps) => {
   }
 
 
+  const handleContribute = async () => {
+
+
+  const encodedGeohash = Geohash.encode(Number(lat ? lat :  21.4225), Number(lng ? lng : 39.8262));
+  let contribution: Contribution = {
+    valid: false,
+    index: BigInt(0),
+    deposit: parseUnits(depositAmount.toString(),token.decimals),
+    withdraw: BigInt(0),
+    claims: BigInt(0),
+    limit: BigInt(0),
+    timestamp: 0,
+    contributor: address || ethers.ZeroAddress,
+    token: token.address,
+    geohash: encodedGeohash,
+    name: title,
+    url: url,
+    description: description,
+    color: generateHexColorFromAddress(address ? address : ethers.ZeroAddress),
+    image: "",
+    claimers: [],
+  };
+
+
+  await contribute(walletProvider,isConnected,address,contribution)
+  //setRefreshTrigger(!refreshTrigger)
+  }
+
 
   return (
 
@@ -92,50 +154,56 @@ const TokenChip = ({ token }: ChipProps) => {
               </ModalHeader>
               <ModalBody>
                 <div className='w-full'>
-         
+
 
                   <div className='flex flex-col gap-2'>
 
-                  <div className='mt-2 w-full grid grid-cols-2 gap-2 text-xs py-2 border border-1 rounded-lg p-2' >
-                    <div className='w-full flex flex-col'>
-                      <span className='font-bold'>Token</span>
-                      <span>{token.name}</span>
+                    <div className='mt-2 w-full grid grid-cols-2 gap-2 text-xs py-2 border border-1 rounded-lg p-2' >
+                      <div className='w-full flex flex-col'>
+                        <span className='font-bold'>Token</span>
+                        <span>{token.name}</span>
+                      </div>
+                      <div className='w-full flex flex-col'>
+                        <span className='font-bold'>Symbol</span>
+                        <span>{token.symbol}</span>
+                      </div>
+                      <div className='w-full flex flex-col'>
+                        <span className='font-bold'>Decimals</span>
+                        <span>{token.decimals}</span>
+                      </div>
+
+                      <div className='w-full flex flex-col'>
+                        <span className='font-bold'>Balance</span>
+                        <span>{contributionInfo && contributionInfo.playerBalance ? formatUnits(contributionInfo.playerBalance, token.decimals) : "0.0000"}</span>
+                      </div>
+
+
                     </div>
-                    <div className='w-full flex flex-col'>
-                      <span className='font-bold'>Symbol</span>
-                      <span>{token.symbol}</span>
+
+                    <div className='w-full flex flex-col gap-2'>
+                      <Input  value={title} onValueChange={setTitle} isClearable label="Title" placeholder="Enter title" size={"lg"} type="text" />
+                      <Input  value={description} onValueChange={setDescription} isClearable label="Description" placeholder="Enter description" size={"lg"} type="text" />
+                      <Input  value={url} onValueChange={setURL} isClearable  label="URL" placeholder="Enter URL" size={"lg"} type="text" />
+
+                      <Slider
+                       value={depositAmount}
+                       onChange={(value) => {
+                        if (typeof value === "number") {
+                          setDepositAmount(value);
+                        } else if (Array.isArray(value)) {
+                          setDepositAmount(value[0]); // İlk değeri alıyoruz.
+                        }
+                      }}
+                        className="w-full"
+                        size='lg'
+                        label="Amount"
+                        getValue={(amount) => `${amount} ${token.symbol}`}
+                        maxValue={forceFormatUnits(contributionInfo?.playerBalance, token)}
+                        minValue={forceFormatUnits(contributionInfo?.minimumContributionAmount, token)}
+                        step={0.1}
+                      />
+
                     </div>
-                    <div className='w-full flex flex-col'>
-                      <span className='font-bold'>Decimals</span>
-                      <span>{token.decimals}</span>
-                    </div>
-
-                    <div className='w-full flex flex-col'>
-                      <span className='font-bold'>Balance</span>
-                      <span>{contributionInfo && contributionInfo.playerBalance ? formatUnits(contributionInfo.playerBalance, token.decimals) : "0.0000"}</span>
-                    </div>
-
-
-                  </div>
-
-                  <div className='w-full flex flex-col gap-2'>
-                     <Input label="Title" placeholder="Enter title" size={"lg"} type="text" />
-                     <Input label="Description" placeholder="Enter description" size={"lg"} type="text" />
-                     <Input label="URL" placeholder="Enter URL" size={"lg"} type="text" />
-
-
-
-                     <Slider
-      className="w-full"
-      defaultValue={0.4}
-      size='lg'
-      label="Contribution Amount"
-      getValue={(amount) => `${amount} ${token.symbol}`}
-      maxValue={forceFormatUnits(contributionInfo?.playerBalance,token)}
-      minValue={forceFormatUnits(contributionInfo?.minimumContributionAmount,token)}
-      step={0.1}
-    />
-                  </div>
 
                   </div>
 
@@ -145,18 +213,20 @@ const TokenChip = ({ token }: ChipProps) => {
               </ModalBody>
               <ModalFooter>
                 <div className='w-full grid grid-cols-2 justify-center'>
-                <div className='w-full flex flex-row items-center justify-start'>
+                  <div className='w-full flex flex-row items-center justify-start'>
                     <LatLngLogo />
                   </div>
                   <div className='w-full flex flex-row gap-2 justify-end'>
-                  <Button className='text-white' color="success" onPress={onClose}>
-                    Contribute
-                  </Button>
+                    <Button className='text-white' color="success" onPress={()=>{
+                      handleContribute()
+                    }}>
+                      Contribute
+                    </Button>
                   </div>
 
 
                 </div>
-       
+
               </ModalFooter>
             </>
           )}
@@ -183,3 +253,4 @@ const TokenChip = ({ token }: ChipProps) => {
 }
 
 export default TokenChip
+

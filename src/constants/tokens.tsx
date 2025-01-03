@@ -4,12 +4,21 @@ import { Token } from "#src/types/web3.types";
   export const Tokens: Token[] = [
         {
             "chainId": 88888,
-            "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "address": "0x0000000000000000000000000000000000000000",
+            "name": "Chiliz",
+            "symbol": "CHZ",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x677f7e16c7dd57be1d4c8ad1244883214953dc47/logo.svg"
+        },
+        {
+            "chainId": 88888,
+            "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
             "name": "TESTTEST",
             "symbol": "TESTTEST",
             "decimals": 18,
             "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x60cfc65ba14c2f8b111fc7b152bb11486fdea822/logo.svg"
         },
+
         {
             "chainId": 88888,
             "address": "0xEd5740209FcF6974d6f3a5F11e295b5E468aC27c",
@@ -17,14 +26,6 @@ import { Token } from "#src/types/web3.types";
             "symbol": "KWL",
             "decimals": 18,
             "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0xed5740209fcf6974d6f3a5f11e295b5e468ac27c/logo.svg"
-        },
-        {
-            "chainId": 88888,
-            "address": "0x677F7e16C7Dd57be1D4C8aD1244883214953DC47",
-            "name": "Wrapped Chiliz",
-            "symbol": "WCHZ",
-            "decimals": 18,
-            "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x677f7e16c7dd57be1d4c8ad1244883214953dc47/logo.svg"
         },
         {
             "chainId": 88888,
@@ -105,14 +106,5 @@ import { Token } from "#src/types/web3.types";
             "symbol": "FANFAN",
             "decimals": 18,
             "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x60cfc65ba14c2f8b111fc7b152bb11486fdea822/logo.svg"
-        },
-        {
-            "chainId": 88888,
-            "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
-            "name": "FanFanToken",
-            "symbol": "FANFAN",
-            "decimals": 18,
-            "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x60cfc65ba14c2f8b111fc7b152bb11486fdea822/logo.svg"
         }
-        
 ]
