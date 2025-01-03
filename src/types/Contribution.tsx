@@ -5,7 +5,7 @@ export interface Contribution {
   withdraw: bigint;
   claims: bigint;
   limit: bigint;
-  timestamp: number;
+  timestamp: bigint | number | any;
   contributor: string; // Solidity address -> string
   token: string;
   geohash: string;
