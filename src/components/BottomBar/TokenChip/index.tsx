@@ -1,5 +1,5 @@
 import { Token } from '#src/types/web3.types'
-import { Avatar, Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Slider, useDisclosure, useDraggable, User } from '@nextui-org/react'
+import { Avatar, Button, form, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Slider, useDisclosure, useDraggable, User } from '@nextui-org/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import useMapContext from '../../Map/useMapContext'
 import L from 'leaflet'
@@ -65,6 +65,7 @@ const TokenChip = ({ token }: ChipProps) => {
     const _contributionInfo = await getContributionInfoByToken(token, walletProvider, isConnected, address)
     setContributionInfo(_contributionInfo)
     console.log("getContributionInfoByToken", _contributionInfo, token, isConnected, address)
+    console.log("ether",formatUnits(_contributionInfo.nextContributionAmount,token.decimals))
   }
 
   useEffect(() => { }, [contributionInfo?.playerBalance])
@@ -199,7 +200,7 @@ const TokenChip = ({ token }: ChipProps) => {
                         label="Amount"
                         getValue={(amount) => `${amount} ${token.symbol}`}
                         maxValue={forceFormatUnits(contributionInfo?.playerBalance, token)}
-                        minValue={forceFormatUnits(contributionInfo?.minimumContributionAmount, token)}
+                        minValue={forceFormatUnits(contributionInfo?.nextContributionAmount, token)}
                         step={0.1}
                       />
 

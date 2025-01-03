@@ -205,7 +205,6 @@ try {
     value: ethers.getAddress(contribution.token) == ethers.getAddress(ethers.ZeroAddress) ? contribution.deposit : 0
   }
 
-  console.log("contribute",contribution)
 
   const tx = await contract
     .connect(signer)
@@ -279,6 +278,7 @@ export const getContributionInfoByToken = async (
         token.address,
         address,
       ]);
+
 
       response = {
         totalContribution: res.totalContribution, // BigNumber'dan sayıya dönüştürme

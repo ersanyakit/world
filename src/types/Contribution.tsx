@@ -1,10 +1,10 @@
 export interface Contribution {
     valid: boolean;
-    index: bigint;
-    deposit: bigint;
-    withdraw: bigint;
-    claims: bigint;
-    limit: bigint;
+    index: number;
+    deposit: number;
+    withdraw: number;
+    claims: number;
+    limit: number;
     timestamp: number;
     contributor: string; // Contributor adresi
     token: string; // Token adresi
