@@ -5,6 +5,7 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
+  NavbarMenuToggle,
 } from '@nextui-org/react';
 import ConnectButton from '#components/common/connectButton';
 import DrawerPanel from '#components/Map/ui/DrawerPanel';
@@ -13,6 +14,7 @@ import { useState } from 'react';
 
 const MapTopBar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+
   return (
     <>
       {/** @ts-ignore */}
@@ -21,7 +23,10 @@ const MapTopBar = () => {
         onClose={() => setIsDrawerOpen(false)}
       />
       <div className="absolute top-0 w-full z-40">
-        <Navbar isBlurred={true} isBordered={true}>
+        <Navbar isBlurred={true} isBordered={true} isMenuOpen={isDrawerOpen} onMenuOpenChange={setIsDrawerOpen}>
+        <NavbarMenuToggle
+          aria-label={"Open menu"}
+        />
           <NavbarBrand>
             <Button
               disableRipple

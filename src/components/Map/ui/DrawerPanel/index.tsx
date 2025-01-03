@@ -41,7 +41,7 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
         <DrawerContent>
           {(onClose) => (
             <>
-              <DrawerHeader className="z-[9999] absolute top-0 inset-x-0 flex flex-row gap-2 px-2 py-2 border-b border-default-200/50 justify-between bg-content1/50 backdrop-saturate-150 backdrop-blur-lg">
+              <DrawerHeader className="z-[9999] absolute top-0 inset-x-0 flex flex-row gap-2 px-2 py-2 border-b border-default-200/50 items-center justify-between bg-content1/50 backdrop-saturate-150 backdrop-blur-sm">
                 <Tooltip content="Close">
                   <Button
                     isIconOnly
@@ -66,14 +66,20 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
                   </Button>
                 </Tooltip>
                 <div className="w-full flex justify-start gap-2">
+                  <Tabs color='primary' variant='light' fullWidth>
+                    <Tab title={"Pins"}></Tab>
+                    <Tab title={"Players"}></Tab>
+                    <Tab title={"History"}></Tab>
+                  </Tabs>
             
                 </div>
                 <div className="flex gap-1 items-center">
+
                  
                 </div>
               </DrawerHeader>
               <DrawerBody className="pt-16">
-                <Tabs color='primary' variant='bordered' fullWidth>
+                <Tabs color='primary' variant='light' fullWidth>
                   <Tab title="Contributions">
                   <div className="flex flex-col w-full justify-center items-center pt-4 gap-2">
                   
