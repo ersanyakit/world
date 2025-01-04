@@ -17,7 +17,7 @@ module.exports = {
       },
       fontFamily: {
         'orbitron': ['Orbitron', 'sans-serif'],
-        sans: ['var(--font-catamaran)', ...fontFamily.sans],
+        "sans": ['sans', ...fontFamily.sans],
       },
     },
   },

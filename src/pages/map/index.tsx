@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Map from '#components/Map'
-import { Button } from '@nextui-org/react'
+import { Alert, Button } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { getAssets, getClaimHistory, getContributors, getPlayers } from '#src/utils/web3/util'
 import { useContributionContext } from '#src/context/GlobalStateContext'
@@ -24,7 +24,10 @@ const MapPage = () => {
   return (
     <div>
       <div className="w-full">
+
+
        <Map /> 
+    
       </div>
     </div>
   )

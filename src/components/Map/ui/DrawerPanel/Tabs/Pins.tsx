@@ -1,5 +1,6 @@
+import { Unicon } from "#components/Unicon";
 import { useContributionContext } from "#src/context/GlobalStateContext";
-import { Card, CardBody, Avatar, AvatarGroup, Link, Tooltip } from "@nextui-org/react"
+import { Card, CardBody, Avatar, AvatarGroup, Link, Tooltip, AvatarIcon } from "@nextui-org/react"
 
 export const PinTAB = () => {
 
@@ -8,7 +9,7 @@ export const PinTAB = () => {
     return (
         <>
             <div className="w-full  border-b">
-                <h1 className="text-lg">Pins</h1>
+                <h1 className="text-2xl">Pins</h1>
             </div>
             <div className="flex flex-col w-full justify-center items-center pt-4 gap-2">
 
@@ -16,7 +17,7 @@ export const PinTAB = () => {
                 {contributions.map((contribution, index) => (
                     <Card className='w-full' key={Number(contribution.index)}>
                         <CardBody>
-                            <div className="flex flex-col gap-2 py-4">
+                            <div className="flex flex-col gap-2">
 
                                 <div className="mt-4 flex flex-col gap-3">
                                     <div className="flex gap-3 items-center">
@@ -93,62 +94,26 @@ export const PinTAB = () => {
 
                                     <div className="flex flex-col mt-4 gap-3 items-start">
                                         <span className="text-small text-default-500">
-                                            Hosted By
+                                            Pinned By
                                         </span>
                                         <div className="flex gap-2 items-center">
-                                            <Avatar
-                                                name="NextUI"
-                                                size="sm"
-                                                src="https://nextui.org/android-chrome-192x192.png"
-                                            />
-                                            <span className="text-small text-default-500">
-                                                NextUI Team
+                                            
+                                            <div className="w-full bg-success-50 shadow-small border-1 border-success-100 rounded-full p-2">
+                                      
+                                            <Unicon size={24} address={contribution.contributor} randomSeed={Number(contribution.index)}/>
+                                                      
+                                            </div>
+                                            <span className="text-xs font-sans text-default-500">
+                                               {contribution.contributor}
                                             </span>
                                         </div>
                                     </div>
                                     <div className="flex flex-col mt-4 gap-3 items-start">
                                         <span className="text-small text-default-500">
-                                            105 Going
+                                            {Number(contribution.claims)} /  {Number(contribution.limit)} Claimed Users
                                         </span>
                                         <div className="flex gap-2 items-center">
-                                            <AvatarGroup
-                                                isBordered
-                                                classNames={{
-                                                    base: 'pl-2',
-                                                    count: 'text-default-500 text-tiny bg-default-100',
-                                                }}
-                                                size="sm"
-                                                total={101}
-                                            >
-                                                <Tooltip content="Alex">
-                                                    <Avatar
-                                                        className="data-[hover=true]:!translate-x-0"
-                                                        name="Alex"
-                                                        src="https://i.pravatar.cc/150?u=a04258114e29026708c"
-                                                    />
-                                                </Tooltip>
-                                                <Tooltip content="Joe">
-                                                    <Avatar
-                                                        className="data-[hover=true]:!translate-x-0"
-                                                        name="Joe"
-                                                        src="https://i.pravatar.cc/150?u=a04258114e290267084"
-                                                    />
-                                                </Tooltip>
-                                                <Tooltip content="John">
-                                                    <Avatar
-                                                        className="data-[hover=true]:!translate-x-0"
-                                                        name="John"
-                                                        src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
-                                                    />
-                                                </Tooltip>
-                                                <Tooltip content="Jane">
-                                                    <Avatar
-                                                        className="data-[hover=true]:!translate-x-0"
-                                                        name="Jane"
-                                                        src="https://i.pravatar.cc/150?u=a04258114e29026702d"
-                                                    />
-                                                </Tooltip>
-                                            </AvatarGroup>
+                                          
                                         </div>
                                     </div>
                                 </div>
