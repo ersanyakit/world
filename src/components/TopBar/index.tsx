@@ -28,7 +28,7 @@ const MapTopBar = () => {
 
 
   useEffect(()=>{
-    onOpen();
+   // onOpen();
   },[])
   
   return (
@@ -61,7 +61,7 @@ const MapTopBar = () => {
         </ModalContent>
       </Modal>
 
-      <div className="absolute top-3 text-white w-full z-40 flex items-center justify-center">
+      <div className=" absolute top-3 text-white w-full z-40 flex items-center justify-center">
         <Navbar
           classNames={{
             wrapper: "rounded-full pr-2",
@@ -76,7 +76,13 @@ const MapTopBar = () => {
 
           <NavbarBrand>
             <Image width={96} height={96} src="/assets/map.svg" />
-            <p className="font-bold text-inherit">MillionarMap</p>
+            <p className="hidden font-bold text-inherit">MillionarMap</p>
+
+            <a className="twitter-share-button"
+   href="https://twitter.com/intent/tweet?text=Check%20out%20this%20view%20from%20Sabanci%20University%21%20https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/SabanciUniversity_DormView.jpg/440px-SabanciUniversity_DormView.jpg"
+   target="_blank">
+   Tweet
+</a>
           </NavbarBrand>
 
 
