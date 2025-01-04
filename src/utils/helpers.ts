@@ -2,6 +2,38 @@ import { Tokens } from "#src/constants/tokens";
 import { Token } from "#src/types/web3.types";
 import { formatUnits, keccak256, parseEther, parseUnits } from "ethers";
 
+// Interface definition
+export interface TimestampDetails {
+  hour: string;       // Hour (HH:mm)
+  date: string;       // Date (DD-MM-YYYY)
+  dayName: string;    // Day name (e.g., "Sat")
+  dayNumber: string;  // Day number (e.g., "04")
+  month: string;      // Short month name (Jan, Feb, etc.)
+}
+
+// Arrays for month and day names
+const MONTH_NAMES: string[] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const DAY_NAMES: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+// Function definition
+export const unixToTimestampDetails = (unixTimestamp: number): TimestampDetails => {
+  const date = new Date(Number(unixTimestamp) * 1000); // Convert Unix timestamp to milliseconds
+
+  const hour = date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false });
+  const dayName = DAY_NAMES[date.getDay()];
+  const dayNumber = date.getDate().toString().padStart(2, "0"); // Ensure two digits (e.g., "04")
+  const month = MONTH_NAMES[date.getMonth()];
+  const dateFormatted = `${dayName}, ${month} ${dayNumber}`;
+
+  return { 
+      hour, 
+      date: dateFormatted, 
+      dayName, 
+      dayNumber, 
+      month 
+  };
+}
+
 export function FormatAddressDesign(
   address: string | `0x${string}`,
   startChars = 6,

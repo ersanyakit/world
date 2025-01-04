@@ -12,6 +12,7 @@ import {
   DrawerHeader,
   Image,
   Link,
+  ScrollShadow,
   Tab,
   Tabs,
   Tooltip,
@@ -77,41 +78,72 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
                     <Tab key={"history"} title={"History"}></Tab>
                     <Tab key={"profile"} title={"Profile"}></Tab>
                   </Tabs>
-            
+
                 </div>
                 <div className="flex gap-1 items-center">
 
-                 
+
                 </div>
               </DrawerHeader>
               <DrawerBody className="pt-16">
-                <div>
-            
-                {
-    (() => {
-      switch (selected) {
-        case "pins":
-          return <PinTAB />;
-        case "history":
-          return <ClaimTAB />;
-        case "players":
-          return <PlayerTAB />;
-        case "profile":
-          return <ProfileTAB />;
-        default:
-          return <PinTAB />;
-      }
-    })()
-  }
-                
-                </div>
-        
+                <ScrollShadow hideScrollBar>
+                  <div className='w-full p-1'>
+
+                    {
+                      (() => {
+                        switch (selected) {
+                          case "pins":
+                            return <PinTAB />;
+                          case "history":
+                            return <ClaimTAB />;
+                          case "players":
+                            return <PlayerTAB />;
+                          case "profile":
+                            return <ProfileTAB />;
+                          default:
+                            return <PinTAB />;
+                        }
+                      })()
+                    }
+
+                  </div>
+
+                </ScrollShadow>
+
 
 
               </DrawerBody>
-              <DrawerFooter className="flex flex-col gap-1">
-             
-            
+              <DrawerFooter className="grid grid-cols-3 items-center justify-center gap-2">
+
+                <div className="flex-none border-1 border-default-200/50 rounded-small text-center overflow-hidden">
+                  <div className="text-tiny bg-default-100 py-0.5 text-default-500">
+                    Pins
+                  </div>
+                  <div className="flex items-center justify-center font-semibold text-3xl text-default-500">
+                    {contributions.length}
+                  </div>
+                </div>
+                <div className="flex-none border-1 border-default-200/50 rounded-small text-center overflow-hidden">
+                  <div className="text-tiny bg-default-100 py-0.5 text-default-500">
+                    Players
+                  </div>
+                  <div className="flex items-center justify-center font-semibold text-3xl text-default-500">
+                    {players.length}
+                  </div>
+                </div>
+
+
+
+                <div className="flex-none border-1 border-default-200/50 rounded-small text-center overflow-hidden">
+                  <div className="text-tiny bg-default-100 py-0.5 text-default-500">
+                    Claims
+                  </div>
+                  <div className="flex items-center justify-center font-semibold text-3xl text-default-500">
+                    {claims.length}
+                  </div>
+                </div>
+
+
               </DrawerFooter>
             </>
           )}

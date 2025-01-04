@@ -1,45 +1,52 @@
 import { Unicon } from "#components/Unicon";
 import { useContributionContext } from "#src/context/GlobalStateContext";
+import { Contribution } from "#src/types/Contribution";
+import { Token } from "#src/types/web3.types";
+import { getTokenByAddress, TimestampDetails, unixToTimestampDetails } from "#src/utils/helpers";
 import { Card, CardBody, Avatar, AvatarGroup, Link, Tooltip, AvatarIcon } from "@nextui-org/react"
+import { formatUnits } from "ethers";
+import { useEffect, useState } from "react";
 
 export const PinTAB = () => {
 
     const { contributions, players, claims, assets } = useContributionContext();
 
-    return (
-        <>
-            <div className="w-full  border-b">
-                <h1 className="text-2xl">Pins</h1>
-            </div>
-            <div className="flex flex-col w-full justify-center items-center pt-4 gap-2">
 
+    const ContributionCard = ({ contribution }: { contribution: Contribution }) => {
+        const [dateTimeDetails,setDateTimeDetails] = useState<TimestampDetails | null>(unixToTimestampDetails(contribution.timestamp))
+        const [tokenInfo,setTokenInfo] = useState<Token | null>(getTokenByAddress(contribution.token))
 
-                {contributions.map((contribution, index) => (
-                    <Card className='w-full' key={Number(contribution.index)}>
+        return(<>
+           <Card shadow="sm" isHoverable className='w-full cursor-pointer' key={Number(contribution.index)}>
                         <CardBody>
                             <div className="flex flex-col gap-2">
 
-                                <div className="mt-4 flex flex-col gap-3">
+                                <div className="flex flex-col gap-2">
                                     <div className="flex gap-3 items-center">
                                         <div className="flex-none border-1 border-default-200/50 rounded-small text-center w-11 overflow-hidden">
                                             <div className="text-tiny bg-default-100 py-0.5 text-default-500">
-                                                Nov
+                                                {dateTimeDetails?.month}
                                             </div>
                                             <div className="flex items-center justify-center font-semibold text-medium h-6 text-default-500">
-                                                19
+                                                {dateTimeDetails?.dayNumber}
                                             </div>
                                         </div>
-                                        <div className="flex flex-col gap-0.5">
+                                        <div className="flex flex-col items-start gap-0.5">
+                                            <div className="flex flex-row gap-2 items-center justify-center">
                                             <p className="text-medium text-foreground font-medium">
-                                                Tuesday, November 19
+                                               {dateTimeDetails?.date}
                                             </p>
                                             <p className="text-small text-default-500">
-                                                5:00 PM - 9:00 PM PST
+                                                {dateTimeDetails?.hour}
                                             </p>
+                                            </div>
+                                            <div className="w-full">
+                                                <span>{formatUnits(contribution.deposit, tokenInfo?.decimals)} {tokenInfo?.symbol}</span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="flex gap-3 items-center">
-                                        <div className="flex items-center justify-center border-1 border-default-200/50 rounded-small w-11 h-11">
+                                    <div className="flex flex-row gap-3 items-start">
+                                        <div className="flex items-center justify-center border-1 border-default-200/50 rounded-small w-11 min-w-11 h-11">
                                             <svg
                                                 className="text-default-500"
                                                 height="20"
@@ -60,7 +67,8 @@ export const PinTAB = () => {
                                                 </g>
                                             </svg>
                                         </div>
-                                        <div className="flex flex-col gap-0.5">
+                                        <div className="w-full flex flex-col gap-0.5">
+                                            
                                             <Link
                                                 isExternal
                                                 showAnchorIcon
@@ -81,14 +89,16 @@ export const PinTAB = () => {
                                                     </svg>
                                                 }
                                                 className="group gap-x-0.5 text-medium text-foreground font-medium"
-                                                href="https://www.google.com/maps/place/555+California+St,+San+Francisco,+CA+94103"
+                                                href={contribution.url}
                                                 rel="noreferrer noopener"
                                             >
-                                                555 California St suite 500
+                                            {contribution.name}
                                             </Link>
+                                            <div className="w-full">
                                             <p className="text-small text-default-500">
-                                                San Francisco, California
+                                            {contribution.description}
                                             </p>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -123,6 +133,19 @@ export const PinTAB = () => {
 
 
                     </Card>
+        </>)
+    }
+    return (
+        <>
+            <div className="w-full  border-b">
+                <h1 className="text-2xl">Pins</h1>
+            </div>
+            <div className="flex flex-col w-full justify-center items-center pt-4 gap-2">
+
+
+                {contributions.slice().reverse().map((contribution, index) => (
+                    <ContributionCard key={index} contribution={contribution}/>
+                 
                 ))}
 
 
