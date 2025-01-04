@@ -3,8 +3,9 @@ import { useContributionContext } from "#src/context/GlobalStateContext";
 import { Contribution } from "#src/types/Contribution";
 import { Token } from "#src/types/web3.types";
 import { getTokenByAddress, TimestampDetails, unixToTimestampDetails } from "#src/utils/helpers";
-import { Card, CardBody, Avatar, AvatarGroup, Link, Tooltip, AvatarIcon } from "@nextui-org/react"
+import { Card, CardBody, Avatar, AvatarGroup, Link, Tooltip, AvatarIcon, Button } from "@nextui-org/react"
 import { formatUnits } from "ethers";
+import { ExternalLink, Twitter } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export const PinTAB = () => {
@@ -17,14 +18,14 @@ export const PinTAB = () => {
         const [tokenInfo,setTokenInfo] = useState<Token | null>(getTokenByAddress(contribution.token))
 
         return(<>
-           <Card shadow="sm" isHoverable className='w-full cursor-pointer' key={Number(contribution.index)}>
+           <Card shadow="sm"  className='w-full cursor-pointer border border-1 border-black/50 bg-primary/5 hover:bg-black/50 transition-colors duration-200' key={Number(contribution.index)}>
                         <CardBody>
                             <div className="flex flex-col gap-2">
 
                                 <div className="flex flex-col gap-2">
                                     <div className="flex gap-3 items-center">
-                                        <div className="flex-none border-1 border-default-200/50 rounded-small text-center w-11 overflow-hidden">
-                                            <div className="text-tiny bg-default-100 py-0.5 text-default-500">
+                                        <div className="flex-none border-1 border-white/5  rounded-small text-center w-11 overflow-hidden">
+                                            <div className="text-tiny bg-black py-0.5 text-white">
                                                 {dateTimeDetails?.month}
                                             </div>
                                             <div className="flex items-center justify-center font-semibold text-medium h-6 text-default-500">
@@ -33,20 +34,20 @@ export const PinTAB = () => {
                                         </div>
                                         <div className="flex flex-col items-start gap-0.5">
                                             <div className="flex flex-row gap-2 items-center justify-center">
-                                            <p className="text-medium text-foreground font-medium">
+                                            <p className="text-medium text-primary font-medium">
                                                {dateTimeDetails?.date}
                                             </p>
-                                            <p className="text-small text-default-500">
+                                            <p className="text-small text-primary/80">
                                                 {dateTimeDetails?.hour}
                                             </p>
                                             </div>
-                                            <div className="w-full">
+                                            <div className="w-full text-white">
                                                 <span>{formatUnits(contribution.deposit, tokenInfo?.decimals)} {tokenInfo?.symbol}</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="flex flex-row gap-3 items-start">
-                                        <div className="flex items-center justify-center border-1 border-default-200/50 rounded-small w-11 min-w-11 h-11">
+                                        <div className="flex items-center justify-center flex-none border-1 border-white/5 rounded-small w-11 min-w-11 h-11">
                                             <svg
                                                 className="text-default-500"
                                                 height="20"
@@ -88,14 +89,14 @@ export const PinTAB = () => {
                                                         <path d="M7 17 17 7M7 7h10v10" />
                                                     </svg>
                                                 }
-                                                className="group gap-x-0.5 text-medium text-foreground font-medium"
+                                                className="group gap-x-0.5 text-medium text-primary font-medium"
                                                 href={contribution.url}
                                                 rel="noreferrer noopener"
                                             >
                                             {contribution.name}
                                             </Link>
                                             <div className="w-full">
-                                            <p className="text-small text-default-500">
+                                            <p className="text-small text-white">
                                             {contribution.description}
                                             </p>
                                             </div>
@@ -103,12 +104,12 @@ export const PinTAB = () => {
                                     </div>
 
                                     <div className="flex flex-col mt-4 gap-3 items-start">
-                                        <span className="text-small text-default-500">
+                                        <span className="text-small text-primary">
                                             Pinned By
                                         </span>
                                         <div className="flex gap-2 items-center">
                                             
-                                            <div className="w-full bg-success-50 shadow-small border-1 border-success-100 rounded-full p-2">
+                                        <div className="animate-spin bg-black/20 shadow-small border-1 border-success-100 rounded-full p-2">
                                       
                                             <Unicon size={24} address={contribution.contributor} randomSeed={Number(contribution.index)}/>
                                                       
@@ -118,11 +119,23 @@ export const PinTAB = () => {
                                             </span>
                                         </div>
                                     </div>
-                                    <div className="flex flex-col mt-4 gap-3 items-start">
-                                        <span className="text-small text-default-500">
+                                    <div className="w-full flex flex-col mt-4 gap-2 items-start">
+                                        <span className="w-full text-small text-default-500">
                                             {Number(contribution.claims)} /  {Number(contribution.limit)} Claimed Users
                                         </span>
-                                        <div className="flex gap-2 items-center">
+                                        <div className="flex gap-2 w-full items-center">
+                                            <Tooltip placement="right" className="font-sans text-xs" delay={10} color={"primary"}  content={"You will earn a 2% commission from every user who joins through your referral."}>
+                                            <Button variant="solid" color="primary" fullWidth startContent={
+                                                <Twitter />
+                                            } endContent={
+                                                <ExternalLink />
+                                            }
+                                            >
+                                                <span className="w-full">
+                                            Tweet with My Referral Link
+                                            </span>
+                                            </Button>
+                                            </Tooltip>
                                           
                                         </div>
                                     </div>
@@ -137,8 +150,8 @@ export const PinTAB = () => {
     }
     return (
         <>
-            <div className="w-full  border-b">
-                <h1 className="text-2xl">Pins</h1>
+            <div className="w-full  border-b border-black/50 text-white">
+            <h1 className="text-2xl">Pins</h1>
             </div>
             <div className="flex flex-col w-full justify-center items-center pt-4 gap-2">
 

@@ -12,9 +12,9 @@ const Document = () => (
             rel="stylesheet"
           />
 
-        <title>KEWL WORLD 🤩</title>
-        <meta property="og:title" content="KEWL World🤩" key="title" />
-        <meta name="description" content="KEWL WORLD by KEWL EXCHANGE" />
+        <title>MILLIONARMAP</title>
+        <meta property="og:title" content="MILLIONARMAP - Your Map to Financial Freedom" key="title" />
+        <meta name="description" content="Join MillionarMap today and start building your wealth—one token at a time." />
     </Head>
     <body className="bg-white">
       <Main />

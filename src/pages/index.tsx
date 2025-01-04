@@ -1,65 +1,36 @@
-import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
-import { AppConfig } from '#lib/AppConfig';
-import { DiamondContract } from '#src/utils/web3/contracts';
-import { GetContractAt, GetSigner } from '#src/utils/web3/util';
-import { Leaf } from 'lucide-react';
-import Head from 'next/head';
-import Link from 'next/link';
+import Head from 'next/head'
+import Map from '#components/Map'
+import { Alert, Button } from '@nextui-org/react'
+import { useEffect, useState } from 'react'
+import { getAssets, getClaimHistory, getContributors, getPlayers } from '#src/utils/web3/util'
+import { useContributionContext } from '#src/context/GlobalStateContext'
+import useInitContributors from '#src/hooks/useInitContributors'
 
-const Home = () => {
-  const { address, isConnected } = useAppKitAccount();
-  const { walletProvider } = useAppKitProvider('eip155');
+const MapPage = () => {
 
+  const [refreshTrigger, setRefreshTrigger] = useState(true);
+
+
+  useInitContributors(refreshTrigger);
+
+  useEffect(() => {
+    if (refreshTrigger) {
+      setRefreshTrigger(false); // Veriler yüklendikten sonra refreshTrigger'ı false yapıyoruz
+    }
+  }, [refreshTrigger]); // refreshTrigger değiştiğinde çalışacak
+
+  
  
-
   return (
-    <div className="dark container mx-auto max-w-2xl p-3 max-md:max-w-none">
+    <div>
+      <div className="w-full">
+
+
+       <Map /> 
     
-      <header className="items-top mt-10 gap-4 md:flex">
-        <span className="text-primary">
-          {/** @ts-ignore */}
-          <Leaf size={AppConfig.ui.bigIconSize} className="mt-2" />
-        </span>
-        <div>
-          <h2 className="text-4xl font-bold ">KEWL WORLD</h2>
-          <h3 className="mb-16 text-3xl">KEWL WORLD by KEWL EXCHANGE</h3>
-        </div>
-      </header>
-      <section>
-        <p className="my-3">
-          <span> 🤝 Feel free to contribute on </span>
-          {/** @ts-ignore */}
-
-          <Link
-            href="https://github.com/kewlexchange/world"
-            className="text-primary"
-          >
-            Github
-          </Link>
-        </p>
-      </section>
-
-      <footer className="mt-16 flex justify-between rounded bg-light p-3 text-sm">
-        <div>
-          2024, KEWL EXCHANGE
-          <br />
-          {/** @ts-ignore */}
-          <Link
-            href="https://github.com/kewlexchange/world"
-            className="text-primary"
-          >
-            KEWL WORLD
-          </Link>
-        </div>
-
-        <div className="text-primary">
-          {/** @ts-ignore */}
-
-          <Leaf size={AppConfig.ui.mapIconSize} className="mt-1" />
-        </div>
-      </footer>
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default MapPage

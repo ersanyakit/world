@@ -37,7 +37,7 @@ export const unixToTimestampDetails = (unixTimestamp: number): TimestampDetails 
 export function FormatAddressDesign(
   address: string | `0x${string}`,
   startChars = 6,
-  endChars = 6
+  endChars = 4
 ) {
   if (address.length <= startChars + endChars) {
     return address;

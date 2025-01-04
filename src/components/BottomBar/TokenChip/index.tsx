@@ -140,7 +140,7 @@ const TokenChip = ({ token }: ChipProps) => {
 
     <>
 
-      <Modal ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal  backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -234,7 +234,7 @@ const TokenChip = ({ token }: ChipProps) => {
       </Modal>
       <div>
       <Button
-        className="w-full"
+        className="w-full "
         size="lg"
         isIconOnly
         radius="full"
@@ -242,7 +242,7 @@ const TokenChip = ({ token }: ChipProps) => {
         onPress={handleClick}
       >
         <Avatar
-          className="group transition-transform duration-300 ease-in-out transform group-hover:scale-110"
+          className="group   transition-transform duration-300 ease-in-out transform group-hover:scale-110"
           size="lg"
           src={token.logoURI}
         />
