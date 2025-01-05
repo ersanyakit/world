@@ -9,6 +9,22 @@
       "type": "error"
     },
     {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        }
+      ],
+      "name": "AlreadyFollowed",
+      "type": "error"
+    },
+    {
       "inputs": [],
       "name": "AlreadyRegistered",
       "type": "error"
@@ -37,6 +53,11 @@
     {
       "inputs": [],
       "name": "InvalidAction",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidAddress",
       "type": "error"
     },
     {
@@ -182,6 +203,25 @@
         }
       ],
       "name": "HandleContribute",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        }
+      ],
+      "name": "HandleFollow",
       "type": "event"
     },
     {
@@ -751,6 +791,11 @@
             },
             {
               "internalType": "string",
+              "name": "tiktok",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
               "name": "website",
               "type": "string"
             },
@@ -761,13 +806,28 @@
             },
             {
               "internalType": "uint256[]",
-              "name": "followers",
+              "name": "contributions",
               "type": "uint256[]"
             },
             {
               "internalType": "uint256[]",
-              "name": "followings",
+              "name": "claims",
               "type": "uint256[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "followers",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "followings",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "referrals",
+              "type": "address[]"
             }
           ],
           "internalType": "struct Player",
@@ -967,6 +1027,11 @@
             },
             {
               "internalType": "string",
+              "name": "tiktok",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
               "name": "website",
               "type": "string"
             },
@@ -977,13 +1042,28 @@
             },
             {
               "internalType": "uint256[]",
-              "name": "followers",
+              "name": "contributions",
               "type": "uint256[]"
             },
             {
               "internalType": "uint256[]",
-              "name": "followings",
+              "name": "claims",
               "type": "uint256[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "followers",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "followings",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "referrals",
+              "type": "address[]"
             }
           ],
           "internalType": "struct Player[]",
@@ -1132,6 +1212,11 @@
             },
             {
               "internalType": "string",
+              "name": "tiktok",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
               "name": "website",
               "type": "string"
             },
@@ -1142,13 +1227,28 @@
             },
             {
               "internalType": "uint256[]",
-              "name": "followers",
+              "name": "contributions",
               "type": "uint256[]"
             },
             {
               "internalType": "uint256[]",
-              "name": "followings",
+              "name": "claims",
               "type": "uint256[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "followers",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "followings",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "referrals",
+              "type": "address[]"
             }
           ],
           "internalType": "struct Player",

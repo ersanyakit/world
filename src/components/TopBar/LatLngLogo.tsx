@@ -27,7 +27,7 @@ const LatLngLogo = () => {
       <div className="flex items-center">
         <Compass size={24} className="text-primary-500 " />
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center text-primary">
         {lat}<span>,</span>{lng}
       </div>
     </div>

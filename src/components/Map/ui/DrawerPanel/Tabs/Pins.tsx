@@ -2,8 +2,9 @@ import { Unicon } from "#components/Unicon";
 import { useContributionContext } from "#src/context/GlobalStateContext";
 import { Contribution } from "#src/types/Contribution";
 import { Token } from "#src/types/web3.types";
-import { getTokenByAddress, TimestampDetails, unixToTimestampDetails } from "#src/utils/helpers";
+import { generateShareURL, generateTweetIntentURL, getTokenByAddress, TimestampDetails, unixToTimestampDetails } from "#src/utils/helpers";
 import { Card, CardBody, Avatar, AvatarGroup, Link, Tooltip, AvatarIcon, Button } from "@nextui-org/react"
+import { useAppKitAccount } from "@reown/appkit/react";
 import { formatUnits } from "ethers";
 import { ExternalLink, Twitter } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -16,6 +17,7 @@ export const PinTAB = () => {
     const ContributionCard = ({ contribution }: { contribution: Contribution }) => {
         const [dateTimeDetails,setDateTimeDetails] = useState<TimestampDetails | null>(unixToTimestampDetails(contribution.timestamp))
         const [tokenInfo,setTokenInfo] = useState<Token | null>(getTokenByAddress(contribution.token))
+        const { address, isConnected } = useAppKitAccount();
 
         return(<>
            <Card shadow="sm"  className='w-full cursor-pointer border border-1 border-black/50 bg-primary/5 hover:bg-black/50 transition-colors duration-200' key={Number(contribution.index)}>
@@ -125,7 +127,7 @@ export const PinTAB = () => {
                                         </span>
                                         <div className="flex gap-2 w-full items-center">
                                             <Tooltip placement="right" className="font-sans text-xs" delay={10} color={"primary"}  content={"You will earn a 2% commission from every user who joins through your referral."}>
-                                            <Button variant="solid" color="primary" fullWidth startContent={
+                                            <Button target="_blank" href={generateTweetIntentURL(address,contribution.index)} as={Link} variant="solid" color="primary" fullWidth startContent={
                                                 <Twitter />
                                             } endContent={
                                                 <ExternalLink />

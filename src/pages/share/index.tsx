@@ -1,6 +1,10 @@
 import Head from 'next/head';
 
+
+
 const SharePage = () => {
+    const randomImage = getRandomImage(); // Get a random image URL
+
   return (
     <>
       <Head>
@@ -12,7 +16,7 @@ const SharePage = () => {
         {/* Open Graph Tags */}
         <meta property="og:title" content="MillionarMap - Your Map to Financial Freedom" />
         <meta property="og:description" content="Join MillionarMap today to pin tokens on the map, claim rewards, and build your wealth!" />
-        <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/SabanciUniversity_DormView.jpg/440px-SabanciUniversity_DormView.jpg" />
+        <meta property="og:image" content={randomImage} />
         <meta property="og:url" content="https://millionarmap.com" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="MillionarMap" />
@@ -22,7 +26,7 @@ const SharePage = () => {
         <meta name="twitter:creator" content="@millionarmap" />
         <meta name="twitter:title" content="MillionarMap - Your Map to Financial Freedom" />
         <meta name="twitter:description" content="Join MillionarMap today to pin tokens on the map, claim rewards, and build your wealth!" />
-        <meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/SabanciUniversity_DormView.jpg/440px-SabanciUniversity_DormView.jpg" />
+        <meta name="twitter:image" content={randomImage} />
         <meta name="twitter:url" content="https://millionarmap.com" />
 
         {/* Favicon and other tags */}

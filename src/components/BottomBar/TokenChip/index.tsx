@@ -8,10 +8,11 @@ import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
 import { Contribution, ContributionInfo } from '#src/types/Contribution'
 import { ethers, formatEther, formatUnits, parseEther, parseUnits } from 'ethers'
 import LatLngLogo from '#components/TopBar/LatLngLogo'
-import { forceFormatUnits, generateHexColorFromAddress } from '#src/utils/helpers'
+import { forceFormatUnits, generateHexColorFromAddress, generateShareURL } from '#src/utils/helpers'
 import Leaflet from 'leaflet'
 import Geohash from 'ngeohash';
 import useInitContributors from '#src/hooks/useInitContributors'
+import { TWEET_HEAD, TWEETS } from '#src/constants/constants'
 
 export interface ChipProps {
   token: Token
@@ -30,9 +31,9 @@ const TokenChip = ({ token }: ChipProps) => {
 
 
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("")
-  const [url, setURL] = useState("");
+  const [title, setTitle] = useState(TWEET_HEAD[Math.floor(Math.random() * TWEET_HEAD.length)]);
+  const [description, setDescription] = useState(TWEETS[Math.floor(Math.random() * TWEETS.length)])
+  const [url, setURL] = useState(generateShareURL(address,undefined));
   const [depositAmount, setDepositAmount]  = useState<number>(0);
 
 

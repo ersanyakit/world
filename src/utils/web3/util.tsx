@@ -3,7 +3,7 @@ import { getContract } from 'viem';
 import { chilizClient,hardhatClient, NETWORKS } from './clients';
 import { HardhatContract } from './contracts';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
-import { Contribution, ContributionInfo } from '#src/types/Contribution';
+import { Contribution, ContributionInfo, Player } from '#src/types/Contribution';
 import { useContributionContext } from '#src/context/GlobalStateContext';
 import { Token } from '#src/types/web3.types';
 
@@ -117,6 +117,33 @@ export async function getPlayers() {
     return response;
   }
 }
+
+export const getPlayer = async (address:any) : Promise<Player | null>  => {
+  let response : Player | null = null;
+  let contractInformation = HardhatContract
+  try {
+    if (contractInformation) {
+      const contract = getContract({
+        address: contractInformation.address,
+        abi: contractInformation.abi,
+        client: {
+          public: selectedNetwork.client,
+        },
+      });
+
+
+    
+      const res : Player | any = await contract.read.getPlayer([address]);
+      console.log("getPlayerRes",res)
+      response = res;
+    }
+    return response;
+  } catch (error) {
+    console.log('getPlayer : ', error);
+    return response;
+  }
+}
+
 
 export async function getAssets() {
   let response : any = [];

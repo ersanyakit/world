@@ -1,6 +1,7 @@
+import { EMOJIS, TWEET_HEAD, TWEETS, TWITTER_USERS } from "#src/constants/constants";
 import { Tokens } from "#src/constants/tokens";
 import { Token } from "#src/types/web3.types";
-import { formatUnits, keccak256, parseEther, parseUnits } from "ethers";
+import { formatUnits, isAddress, keccak256, parseEther, parseUnits } from "ethers";
 
 // Interface definition
 export interface TimestampDetails {
@@ -78,3 +79,38 @@ export const getTokenByAddress = (address: string) : Token | null => {
   }
   return tokenInfo;
 }
+
+export const generateShareURL = (address : any, contributionId : any) : string => {
+  let url : string = ""
+  if(!isAddress(address)){
+    url = "https://millionarmap.com"
+  }else if(contributionId){
+    url = `https://millionarmap.com/?ref=${address}&cid=${contributionId}`
+  }else{
+    url = `https://millionarmap.com/?ref=${address}`
+  }
+  return url;
+} 
+
+
+const getRandomUsers = (users: string[], count: number): string[] => {
+  const shuffled = [...users].sort(() => Math.random() - 0.5); // Shuffle the array
+  const selectedUsers = shuffled.slice(0, count); // Select the first `count` users
+  return selectedUsers.map(user => `@${user}`); // Add "@" to the beginning of each username
+};
+
+
+export const generateTweetIntentURL = (address: any, contributionId: any): string => {
+  const shareURL = generateShareURL(address, contributionId);
+  let randomUsers : string = getRandomUsers(TWITTER_USERS,5).join(' ').concat(" @alex_dreyfus");
+  const randomEmoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+
+  const randomTweet = TWEETS[Math.floor(Math.random() * TWEETS.length)];
+
+  const randomHead = TWEET_HEAD[Math.floor(Math.random() * TWEET_HEAD.length)];
+  const tweetText = `🥇${randomHead} ${randomEmoji}\n\n🥈${randomTweet}\n\n🚀🚀🚀${shareURL}\n\n🥉Shoutout to: ${randomUsers}`;
+
+  const encodedTweetText = encodeURIComponent(tweetText);
+
+  return `https://twitter.com/intent/tweet?text=${encodedTweetText}`;
+};

@@ -13,7 +13,7 @@ interface ContributionContextType {
   addAssets: (assets: Asset[]) => void;  // Toplu ekleme fonksiyonu
   addPlayers: (players: Player[]) => void;  // Toplu ekleme fonksiyonu
   addContributions: (contributions: Contribution[]) => void;  // Toplu ekleme fonksiyonu
-  addPlayer : (player:Player) => void
+  addPlayer : (player:Player | null) => void
 }
 
 const ContributionContext = createContext<ContributionContextType | undefined>(undefined);
@@ -54,7 +54,7 @@ export const ContributionProvider: React.FC<ContributionProviderProps> = ({ chil
   };
 
 
-  const addPlayer = (player:Player) => {
+  const addPlayer = (player:Player | null) => {
     setPlayer(player)
   }
 
