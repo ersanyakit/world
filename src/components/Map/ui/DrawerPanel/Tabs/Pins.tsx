@@ -36,10 +36,10 @@ export const PinTAB = () => {
                                         </div>
                                         <div className="flex flex-col items-start gap-0.5">
                                             <div className="flex flex-row gap-2 items-center justify-center">
-                                            <p className="text-medium text-primary font-medium">
+                                            <p className="text-medium text-lime-500 font-medium">
                                                {dateTimeDetails?.date}
                                             </p>
-                                            <p className="text-small text-primary/80">
+                                            <p className="text-small text-lime-600">
                                                 {dateTimeDetails?.hour}
                                             </p>
                                             </div>
@@ -51,7 +51,7 @@ export const PinTAB = () => {
                                     <div className="flex flex-row gap-3 items-start">
                                         <div className="flex items-center justify-center flex-none border-1 border-white/5 rounded-small w-11 min-w-11 h-11">
                                             <svg
-                                                className="text-default-500"
+                                                className="text-red-500"
                                                 height="20"
                                                 viewBox="0 0 16 16"
                                                 width="20"
@@ -91,7 +91,7 @@ export const PinTAB = () => {
                                                         <path d="M7 17 17 7M7 7h10v10" />
                                                     </svg>
                                                 }
-                                                className="group gap-x-0.5 text-medium text-primary font-medium"
+                                                className="group gap-x-0.5 text-medium text-lime-500 font-medium"
                                                 href={contribution.url}
                                                 rel="noreferrer noopener"
                                             >
@@ -106,7 +106,7 @@ export const PinTAB = () => {
                                     </div>
 
                                     <div className="flex flex-col mt-4 gap-3 items-start">
-                                        <span className="text-small text-primary">
+                                        <span className="text-small text-lime-500">
                                             Pinned By
                                         </span>
                                         <div className="flex gap-2 items-center">
@@ -152,9 +152,7 @@ export const PinTAB = () => {
     }
     return (
         <>
-            <div className="w-full  border-b border-black/50 text-white">
-            <h1 className="text-2xl">Pins</h1>
-            </div>
+    
             <div className="flex flex-col w-full justify-center items-center pt-4 gap-2">
 
 

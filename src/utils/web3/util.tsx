@@ -1,11 +1,11 @@
 import { BrowserProvider, Contract, ethers, JsonRpcProvider, parseEther } from 'ethers';
 import { getContract } from 'viem';
 import { chilizClient,hardhatClient, NETWORKS } from './clients';
-import { HardhatContract } from './contracts';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 import { Contribution, ContributionInfo, Player } from '#src/types/Contribution';
 import { useContributionContext } from '#src/context/GlobalStateContext';
 import { Token } from '#src/types/web3.types';
+import { getContractByName } from './contracts';
 
 
 export let selectedNetwork = NETWORKS.hardhat; // Varsayılan ağ
@@ -74,7 +74,7 @@ export async function getERC20Allowance(contractInformation : any , user : any ,
 
 export async function getContributors() {
   let response : any = [];
-  let contractInformation = HardhatContract
+  let contractInformation = getContractByName("DIAMOND",selectedNetwork.network.chainId)
   try {
     if (contractInformation) {
       const contract = getContract({
@@ -100,7 +100,7 @@ export async function getContributors() {
 
 export async function getRegistrationFee() {
   let response : bigint = BigInt(0);
-  let contractInformation = HardhatContract
+  let contractInformation = getContractByName("DIAMOND",selectedNetwork.network.chainId)
   try {
     if (contractInformation) {
       const contract = getContract({
@@ -122,7 +122,7 @@ export async function getRegistrationFee() {
 
 export async function getPlayers() {
   let response : any = [];
-  let contractInformation = HardhatContract
+  let contractInformation = getContractByName("DIAMOND",selectedNetwork.network.chainId)
   try {
     if (contractInformation) {
       const contract = getContract({
@@ -144,7 +144,7 @@ export async function getPlayers() {
 
 export const getPlayer = async (address:any) : Promise<Player | null>  => {
   let response : Player | null = null;
-  let contractInformation = HardhatContract
+  let contractInformation = getContractByName("DIAMOND",selectedNetwork.network.chainId)
   try {
     if (contractInformation) {
       const contract = getContract({
@@ -171,7 +171,7 @@ export const getPlayer = async (address:any) : Promise<Player | null>  => {
 
 export async function getAssets() {
   let response : any = [];
-  let contractInformation = HardhatContract
+  let contractInformation = getContractByName("DIAMOND",selectedNetwork.network.chainId)
   try {
     if (contractInformation) {
       const contract = getContract({
@@ -193,7 +193,7 @@ export async function getAssets() {
 
 export async function getClaimHistory() {
   let response : any = [];
-  let contractInformation = HardhatContract
+  let contractInformation = getContractByName("DIAMOND",selectedNetwork.network.chainId)
   try {
     if (contractInformation) {
       const contract = getContract({
@@ -217,7 +217,7 @@ export async function getClaimHistory() {
 export const claim = async (walletProvider:any, isConnected:any, address:any, index:any) => {
 
 
-    let contractInformation = HardhatContract
+  let contractInformation = getContractByName("DIAMOND",selectedNetwork.network.chainId)
 
   if (isConnected === false) {
     return;
@@ -245,7 +245,7 @@ export const claim = async (walletProvider:any, isConnected:any, address:any, in
 
 
 export const register = async (walletProvider:any, isConnected:any, referralAddress:any,fee:any) => {
-  let contractInformation = HardhatContract
+  let contractInformation = getContractByName("DIAMOND",selectedNetwork.network.chainId)
   if (isConnected === false) {
     return;
   }
@@ -271,7 +271,7 @@ try {
 
 
 export const contribute = async (walletProvider:any, isConnected:any, address:any, contribution:Contribution) => {
-  let contractInformation = HardhatContract
+  let contractInformation = getContractByName("DIAMOND",selectedNetwork.network.chainId)
   if (isConnected === false) {
     return;
   }
@@ -304,7 +304,7 @@ try {
 export const getContributionInfo = async (contribution:Contribution, walletProvider:any, isConnected:any, address:any) : Promise<ContributionInfo | null>  => {
 
   let response: ContributionInfo | null = null;
-  let contractInformation = HardhatContract
+  let contractInformation = getContractByName("DIAMOND",selectedNetwork.network.chainId)
   try {
     if (contractInformation) {
       const contract = getContract({
@@ -341,7 +341,7 @@ export const getContributionInfoByToken = async (
   address: any
 ): Promise<ContributionInfo | null> => {
   let response: ContributionInfo | null = null;
-  const contractInformation = HardhatContract;
+  let contractInformation = getContractByName("DIAMOND",selectedNetwork.network.chainId)
 
   try {
     if (contractInformation) {
@@ -379,7 +379,7 @@ export const getContributionInfoByToken = async (
 export const getContributionInfoByTokenEx = async (token:Token, walletProvider:any, isConnected:any, address:any) :  Promise<ContributionInfo | null>  => {
 
   let response: ContributionInfo | null = null;
-  let contractInformation = HardhatContract
+  let contractInformation = getContractByName("DIAMOND",selectedNetwork.network.chainId)
   try {
     if (contractInformation) {
       const contract = getContract({

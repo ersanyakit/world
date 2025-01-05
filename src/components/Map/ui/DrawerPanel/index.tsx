@@ -47,8 +47,8 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
         <DrawerContent>
           {(onClose) => (
             <>
-              <DrawerHeader 
-              className="z-[9999] absolute top-0 inset-x-0 flex flex-row gap-2 px-2 py-2 border-b border-black/50 shadow-lg items-center justify-between ">
+              <DrawerHeader
+                className="z-[9999] absolute top-0 inset-x-0 flex flex-row gap-2 px-2 py-2 border-b border-black/50 shadow-lg items-center justify-between ">
                 <Tooltip content="Close">
                   <Button
                     isIconOnly
@@ -86,9 +86,28 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
 
                 </div>
               </DrawerHeader>
-              <DrawerBody className="pt-16 px-3">
+              <DrawerBody className="pt-14 px-0 ">
+                <div className="w-full bg-primary/60 text-lime-500 p-2">
+                  <h1 className="text-2xl">
+                    {(() => {
+                      switch (selected) {
+                        case "pins":
+                          return "Pins";
+                        case "history":
+                          return "History";
+                        case "players":
+                          return "Players";
+                        case "profile":
+                          return "Profile";
+                        default:
+                          return "Pins";
+                      }
+                    })()}
+                  </h1>
+                </div>
+
                 <ScrollShadow hideScrollBar>
-                  <div className='w-full'>
+                  <div className='w-full px-2'>
 
                     {
                       (() => {
@@ -116,19 +135,19 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
               </DrawerBody>
               <DrawerFooter className="grid grid-cols-3 items-center justify-center gap-2">
 
-              <div className="flex-none border-1 border-white/5 rounded-small text-center overflow-hidden">
-              <div className="text-tiny bg-black py-0.5 text-white">
+                <div className="flex-none border-1 border-white/5 rounded-small text-center overflow-hidden">
+                  <div className="text-tiny bg-black py-0.5 text-white">
                     Pins
                   </div>
-                  <div className="flex items-center justify-center font-semibold text-3xl text-default-500">
+                  <div className="flex items-center justify-center font-semibold text-3xl text-lime-500">
                     {contributions.length}
                   </div>
                 </div>
                 <div className="flex-none border-1 border-white/5 rounded-small text-center overflow-hidden">
-                <div className="text-tiny bg-black py-0.5 text-white">
+                  <div className="text-tiny bg-black py-0.5 text-white">
                     Players
                   </div>
-                  <div className="flex items-center justify-center font-semibold text-3xl text-default-500">
+                  <div className="flex items-center justify-center font-semibold text-3xl text-lime-500">
                     {players.length}
                   </div>
                 </div>
@@ -136,10 +155,10 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
 
 
                 <div className="flex-none border-1 border-white/5 rounded-small text-center overflow-hidden">
-                <div className="text-tiny bg-black py-0.5 text-white">
+                  <div className="text-tiny bg-black py-0.5 text-white">
                     Claims
                   </div>
-                  <div className="flex items-center justify-center font-semibold text-3xl text-default-500">
+                  <div className="flex items-center justify-center font-semibold text-3xl text-lime-500">
                     {claims.length}
                   </div>
                 </div>

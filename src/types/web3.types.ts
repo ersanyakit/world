@@ -24,9 +24,21 @@ export type TNetwork = {
   image: string;
 };
 
-export type TContract = {
+
+export interface TContract {
   address: Address;
-  abi: object[];
-  chainId: number;
-  rpcUrl: string;
-};
+}
+
+export interface TCustomContract {
+  address: Address;
+  abi:object[];
+}
+
+export interface MultiContractConfig {
+  [contractName: string]: {
+    abi: object[];
+    contracts:{
+      [chainID: number]: TContract;
+    }
+  };
+}

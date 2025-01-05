@@ -21,8 +21,8 @@ export const PlayerTAB = () => {
                                     <Unicon size={24} address={player.wallet} randomSeed={Number(player.index)} />
                                 </div>
                                 <div className="w-full flex flex-col gap-1">
-                                <span className='text-sm font-bold text-primary'>{player.name ? player.name : "Unknown User"}</span>
-                                <span className='text-xs font-sans  text-success/50'>{player.wallet}</span>
+                                <span className='text-sm font-bold text-lime-500'>{player.name ? player.name : "Unknown User"}</span>
+                                <span className='text-xs font-sans  text-lime-600'>{player.wallet}</span>
                                 </div>
                                 
                                 </div>
@@ -83,9 +83,7 @@ export const PlayerTAB = () => {
     }
     return (
         <>
-            <div className="w-full  border-b border-black/50 text-white">
-                <h1 className="text-2xl">Players</h1>
-            </div>
+  
             <div className='w-full flex flex-col gap-2 py-2'>
                 {players.slice().reverse().map((player, index) => (
                     <PlayerCard key={index} player={player}/>

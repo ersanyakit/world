@@ -27,14 +27,7 @@ import { Token } from "#src/types/web3.types";
             "decimals": 18,
             "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0xed5740209fcf6974d6f3a5f11e295b5e468ac27c/logo.svg"
         },
-        {
-            "chainId": 88888,
-            "address": "0x8c0b6ea89DABA6516df9437a60cA481501781606",
-            "name": "KAYEN Token",
-            "symbol": "KAYEN",
-            "decimals": 18,
-            "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x8c0b6ea89daba6516df9437a60ca481501781606/logo.svg"
-        },
+
         {
             "chainId": 88888,
             "address": "0xF3928e7871eb136DD6648Ad08aEEF6B6ea893001",
@@ -90,14 +83,6 @@ import { Token } from "#src/types/web3.types";
             "symbol": "DSWAP",
             "decimals": 18,
             "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x2ebec8e89bb4b9c3681be4eaa85c391f1cd717ce/logo.svg"
-        },
-        {
-            "chainId": 88888,
-            "address": "0x68364d82A628b2AaF691d5a6605030f6Dff4436E",
-            "name": "Suck",
-            "symbol": "SUCK",
-            "decimals": 18,
-            "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x68364d82a628b2aaf691d5a6605030f6dff4436e/logo.svg"
         },
         {
             "chainId": 88888,

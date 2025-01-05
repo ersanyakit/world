@@ -14,7 +14,7 @@ const ConnectButton = () => {
         size="lg"
         aria-label="connect-btn"
         radius="full"
-        className='px-2 '
+        className='px-2 bg-primary/50'
         variant="light"
         startContent={
           isConnected ?

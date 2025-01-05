@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import useMapContext from '../../Map/useMapContext'
 import L from 'leaflet'
 import { contribute, getContributionInfoByToken } from '#src/utils/web3/util'
-import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
+import { useAppKitAccount, useAppKitProvider,useAppKit, useAppKitNetwork } from '@reown/appkit/react'
 import { Contribution, ContributionInfo } from '#src/types/Contribution'
 import { ethers, formatEther, formatUnits, parseEther, parseUnits } from 'ethers'
 import LatLngLogo from '#components/TopBar/LatLngLogo'
@@ -17,6 +17,8 @@ import { TWEET_HEAD, TWEETS } from '#src/constants/constants'
 export interface ChipProps {
   token: Token
 }
+
+
 
 // TokenChip component
 const TokenChip = ({ token }: ChipProps) => {

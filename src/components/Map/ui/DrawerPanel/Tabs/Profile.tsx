@@ -15,9 +15,7 @@ export const ProfileTAB = () => {
 
     return (
         <div className="flex flex-col gap-2">
-            <div className="w-full  border-b border-black/50 text-white">
-                <h1 className="text-2xl">Profile</h1>
-            </div>
+      
             <div className="w-full">
                 <Tabs aria-label="Tabs colors" variant="light" fullWidth color={"primary"}>
                     <Tab key="account" title="Account">

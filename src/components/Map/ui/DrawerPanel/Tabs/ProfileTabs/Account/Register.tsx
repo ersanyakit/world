@@ -19,12 +19,12 @@ export const RegisterTAB = () => {
     }
 
     return (<>
-        <div className="dark w-full gap-2 flex flex-col">
+        <div className="w-full gap-2 flex flex-col">
             <div className="w-full rounded-xl bg-black/30 p-2 text-white text-center flex flex-col gap-2">
-                <span className="text-xl font-semibold">
+                <span className="text-xl text-lime-500 font-semibold">
                     Unlock Your Fortune Today.
                 </span>
-                <span className="text-lg"> Register Now and Start Exploring Millionar Map!</span>
+                <span className="text-lg text-red-500"> Register Now and Start Exploring Millionar Map!</span>
                 <span className="text-sm text-white mt-2">
                     Millions of dollars are waiting for you on the map—turn your dream of wealth into reality and begin your adventure today!
                 </span>
@@ -34,6 +34,7 @@ export const RegisterTAB = () => {
                 <Unicon address={ref ? ref : ethers.ZeroAddress} size={20} randomSeed={32}/>
             }
                 variant="flat"
+                className="dark"
                 size="lg"
                 isClearable
                 label="Referral Address"
@@ -43,7 +44,7 @@ export const RegisterTAB = () => {
                 fullWidth
             />
 
-            <Button onPress={()=>{
+            <Button variant="solid" onPress={()=>{
                 handleRegister()
             }} size="lg" color="primary">Register</Button>
 
