@@ -39,7 +39,7 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
         backdrop="blur"
         placement="left"
         classNames={{
-          base: 'm-2  rounded-medium  bg-black/30 border border-1 border-black/20 shadow-lg',
+          base: 'm-2  rounded-medium  bg-black/40 border border-1 border-black/40 shadow-lg',
         }}
         isOpen={isOpen}
         onClose={onClose}

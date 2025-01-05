@@ -22,7 +22,7 @@ export const PlayerTAB = () => {
                                 </div>
                                 <div className="w-full flex flex-col gap-1">
                                 <span className='text-sm font-bold text-lime-500'>{player.name ? player.name : "Unknown User"}</span>
-                                <span className='text-xs font-sans  text-lime-600'>{player.wallet}</span>
+                                <span className='text-xs font-sans  text-fuchsia-400'>{player.wallet}</span>
                                 </div>
                                 
                                 </div>

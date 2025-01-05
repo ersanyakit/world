@@ -116,13 +116,13 @@ export const PinTAB = () => {
                                             <Unicon size={24} address={contribution.contributor} randomSeed={Number(contribution.index)}/>
                                                       
                                             </div>
-                                            <span className="text-xs font-sans text-default-500">
+                                            <span className="text-xs font-sans text-fuchsia-500">
                                                {contribution.contributor}
                                             </span>
                                         </div>
                                     </div>
                                     <div className="w-full flex flex-col mt-4 gap-2 items-start">
-                                        <span className="w-full text-small text-default-500">
+                                        <span className="w-full text-small text-lime-500">
                                             {Number(contribution.claims)} /  {Number(contribution.limit)} Claimed Users
                                         </span>
                                         <div className="flex gap-2 w-full items-center">
