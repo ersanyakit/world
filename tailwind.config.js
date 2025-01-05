@@ -19,6 +19,7 @@ module.exports = {
         'orbitron': ['Orbitron', 'sans-serif'],
         "sans": ['sans', ...fontFamily.sans],
       },
+     
     },
   },
   darkMode: "class",

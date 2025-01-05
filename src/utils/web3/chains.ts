@@ -7,7 +7,7 @@ export const ChilizMainnet: TNetwork = {
   currency: chiliz.nativeCurrency.symbol,
   explorerUrl: 'https://chiliscan.com/',
   rpcUrl: 'https://rpc.chiliz.com',
-  image: '/chainsLogos/arbitrum-logo.svg',
+  image: 'https://millionarmap.com/assets/chains/chiliz.svg',
 };
 
 
@@ -17,7 +17,7 @@ export const ChilizSpicyTestNet: TNetwork = {
   currency: spicy.nativeCurrency.symbol,
   explorerUrl: 'https://testnet.chiliscan.com',
   rpcUrl: 'https://spicy-rpc.chiliz.com',
-  image: '/chainsLogos/arbitrum-logo.svg',
+  image: 'https://millionarmap.com/assets/chains/chiliz.svg',
 };
 
 
@@ -27,7 +27,7 @@ export const AvaxMainnet: TNetwork = {
   currency: avalanche.nativeCurrency.symbol,
   explorerUrl: 'https://snowtrace.io/',
   rpcUrl: 'https://rpc.ankr.com/avalanche',
-  image: '/chainsLogos/avax-logo.svg',
+  image: 'https://millionarmap.com/assets/chains/avax.svg',
 };
 
 
@@ -37,6 +37,6 @@ export const HardhatTestnet: TNetwork = {
   currency: hardhat.nativeCurrency.symbol,
   explorerUrl: 'https://chiliscan.com/',
   rpcUrl: 'http://127.0.0.1:8545',
-  image: '/chainsLogos/hardhat-logo.svg',
+  image: 'https://millionarmap.com/assets/chains/error.svg',
 };
 

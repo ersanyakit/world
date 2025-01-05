@@ -4,6 +4,7 @@ import React, { createContext, useReducer, useContext, ReactNode, useState } fro
 
 
 interface ContributionContextType {
+  registrationFee:bigint;
   contributions: Contribution[];
   claims:Claim[];
   players:Player[];
@@ -14,6 +15,8 @@ interface ContributionContextType {
   addPlayers: (players: Player[]) => void;  // Toplu ekleme fonksiyonu
   addContributions: (contributions: Contribution[]) => void;  // Toplu ekleme fonksiyonu
   addPlayer : (player:Player | null) => void
+  addRegistrationFee : (fee:bigint) => void
+
 }
 
 const ContributionContext = createContext<ContributionContextType | undefined>(undefined);
@@ -36,6 +39,7 @@ export const ContributionProvider: React.FC<ContributionProviderProps> = ({ chil
   const [assets, setAssets] = useState<Asset[]>([]);
   const [claims, setClaims] = useState<Claim[]>([]);
   const [player, setPlayer] = useState<Player | null>(null);
+  const [registrationFee, setRegistrationFee] = useState<bigint>(BigInt(0));
 
   const addContributions = (contributions: Contribution[]) => {
     setContributions(contributions);
@@ -58,8 +62,12 @@ export const ContributionProvider: React.FC<ContributionProviderProps> = ({ chil
     setPlayer(player)
   }
 
+  const addRegistrationFee = (fee:bigint) => {
+    setRegistrationFee(fee)
+  }
+
   return (
-    <ContributionContext.Provider value={{ player, contributions,claims,players,assets,addPlayer,addContributions, addClaims, addPlayers,addAssets }}>
+    <ContributionContext.Provider value={{registrationFee, player, contributions,claims,players,assets,addRegistrationFee ,addPlayer,addContributions, addClaims, addPlayers,addAssets }}>
       {children}
     </ContributionContext.Provider>
   );

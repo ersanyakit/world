@@ -96,6 +96,30 @@ export async function getContributors() {
 
 
 
+
+
+export async function getRegistrationFee() {
+  let response : bigint = BigInt(0);
+  let contractInformation = HardhatContract
+  try {
+    if (contractInformation) {
+      const contract = getContract({
+        address: contractInformation.address,
+        abi: contractInformation.abi,
+        client: {
+          public: selectedNetwork.client,
+        },
+      });
+      const res : any = await contract.read.getRegistrationFee();
+      response = res;
+    }
+  } catch (error) {
+    console.log('getRegistrationFee : ', error);
+  }
+  return response;
+
+}
+
 export async function getPlayers() {
   let response : any = [];
   let contractInformation = HardhatContract
@@ -134,7 +158,7 @@ export const getPlayer = async (address:any) : Promise<Player | null>  => {
 
     
       const res : Player | any = await contract.read.getPlayer([address]);
-      console.log("getPlayerRes",res)
+      console.log("getPlayerRes",address,res)
       response = res;
     }
     return response;
@@ -216,6 +240,33 @@ export const claim = async (walletProvider:any, isConnected:any, address:any, in
     // close wait modal
     // error modal
   }
+};
+
+
+
+export const register = async (walletProvider:any, isConnected:any, referralAddress:any,fee:any) => {
+  let contractInformation = HardhatContract
+  if (isConnected === false) {
+    return;
+  }
+try {
+  const contract = GetContractAt(contractInformation);
+  const signer = await GetSigner(walletProvider);
+
+  const overrides = {
+    value:fee
+  }
+  const tx = await contract
+    .connect(signer)
+    // @ts-ignore
+    .register(referralAddress,overrides);
+
+  await tx.wait();
+} catch (error) {
+  console.log("contributeError",error)
+  // close wait modal
+  // error modal
+}
 };
 
 

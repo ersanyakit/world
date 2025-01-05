@@ -6,6 +6,7 @@ import '#components/Map/leaflet-custom.css';
 import '#src/globals.css';
 import { Web3Provider } from '#src/context/web3modal';
 import { ContributionProvider } from '#src/context/GlobalStateContext';
+import { QueryProvider } from '#src/context/GlobalQueryContext'; // Adjust the path as necessary
 
 
 
@@ -13,6 +14,7 @@ import { ContributionProvider } from '#src/context/GlobalStateContext';
 const App = ({ Component, pageProps }: AppProps) => (
   <>
     <NextUIProvider>
+      <QueryProvider>
       <ContributionProvider>
 
         <Web3Provider>
@@ -23,6 +25,7 @@ const App = ({ Component, pageProps }: AppProps) => (
         </Web3Provider>
 
       </ContributionProvider>
+      </QueryProvider>
     </NextUIProvider>
   </>
 );

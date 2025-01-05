@@ -5,22 +5,11 @@ import { useEffect, useState } from 'react'
 import { getAssets, getClaimHistory, getContributors, getPlayers } from '#src/utils/web3/util'
 import { useContributionContext } from '#src/context/GlobalStateContext'
 import useInitContributors from '#src/hooks/useInitContributors'
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
+import { useAppKitAccount } from '@reown/appkit/react'
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { ref, cid } = context.query;
-  return {
-    props: {
-      refParam: ref ? String(ref) : null, // Explicitly cast to string or null
-      cidParam: cid ? String(cid) : null, // Explicitly cast to string or null
-    },
-  };
-}
 
-const MapPage = ({
-  refParam,
-  cidParam,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const MapPage = () => {
+    const { address, isConnected } = useAppKitAccount();
 
   const [refreshTrigger, setRefreshTrigger] = useState(true);
 
@@ -33,6 +22,12 @@ const MapPage = ({
       setRefreshTrigger(false); // Veriler yüklendikten sonra refreshTrigger'ı false yapıyoruz
     }
   }, [refreshTrigger]); // refreshTrigger değiştiğinde çalışacak
+
+  useEffect(()=>{
+    if(isConnected){
+      setRefreshTrigger(!refreshTrigger)
+    }
+  },[isConnected,address])
 
   
  

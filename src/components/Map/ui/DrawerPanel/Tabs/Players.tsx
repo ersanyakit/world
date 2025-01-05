@@ -34,7 +34,7 @@ export const PlayerTAB = () => {
                                             Referrals
                                         </div>
                                         <div className="flex items-center justify-center font-semibold text-3xl text-default-500">
-                                            {player.referral.length}
+                                            {player.referrals.length}
                                         </div>
                                     </div>
 
@@ -61,7 +61,7 @@ export const PlayerTAB = () => {
                                         Pins
                                         </div>
                                         <div className="flex items-center justify-center font-semibold text-3xl text-default-500">
-                                            {player.followers.length}
+                                            {player.contributions.length}
                                         </div>
                                     </div>
 
@@ -70,7 +70,7 @@ export const PlayerTAB = () => {
                                         Claims
                                         </div>
                                         <div className="flex items-center justify-center font-semibold text-3xl text-default-500">
-                                            {player.followers.length}
+                                            {player.claims.length}
                                         </div>
                                     </div>
                                 </div>
