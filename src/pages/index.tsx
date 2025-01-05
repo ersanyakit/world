@@ -6,7 +6,6 @@ import { getAssets, getClaimHistory, getContributors, getPlayers } from '#src/ut
 import { useContributionContext } from '#src/context/GlobalStateContext'
 import useInitContributors from '#src/hooks/useInitContributors'
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
-import { fetchSybilData } from '#src/constants/constants'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { ref, cid } = context.query;
