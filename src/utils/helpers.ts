@@ -85,9 +85,9 @@ export const generateShareURL = (address : any, contributionId : any) : string =
   if(!isAddress(address)){
     url = "https://millionarmap.com"
   }else if(contributionId){
-    url = `https://millionarmap.com/?ref=${address}&cid=${contributionId}`
+    url = `https://millionarmap.com/ref/${address}`
   }else{
-    url = `https://millionarmap.com/?ref=${address}`
+    url = `https://millionarmap.com/ref/${address}`
   }
   return url;
 } 

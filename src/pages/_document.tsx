@@ -17,7 +17,7 @@ export default function Document(){
         {/* Standard Meta Tags */}
         <meta name="description" content="Discover and contribute on MillionarMap by pinning tokens and earning rewards!" />
         <meta name="keywords" content="wealth, map, tokens, contribute, rewards" />
-        <meta name="author" content="MillionarMap Team" />
+        <meta name="author" content="MillionarMap" />
 
       </Head>
       <body >
