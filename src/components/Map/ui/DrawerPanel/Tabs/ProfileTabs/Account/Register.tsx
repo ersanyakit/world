@@ -20,12 +20,12 @@ export const RegisterTAB = () => {
 
     return (<>
         <div className="w-full gap-2 flex flex-col">
-            <div className="w-full rounded-xl bg-black/30 p-2 text-white text-center flex flex-col gap-2">
+            <div className="w-full rounded-xl bg-black/30 p-4 text-white text-center flex flex-col gap-2">
                 <span className="text-xl text-lime-500 font-semibold">
                     Unlock Your Fortune Today.
                 </span>
-                <span className="text-lg text-red-500"> Register Now and Start Exploring Millionar Map!</span>
-                <span className="text-sm text-white mt-2">
+                <span className="text-lg text-green-600"> Register Now and Start Exploring Millionar Map!</span>
+                <span className="text-sm text-green-600 mt-2">
                     Millions of dollars are waiting for you on the map—turn your dream of wealth into reality and begin your adventure today!
                 </span>
             </div>
