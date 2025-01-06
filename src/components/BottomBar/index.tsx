@@ -21,9 +21,9 @@ const BottomBar = () =>  {
     <>
 
 
-   <div className='absolute bottom-0 w-full z-40 h-200 min-h-200'>
+   <div className='fixed bottom-0 w-screen z-40 h-200 min-h-200'>
     <div className="h-[96px]">
-      <div className="rounded-lg flex w-full gap-4 px-5 items-center sm:justify-center justify-start overflow-x-auto">
+      <div className="rounded-lg flex w-full gap-4 px-5 items-center justify-center  overflow-x-auto">
         {Tokens.map((token, index) => (
           token.chainId == chainId &&  <TokenChip  key={index} token={token} />
         ))}
