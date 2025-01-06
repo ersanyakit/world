@@ -51,10 +51,10 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
                 className="z-[9999] absolute top-0 inset-x-0 flex flex-row gap-2 p-4 py-2 border-b border-black/50 shadow-lg items-center justify-between ">
              
                 <div className="w-full flex justify-start gap-2 ">
-                  <Tabs selectedKey={selected} onSelectionChange={(key) => setSelected(String(key))} color='primary' variant='light' fullWidth>
+                  <Tabs size='lg' selectedKey={selected} onSelectionChange={(key) => setSelected(String(key))} color='primary' variant='light' fullWidth>
                     <Tab key={"pins"} title={"Pins"}></Tab>
                     <Tab key={"players"} title={"Players"}></Tab>
-                    <Tab key={"history"} title={"History"}></Tab>
+                    <Tab key={"history"} title={"Claims"}></Tab>
                     <Tab key={"profile"} title={"Profile"}></Tab>
                   </Tabs>
                   <Tooltip content="Close">

@@ -245,6 +245,7 @@ export const claim = async (walletProvider:any, isConnected:any, address:any, in
 
 
 export const register = async (walletProvider:any, isConnected:any, referralAddress:any,fee:any) => {
+  return
   let contractInformation = getContractByName("DIAMOND",selectedNetwork.network.chainId)
   if (isConnected === false) {
     return;
@@ -271,6 +272,7 @@ try {
 
 
 export const contribute = async (walletProvider:any, isConnected:any, address:any, contribution:Contribution) => {
+  return
   let contractInformation = getContractByName("DIAMOND",selectedNetwork.network.chainId)
   if (isConnected === false) {
     return;
