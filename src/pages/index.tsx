@@ -47,7 +47,13 @@ const MapPage = () => {
   return (
     <>
     <Head>
+      <title>{"MILLIONARMAP - Your Map to Financial Freedom"}</title>
+        <meta name="description" content="Join MillionarMap today and start building your wealth—one token at a time." />
 
+        {/* Standard Meta Tags */}
+        <meta name="description" content="Discover and contribute on MillionarMap by pinning tokens and earning rewards!" />
+        <meta name="keywords" content="wealth, map, tokens, contribute, rewards" />
+        <meta name="author" content="MillionarMap" />
         {/* Open Graph Tags */}
         <meta property="og:title" content={title} key="title" />
         <meta property="og:description" content="Join MillionarMap today to pin tokens on the map, claim rewards, and build your wealth!" />
