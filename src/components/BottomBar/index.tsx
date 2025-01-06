@@ -4,6 +4,7 @@ import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Button, Link, useDisclo
 import { Tokens } from "../../constants/tokens"
 import dynamic from 'next/dynamic';
 import React, { useEffect, useRef } from 'react';
+import { useAppKitNetwork } from '@reown/appkit/react';
 
 const TokenChip = dynamic(() => import('./TokenChip'), {
   ssr: false, // Disable SSR for TokenChip component
@@ -11,6 +12,11 @@ const TokenChip = dynamic(() => import('./TokenChip'), {
 
 const BottomBar = () =>  {
 
+  const {chainId} = useAppKitNetwork()
+
+  useEffect(()=>{
+
+  },[chainId])
   return (
     <>
 
@@ -19,7 +25,7 @@ const BottomBar = () =>  {
     <div className="h-[96px]">
       <div className="rounded-lg flex w-full gap-4 px-5 items-center sm:justify-center justify-start overflow-x-auto">
         {Tokens.map((token, index) => (
-          <TokenChip  key={index} token={token} />
+          token.chainId == chainId &&  <TokenChip  key={index} token={token} />
         ))}
       </div>
     </div>

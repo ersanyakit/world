@@ -7,7 +7,7 @@ export const ChilizMainnet: TNetwork = {
   currency: chiliz.nativeCurrency.symbol,
   explorerUrl: 'https://chiliscan.com/',
   rpcUrl: 'https://rpc.chiliz.com',
-  image: 'https://millionarmap.com/assets/chains/chiliz.svg',
+  image: 'https://millionarmap.com/assets/chains/chz.svg',
 };
 
 
@@ -17,7 +17,7 @@ export const ChilizSpicyTestNet: TNetwork = {
   currency: spicy.nativeCurrency.symbol,
   explorerUrl: 'https://testnet.chiliscan.com',
   rpcUrl: 'https://spicy-rpc.chiliz.com',
-  image: 'https://millionarmap.com/assets/chains/chiliz.svg',
+  image: 'https://millionarmap.com/assets/chains/chz.svg',
 };
 
 
