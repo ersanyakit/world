@@ -98,3 +98,71 @@ body {
   display: none;
 }
 
+
+html,
+body{
+  position: fixed !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  overflow: none !important;
+  -webkit-touch-callout:none;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    padding: 0 !important;
+    margin: 0 !important;
+
+ 
+
+    
+    background-color: rgb(20, 184, 166);
+    background-image: radial-gradient(at 30% 37%, rgb(214, 211, 209) 0, transparent 12%), radial-gradient(at 98% 17%, rgb(30, 64, 175) 0, transparent 39%), radial-gradient(at 51% 70%, rgb(244, 63, 94) 0, transparent 46%), radial-gradient(at 41% 12%, rgba(0, 0, 0, 0) 0, transparent 100%), radial-gradient(at 78% 72%, rgb(232, 121, 249) 0, transparent 20%), radial-gradient(at 38% 69%, rgb(217, 249, 157) 0, transparent 88%);
+  
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(20, 184, 166);
+    background-image: 
+      radial-gradient(at 30% 37%, rgb(214, 211, 209) 0, transparent 12%), 
+      radial-gradient(at 98% 17%, rgb(30, 64, 175) 0, transparent 39%), 
+      radial-gradient(at 51% 70%, rgb(244, 63, 94) 0, transparent 46%), 
+      radial-gradient(at 41% 12%, rgba(0, 0, 0, 0) 0, transparent 100%), 
+      radial-gradient(at 78% 72%, rgb(232, 121, 249) 0, transparent 20%), 
+      radial-gradient(at 38% 69%, rgb(217, 249, 157) 0, transparent 88%);
+    background-size: 100% 100%;
+    animation: gradientAnimation 1s infinite linear;
+
+
+          }
+
+     
+          
+          @keyframes gradientAnimation {
+            0% {
+              background-image: 
+                radial-gradient(at 30% 37%, rgb(214, 211, 209) 0, transparent 12%), 
+                radial-gradient(at 98% 17%, rgb(30, 64, 175) 0, transparent 39%), 
+                radial-gradient(at 51% 70%, rgb(244, 63, 94) 0, transparent 46%), 
+                radial-gradient(at 41% 12%, rgba(0, 0, 0, 0) 0, transparent 100%), 
+                radial-gradient(at 78% 72%, rgb(232, 121, 249) 0, transparent 20%), 
+                radial-gradient(at 38% 69%, rgb(217, 249, 157) 0, transparent 88%);
+            }
+            50% {
+              background-image: 
+                radial-gradient(at 70% 80%, rgb(214, 211, 209) 0, transparent 12%), 
+                radial-gradient(at 20% 5%, rgb(30, 64, 175) 0, transparent 39%), 
+                radial-gradient(at 80% 20%, rgb(244, 63, 94) 0, transparent 46%), 
+                radial-gradient(at 90% 60%, rgba(0, 0, 0, 0) 0, transparent 100%), 
+                radial-gradient(at 10% 70%, rgb(232, 121, 249) 0, transparent 20%), 
+                radial-gradient(at 70% 50%, rgb(217, 249, 157) 0, transparent 88%);
+            }
+            100% {
+              background-image: 
+                radial-gradient(at 30% 37%, rgb(214, 211, 209) 0, transparent 12%), 
+                radial-gradient(at 98% 17%, rgb(30, 64, 175) 0, transparent 39%), 
+                radial-gradient(at 51% 70%, rgb(244, 63, 94) 0, transparent 46%), 
+                radial-gradient(at 41% 12%, rgba(0, 0, 0, 0) 0, transparent 100%), 
+                radial-gradient(at 78% 72%, rgb(232, 121, 249) 0, transparent 20%), 
+                radial-gradient(at 38% 69%, rgb(217, 249, 157) 0, transparent 88%);
+            }
+          }

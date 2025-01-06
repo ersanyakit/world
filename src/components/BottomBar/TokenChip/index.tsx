@@ -236,8 +236,9 @@ const TokenChip = ({ token }: ChipProps) => {
         </ModalContent>
       </Modal>
       <div>
+ 
       <Button
-        className="w-full "
+        className="w-full"
         size="lg"
         isIconOnly
         radius="full"
@@ -245,7 +246,7 @@ const TokenChip = ({ token }: ChipProps) => {
         onPress={handleClick}
       >
         <Avatar
-          className="group   transition-transform duration-300 ease-in-out transform group-hover:scale-110"
+          className="group  transition-transform duration-300 ease-in-out transform group-hover:scale-90"
           size="lg"
           src={token.logoURI}
         />

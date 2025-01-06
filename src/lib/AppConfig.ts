@@ -2,7 +2,7 @@ import { LatLngExpression } from 'leaflet'
 
 // FIXME: naming and structure
 export const AppConfig = {
-  minZoom: 3,
+  minZoom: 10,
   maxZoom: 18, // max zoom level of CARTO: 18
   ui: {
     topBarHeight: 0,
