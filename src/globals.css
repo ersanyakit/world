@@ -93,3 +93,8 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.leaflet-control-attribution.leaflet-control {
+  display: none;
+}
+

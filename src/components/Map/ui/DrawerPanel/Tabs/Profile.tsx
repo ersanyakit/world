@@ -15,19 +15,23 @@ export const ProfileTAB = () => {
 
     return (
         <div className="flex flex-col gap-2">
-      
             <div className="w-full">
                 <Tabs aria-label="Tabs colors" variant="light" fullWidth color={"primary"}>
                     <Tab key="account" title="Account">
                         {
-                            
-                            isConnected && player ? (
-                                player.registered ? (
-                                    <AccountTAB />
+                            isConnected ? (
+                                player ? (
+                                    player.registered ? (
+                                        <AccountTAB />
+                                    ) : (
+                                        <RegisterTAB />
+                                    )
                                 ) : (
                                     <RegisterTAB />
                                 )
-                            ) : <ConnectTab />
+                            ) : (
+                                <ConnectTab />
+                            )
                         }
                     </Tab>
                     <Tab key="referrals" title="Referrals">

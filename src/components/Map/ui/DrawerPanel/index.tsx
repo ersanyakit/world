@@ -39,7 +39,7 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
         backdrop="blur"
         placement="left"
         classNames={{
-          base: 'm-2  rounded-medium  bg-black/40 border border-1 border-black/40 shadow-lg',
+          base: 'rounded-lg  bg-black/40 border border-1 border-black/40 shadow-lg',
         }}
         isOpen={isOpen}
         onClose={onClose}
@@ -48,11 +48,19 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
           {(onClose) => (
             <>
               <DrawerHeader
-                className="z-[9999] absolute top-0 inset-x-0 flex flex-row gap-2 px-2 py-2 border-b border-black/50 shadow-lg items-center justify-between ">
-                <Tooltip content="Close">
+                className="z-[9999] absolute top-0 inset-x-0 flex flex-row gap-2 p-4 py-2 border-b border-black/50 shadow-lg items-center justify-between ">
+             
+                <div className="w-full flex justify-start gap-2 ">
+                  <Tabs selectedKey={selected} onSelectionChange={(key) => setSelected(String(key))} color='primary' variant='light' fullWidth>
+                    <Tab key={"pins"} title={"Pins"}></Tab>
+                    <Tab key={"players"} title={"Players"}></Tab>
+                    <Tab key={"history"} title={"History"}></Tab>
+                    <Tab key={"profile"} title={"Profile"}></Tab>
+                  </Tabs>
+                  <Tooltip content="Close">
                   <Button
                     isIconOnly
-                    className="text-default-400"
+                    className=" text-default-400"
                     size="sm"
                     variant="light"
                     onPress={onClose}
@@ -72,13 +80,6 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
                     </svg>
                   </Button>
                 </Tooltip>
-                <div className="w-full flex justify-start gap-2">
-                  <Tabs selectedKey={selected} onSelectionChange={(key) => setSelected(String(key))} color='primary' variant='light' fullWidth>
-                    <Tab key={"pins"} title={"Pins"}></Tab>
-                    <Tab key={"players"} title={"Players"}></Tab>
-                    <Tab key={"history"} title={"History"}></Tab>
-                    <Tab key={"profile"} title={"Profile"}></Tab>
-                  </Tabs>
 
                 </div>
                 <div className="flex gap-1 items-center">
