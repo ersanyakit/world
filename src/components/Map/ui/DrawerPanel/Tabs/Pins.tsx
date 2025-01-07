@@ -44,7 +44,7 @@ export const PinTAB = () => {
                                             </p>
                                             </div>
                                             <div className="w-full text-white">
-                                                <span>{formatUnits(contribution.deposit, tokenInfo?.decimals)} {tokenInfo?.symbol}</span>
+                                                <span>{formatUnits(contribution.deposit, tokenInfo?.decimals)}</span>
                                             </div>
                                         </div>
                                     </div>

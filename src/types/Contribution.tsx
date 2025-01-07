@@ -62,10 +62,11 @@ export interface Contribution {
   }
 
   export interface ContributionInfo {
-    totalContribution: number; // uint256'i temsil eder
-    playerContribution: number;
-    minimumContributionAmount: number;
-    nextContributionAmount:number;
-    playerBalance : number;
-    playerAllowance:number;
+    totalContribution: bigint; // uint256'i temsil eder
+    playerContribution: bigint;
+    minimumContributionAmount: bigint;
+    nextContributionAmount:bigint;
+    playerBalance : bigint;
+    playerAllowance:bigint;
 }
+

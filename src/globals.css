@@ -115,54 +115,46 @@ body{
 
  
 
-    
-    background-color: rgb(20, 184, 166);
-    background-image: radial-gradient(at 30% 37%, rgb(214, 211, 209) 0, transparent 12%), radial-gradient(at 98% 17%, rgb(30, 64, 175) 0, transparent 39%), radial-gradient(at 51% 70%, rgb(244, 63, 94) 0, transparent 46%), radial-gradient(at 41% 12%, rgba(0, 0, 0, 0) 0, transparent 100%), radial-gradient(at 78% 72%, rgb(232, 121, 249) 0, transparent 20%), radial-gradient(at 38% 69%, rgb(217, 249, 157) 0, transparent 88%);
-  
+
     justify-content: center;
     align-items: center;
-    background-color: rgb(20, 184, 166);
-    background-image: 
-      radial-gradient(at 30% 37%, rgb(214, 211, 209) 0, transparent 12%), 
-      radial-gradient(at 98% 17%, rgb(30, 64, 175) 0, transparent 39%), 
-      radial-gradient(at 51% 70%, rgb(244, 63, 94) 0, transparent 46%), 
-      radial-gradient(at 41% 12%, rgba(0, 0, 0, 0) 0, transparent 100%), 
-      radial-gradient(at 78% 72%, rgb(232, 121, 249) 0, transparent 20%), 
-      radial-gradient(at 38% 69%, rgb(217, 249, 157) 0, transparent 88%);
+
+    background-color: rgb(167, 243, 208);
+    background-image: radial-gradient(at 38% 32%, rgb(91, 33, 182) 0, transparent 46%), radial-gradient(at 30% 87%, rgb(2, 132, 199) 0, transparent 52%), radial-gradient(at 58% 53%, rgb(96, 165, 250) 0, transparent 59%), radial-gradient(at 20% 77%, rgb(15, 118, 110) 0, transparent 56%), radial-gradient(at 97% 42%, rgb(253, 230, 138) 0, transparent 58%), radial-gradient(at 65% 69%, rgb(113, 63, 18) 0, transparent 18%);
+
     background-size: 100% 100%;
-    animation: gradientAnimation 1s infinite linear;
+    animation: gradientAnimation 2s ease-in-out infinite; /* Yavaş, yumuşak animasyon */
 
 
           }
 
-     
-          
           @keyframes gradientAnimation {
             0% {
               background-image: 
-                radial-gradient(at 30% 37%, rgb(214, 211, 209) 0, transparent 12%), 
-                radial-gradient(at 98% 17%, rgb(30, 64, 175) 0, transparent 39%), 
-                radial-gradient(at 51% 70%, rgb(244, 63, 94) 0, transparent 46%), 
-                radial-gradient(at 41% 12%, rgba(0, 0, 0, 0) 0, transparent 100%), 
-                radial-gradient(at 78% 72%, rgb(232, 121, 249) 0, transparent 20%), 
-                radial-gradient(at 38% 69%, rgb(217, 249, 157) 0, transparent 88%);
+                radial-gradient(at 38% 32%, rgb(91, 33, 182) 0, transparent 46%), 
+                radial-gradient(at 30% 87%, rgb(2, 132, 199) 0, transparent 52%), 
+                radial-gradient(at 58% 53%, rgb(96, 165, 250) 0, transparent 59%), 
+                radial-gradient(at 20% 77%, rgb(15, 118, 110) 0, transparent 56%), 
+                radial-gradient(at 97% 42%, rgb(253, 230, 138) 0, transparent 58%), 
+                radial-gradient(at 65% 69%, rgb(113, 63, 18) 0, transparent 18%);
             }
             50% {
               background-image: 
-                radial-gradient(at 70% 80%, rgb(214, 211, 209) 0, transparent 12%), 
-                radial-gradient(at 20% 5%, rgb(30, 64, 175) 0, transparent 39%), 
-                radial-gradient(at 80% 20%, rgb(244, 63, 94) 0, transparent 46%), 
-                radial-gradient(at 90% 60%, rgba(0, 0, 0, 0) 0, transparent 100%), 
-                radial-gradient(at 10% 70%, rgb(232, 121, 249) 0, transparent 20%), 
-                radial-gradient(at 70% 50%, rgb(217, 249, 157) 0, transparent 88%);
+                radial-gradient(at 60% 20%, rgb(91, 33, 182) 0, transparent 46%), 
+                radial-gradient(at 40% 70%, rgb(2, 132, 199) 0, transparent 52%), 
+                radial-gradient(at 20% 40%, rgb(96, 165, 250) 0, transparent 59%), 
+                radial-gradient(at 80% 90%, rgb(15, 118, 110) 0, transparent 56%), 
+                radial-gradient(at 10% 50%, rgb(253, 230, 138) 0, transparent 58%), 
+                radial-gradient(at 30% 80%, rgb(113, 63, 18) 0, transparent 18%);
             }
             100% {
               background-image: 
-                radial-gradient(at 30% 37%, rgb(214, 211, 209) 0, transparent 12%), 
-                radial-gradient(at 98% 17%, rgb(30, 64, 175) 0, transparent 39%), 
-                radial-gradient(at 51% 70%, rgb(244, 63, 94) 0, transparent 46%), 
-                radial-gradient(at 41% 12%, rgba(0, 0, 0, 0) 0, transparent 100%), 
-                radial-gradient(at 78% 72%, rgb(232, 121, 249) 0, transparent 20%), 
-                radial-gradient(at 38% 69%, rgb(217, 249, 157) 0, transparent 88%);
+                radial-gradient(at 38% 32%, rgb(91, 33, 182) 0, transparent 46%), 
+                radial-gradient(at 30% 87%, rgb(2, 132, 199) 0, transparent 52%), 
+                radial-gradient(at 58% 53%, rgb(96, 165, 250) 0, transparent 59%), 
+                radial-gradient(at 20% 77%, rgb(15, 118, 110) 0, transparent 56%), 
+                radial-gradient(at 97% 42%, rgb(253, 230, 138) 0, transparent 58%), 
+                radial-gradient(at 65% 69%, rgb(113, 63, 18) 0, transparent 18%);
             }
           }
+          

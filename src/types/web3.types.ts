@@ -42,3 +42,9 @@ export interface MultiContractConfig {
     }
   };
 }
+
+export interface ContractCallResponse{
+  success:boolean;
+  error:any;
+  transaction:any;
+}

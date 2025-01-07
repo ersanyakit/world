@@ -1,6 +1,8 @@
 import { Unicon } from "#components/Unicon";
 import { useQueryContext } from "#src/context/GlobalQueryContext";
 import { useContributionContext } from "#src/context/GlobalStateContext";
+import useInitContributors from "#src/hooks/useInitContributors";
+import { ContractCallResponse } from "#src/types/web3.types";
 import { register } from "#src/utils/web3/util";
 import { Button, Input } from "@nextui-org/react"
 import { useAppKitAccount, useAppKitProvider } from "@reown/appkit/react";
@@ -13,9 +15,19 @@ export const RegisterTAB = () => {
     const [ref, setRef] = useState<string>(refParam ? ethers.isAddress(refParam) ? refParam : "" : "")
  const { address, isConnected } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider('eip155');
-  
+  const [isLoading,setLoading] = useState<boolean>(false)
+  const [refreshTrigger, setRefreshTrigger] = useState(true);
+  useInitContributors(refreshTrigger);
+
     const handleRegister = async() => {
-        await register(walletProvider,isConnected,ref,registrationFee);
+        setLoading(true)
+        const registerResponse : ContractCallResponse= await register(walletProvider,isConnected,ref,registrationFee);
+        console.log(registerResponse)
+        setLoading(false)
+        if(registerResponse.success){
+            setRefreshTrigger(!refreshTrigger)
+        }
+        
     }
 
     return (<>
@@ -44,7 +56,7 @@ export const RegisterTAB = () => {
                 fullWidth
             />
 
-            <Button variant="solid" onPress={()=>{
+            <Button isLoading={isLoading} variant="solid" onPress={()=>{
                 handleRegister()
             }} size="lg" color="primary">Register</Button>
 

@@ -1,9 +1,9 @@
-import { Token } from '#src/types/web3.types'
+import { ContractCallResponse, Token } from '#src/types/web3.types'
 import { Avatar, Button, form, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Slider, useDisclosure, useDraggable, User } from '@nextui-org/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import useMapContext from '../../Map/useMapContext'
 import L from 'leaflet'
-import { contribute, getContributionInfoByToken } from '#src/utils/web3/util'
+import { approve, contribute, getContributionInfoByToken } from '#src/utils/web3/util'
 import { useAppKitAccount, useAppKitProvider, useAppKit, useAppKitNetwork } from '@reown/appkit/react'
 import { Contribution, ContributionInfo } from '#src/types/Contribution'
 import { ethers, formatEther, formatUnits, parseEther, parseUnits } from 'ethers'
@@ -15,6 +15,7 @@ import useInitContributors from '#src/hooks/useInitContributors'
 import { TWEET_HEAD, TWEETS } from '#src/constants/constants'
 import { Tokens } from '#src/constants/tokens'
 import TokenChip from '../TokenChip'
+import { useContributionContext } from '#src/context/GlobalStateContext'
 
 export interface ChipProps {
   token: Token
@@ -33,6 +34,8 @@ const TapButton = () => {
   const { walletProvider } = useAppKitProvider('eip155');
   const [contributionInfo, setContributionInfo] = useState<ContributionInfo | null>(null);
   const [token, setToken] = useState<Token | null>(null)
+  const [error,setError] = useState<any>(null)
+  const [isLoading,setLoaded] = useState<boolean>(false)
 
 
 
@@ -41,11 +44,9 @@ const TapButton = () => {
   const [url, setURL] = useState(generateShareURL(address, undefined));
   const [depositAmount, setDepositAmount] = useState<number>(0);
 
-
-  const [location, setLocation] = useState<Leaflet.LatLng | undefined>()
-  const lat = location?.lat
-  const lng = location?.lng
+ 
   const [refreshTrigger, setRefreshTrigger] = useState(false);
+  const {location, contributions, players, claims, assets,addLocation } = useContributionContext();
 
 
   const { chainId } = useAppKitNetwork()
@@ -54,33 +55,24 @@ const TapButton = () => {
   useInitContributors(refreshTrigger);
 
 
-  useEffect(() => {
-    if (!isOpen) return undefined
-
-    if (!map) return undefined
-
-    setLocation(map.getCenter())
-
-    map?.on('move', () => {
-      if (!isOpen) return
-      setLocation(map.getCenter())
-    })
-
-
-  }, [map])
-
-
 
   useEffect(() => { }, [contributionInfo?.playerBalance])
 
 
   const handleContribute = async () => {
+    setLoaded(true)
     if(!token){
+      setError({message:"Please select token!",exception:"Please select token!"})
+      return
+    }
+
+    if(!location){
+      setError({message:"Invalid Location!",exception:"Invalid Location!"})
       return
     }
 
 
-    const encodedGeohash = Geohash.encode(Number(lat ? lat : 21.4225), Number(lng ? lng : 39.8262));
+    const encodedGeohash = Geohash.encode(Number(location?.lat), Number(location?.lng));
     let contribution: Contribution = {
       valid: false,
       index: BigInt(0),
@@ -101,8 +93,24 @@ const TapButton = () => {
     };
 
 
-    await contribute(walletProvider, isConnected, address, contribution)
-    //setRefreshTrigger(!refreshTrigger)
+    let playerAllowance : bigint = contributionInfo ? contributionInfo.playerAllowance : BigInt(0)
+    if(contribution.deposit > playerAllowance){
+      let approvalResponse = await approve(walletProvider,isConnected,token,ethers.MaxUint256)
+      if(!approvalResponse.success){
+        setError(approvalResponse.error)
+        setLoaded(false)
+        return 
+      }
+    }
+
+
+    let contributeResponse = await contribute(walletProvider, isConnected, address, contribution)
+    if(!contributeResponse.success){
+      setError(contributeResponse.error)
+      setLoaded(false)
+      return 
+    }
+    setLoaded(false)
   }
 
 
@@ -119,6 +127,14 @@ const TapButton = () => {
     const _contributionInfo = await getContributionInfoByToken(_token, walletProvider, isConnected, address)
     setContributionInfo(_contributionInfo)
     console.log("getContributionInfoByToken", _contributionInfo, _token, isConnected, address)
+  }
+
+  const handleApprove = async() => {
+    if(!token){
+      return;
+    }
+      let response : ContractCallResponse = await approve(walletProvider,isConnected,token,ethers.MaxUint256)
+      console.log(response);
   }
 
 
@@ -249,8 +265,7 @@ const TapButton = () => {
                               label="Amount"
                               getValue={(amount) => `${amount} ${token.symbol}`}
                               maxValue={forceFormatUnits(contributionInfo?.playerBalance, token)}
-                              minValue={forceFormatUnits(contributionInfo?.nextContributionAmount, token)}
-                              step={0.1}
+                              minValue={0}
                             />
 
                           </div>
@@ -271,8 +286,8 @@ const TapButton = () => {
                     <LatLngLogo />
                   </div>
                   <div className='w-full flex flex-row gap-2 justify-end'>
-
-                    <Button isDisabled={!token || !depositAmount || depositAmount === 0}
+                   
+                    <Button isLoading={isLoading} isDisabled={!token || !depositAmount || depositAmount === 0}
                       className='text-white' color="success" onPress={() => {
                         handleContribute()
                       }}>

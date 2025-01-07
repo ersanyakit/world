@@ -72,7 +72,7 @@ const MapPage = () => {
     </Head>
       <div>
         <div className="w-full">
-          <Map />
+           <Map /> 
         </div>
       </div>
       {/* <Toaster visibleToasts={5} className='!bottom-[120px] !z-1' expand={false} position='bottom-left' richColors={true} /> */}

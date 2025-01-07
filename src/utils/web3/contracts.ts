@@ -3,7 +3,7 @@ import WorldDiamondABI from "../../constants/abi/WorldDiamond.json"
 import ERC20ABI from "../../constants/abi/ERC20.json"
 
 
-export const DiamondAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
+export const DiamondAddress = '0x3B86091793D1f732BBfCCF1269e471d5DF4eb350';
 
 export const ContractList: MultiContractConfig = {
   "DIAMOND": {
@@ -28,6 +28,9 @@ export const ContractList: MultiContractConfig = {
     },
     43114:{
       address: DiamondAddress, 
+    },
+    31337:{
+      address:"0xTokenMainnetAddress"
     }
   }
   },
@@ -35,7 +38,7 @@ export const ContractList: MultiContractConfig = {
 
 
 export const getContractByName = (contractName: string, chainID: number): TCustomContract => {
-  console.log("chainId",chainID)
+  console.log("chainId",chainID,"CONTRACT",contractName)
   const contractGroup = ContractList[contractName];
   if (!contractGroup) {
     throw new Error(`Unknown contract name: ${contractName}`);

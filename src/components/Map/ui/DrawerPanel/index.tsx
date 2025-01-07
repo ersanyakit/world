@@ -53,7 +53,7 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
                 <div className="w-full flex justify-start gap-2 ">
                   <Tabs size='lg' selectedKey={selected} onSelectionChange={(key) => setSelected(String(key))} color='primary' variant='light' fullWidth>
                     <Tab key={"pins"} title={"Pins"}></Tab>
-                    <Tab key={"players"} title={"Players"}></Tab>
+                    <Tab key={"players"} title={"Millionaires"}></Tab>
                     <Tab key={"history"} title={"Claims"}></Tab>
                     <Tab key={"profile"} title={"Profile"}></Tab>
                   </Tabs>
@@ -97,7 +97,7 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
                         case "history":
                           return "History";
                         case "players":
-                          return "Players";
+                          return "Millionaries";
                         case "profile":
                           return "Profile";
                         default:

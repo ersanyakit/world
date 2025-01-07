@@ -3,20 +3,21 @@ import { Compass } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import useMapContext from '#components/Map/useMapContext'
+import { useContributionContext } from '#src/context/GlobalStateContext'
 
 const LatLngLogo = () => {
   const { map } = useMapContext()
-  const [location, setLocation] = useState<Leaflet.LatLng | undefined>()
+  const {location, contributions, players, claims, assets,addLocation } = useContributionContext();
   const lat = location?.lat.toFixed(4)
   const lng = location?.lng.toFixed(4)
 
   useEffect(() => {
     if (!map) return undefined
 
-    setLocation(map.getCenter())
+    addLocation(map.getCenter())
 
     map?.on('move', () => {
-      setLocation(map.getCenter())
+      addLocation(map.getCenter())
     })
 
 

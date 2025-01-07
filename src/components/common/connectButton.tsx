@@ -1,13 +1,22 @@
 import { Button } from '@nextui-org/react';
-import { useAppKit, useAppKitAccount } from '@reown/appkit/react';
+import { useAppKit, useAppKitAccount, useAppKitNetwork } from '@reown/appkit/react';
 import { FormatAddressDesign } from '#src/utils/helpers';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Unicon } from '#components/Unicon';
 import { Globe } from 'lucide-react';
+import { setSelectedNetwork } from '#src/utils/web3/clients';
 
 const ConnectButton = () => {
   const { open } = useAppKit();
   const { address, isConnected } = useAppKitAccount();
+  const { chainId } = useAppKitNetwork()
+
+  useEffect(()=>{
+    if(chainId){
+      console.log("Current Chain",chainId)
+      setSelectedNetwork(Number(chainId))
+    }
+  },[chainId])
 
   return (
       <Button
