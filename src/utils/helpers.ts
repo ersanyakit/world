@@ -102,7 +102,7 @@ const getRandomUsers = (users: string[], count: number): string[] => {
 
 export const generateTweetIntentURL = (address: any, contributionId: any): string => {
   const shareURL = generateShareURL(address, contributionId);
-  let randomUsers : string = getRandomUsers(TWITTER_USERS,5).join(' ').concat(" @alex_dreyfus");
+  let randomUsers : string = getRandomUsers(TWITTER_USERS,5).join(' ').concat(" @alex_dreyfus @millionarmap");
   const randomEmoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
 
   const randomTweet = TWEETS[Math.floor(Math.random() * TWEETS.length)];
