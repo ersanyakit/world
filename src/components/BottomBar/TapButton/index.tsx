@@ -75,6 +75,9 @@ const TapButton = () => {
 
 
   const handleContribute = async () => {
+    if(!token){
+      return
+    }
 
 
     const encodedGeohash = Geohash.encode(Number(lat ? lat : 21.4225), Number(lng ? lng : 39.8262));
@@ -123,12 +126,13 @@ const TapButton = () => {
 
 
 
-      <Modal backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal className='bg-black/30' backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader {...moveProps} className="flex flex-col gap-1 items-start justify-center">
                 <User name={`Contribute`}
+                classNames={{base:"text-lime-500"}}
                   description={"Contribute to claim others’ assets."}
                   avatarProps={{
                     className: "w-8 h-8 bg-transparent",
@@ -139,10 +143,10 @@ const TapButton = () => {
                 {
                   <div className='w-full'>
                     {
-                      !token && <div className='w-full grid grid-cols-4 gap-2 items-center justify-center'>
+                      !token && <div className='w-full grid grid-cols-3 gap-2 items-center justify-center'>
                         {Tokens.map((token, index) => (
                           token.chainId == chainId && <>
-                            <div className='w-full'>
+                            <div className='w-full flex items-center justify-center'>
 
                               <Button
                                 className="w-full"

@@ -25,9 +25,9 @@ const LatLngLogo = () => {
   return (
     <div className="w-full flex flex-row gap-2 text-md font-black">
       <div className="flex items-center">
-        <Compass size={24} className="text-primary-500 " />
+        <Compass size={24} className="text-lime-500 " />
       </div>
-      <div className="flex items-center text-primary">
+      <div className="flex items-center text-lime-500">
         {lat}<span>,</span>{lng}
       </div>
     </div>
