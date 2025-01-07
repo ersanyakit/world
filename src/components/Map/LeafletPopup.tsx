@@ -89,14 +89,17 @@ const LeafletPopup = ({
           
 
             <div className="mt-6 flex flex-row justify-between gap-2 p-2">
-              <Button variant='shadow' className="gap-2 bg-secondary text-white" onPress={() => handlePopupClose()} size='md'>
+              <Button variant='shadow' className="gap-2 bg-danger text-white" onPress={() => handlePopupClose()} size='md'>
                 <ChevronLeft size={AppConfig.ui.menuIconSize} />
                 Close
               </Button>
-              <Button variant='shadow' color='success' className="gap-2 text-white" onPress={() => handleOpenLocation()} size='md'>
-                Open
-                <ChevronRight size={AppConfig.ui.menuIconSize} />
-              </Button>
+              {
+               contribution?.index < ethers.MaxUint256 && <Button variant='shadow' color='success' className="gap-2 text-white" onPress={() => handleOpenLocation()} size='md'>
+               Open
+               <ChevronRight size={AppConfig.ui.menuIconSize} />
+             </Button>
+              }
+              
             </div>
           </div>
         </div>
