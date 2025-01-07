@@ -146,8 +146,8 @@ const TapButton = () => {
                 classNames={{base:"text-lime-500"}}
                   description={"Contribute to claim others’ assets."}
                   avatarProps={{
-                    className: "w-8 h-8 bg-transparent",
-                    src: "/assets/finger.png"
+                    className: "bg-transparent",
+                    src: "/assets/gemstone.png"
                   }} />
               </ModalHeader>
               <ModalBody>
