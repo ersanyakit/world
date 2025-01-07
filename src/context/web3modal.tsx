@@ -17,7 +17,7 @@ const metadata = {
 createAppKit({
   adapters: [new EthersAdapter()],
   metadata,
-  networks: [chiliz,avalanche,hardhat],
+  networks: [chiliz],
   defaultNetwork: chiliz,
   projectId,
   themeMode:"light",
