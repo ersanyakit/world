@@ -107,6 +107,7 @@ const TapButton = () => {
 
 
   const handleClick = async () => {
+    setToken(null)
     onOpen()
   }
 
@@ -114,7 +115,17 @@ const TapButton = () => {
     setToken(_token);
   }
 
+  const fetchContributionData = async (_token:Token) => {
+    const _contributionInfo = await getContributionInfoByToken(_token, walletProvider, isConnected, address)
+    setContributionInfo(_contributionInfo)
+    console.log("getContributionInfoByToken", _contributionInfo, _token, isConnected, address)
+  }
+
+
   useEffect(() => {
+    if(token){
+      fetchContributionData(token)
+    }
 
   }, [token])
 
@@ -126,7 +137,7 @@ const TapButton = () => {
 
 
 
-      <Modal className='bg-black/30' backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal   backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -149,7 +160,7 @@ const TapButton = () => {
                             <div className='w-full flex items-center justify-center'>
 
                               <Button
-                                className="w-full"
+                                className="w-full bg-lime-500/40"
                                 size="lg"
                                 isIconOnly
                                 radius="full"
@@ -175,9 +186,9 @@ const TapButton = () => {
                       token && <>
                         <div className='flex flex-col gap-2'>
                           <div className='w-full flex flex-row gap-2'>
-                            <div className='flex items-center justify-center'>
+                            <div className='flex items-center justify-center flex flex-col gap-2'>
                               <Button
-                                className="w-full"
+                                className="w-full bg-lime-500/40"
                                 size="lg"
                                 isIconOnly
                                 radius="full"
@@ -192,6 +203,7 @@ const TapButton = () => {
                                   src={token.logoURI}
                                 />
                               </Button>
+                              <span className='text-xs text-lime-500 font-bold'>SELECT</span>
 
                             </div>
                             <div className='mt-2 w-full grid grid-cols-2 gap-2 text-xs py-2 border border-1 rounded-lg p-2' >
