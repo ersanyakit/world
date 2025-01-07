@@ -208,7 +208,7 @@ export async function getClaimHistory() {
 
 export const claim = async (walletProvider: any, isConnected: any, address: any, index: any) => {
 
-
+  return
   let contractInformation = getContractByName("DIAMOND", selectedNetwork.network.chainId)
 
   if (isConnected === false) {
