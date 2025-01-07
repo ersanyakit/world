@@ -8,19 +8,19 @@ import { ReactNode } from 'react';
 const projectId = '041abdda4ad706f9d40a41491d39737c';
 
 const metadata = {
-  name: 'My Website',
+  name: 'MillionarMap',
   description: 'My Website description',
-  url: 'website linki',
+  url: 'https://millionarmap.com',
   icons: ['https://avatars.mywebsite.com/'],
 };
 
 createAppKit({
   adapters: [new EthersAdapter()],
-  metadata,
+  metadata:metadata,
   networks: [chiliz],
   defaultNetwork: chiliz,
   projectId,
-  themeMode:"light",
+  themeMode:"dark",
   features: {
     email: false,
     socials:false,
