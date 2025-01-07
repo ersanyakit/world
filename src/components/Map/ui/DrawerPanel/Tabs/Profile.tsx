@@ -20,7 +20,7 @@ export const ProfileTAB = () => {
 
         return (
             <>
-                <Card shadow="sm" className='w-full cursor-pointer border border-1 border-black/50 bg-primary/5 hover:bg-black/30 transition-colors duration-200' key={Number(player.index)}>
+                <Card shadow="sm" className='w-full cursor-pointer border border-1 border-black/50 bg-primary/5 hover:bg-black/30 transition-colors duration-200' key={Number(referral)}>
                     <div className="flex flex-row items-center justify-center gap-2 p-2">
 
                         <div className="w-full flex flex-col gap-2 items-start justify-center">
