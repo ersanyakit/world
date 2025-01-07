@@ -12,6 +12,15 @@ module.exports = {
   theme: {
   	extend: {
   		extend: 'dark',
+		  keyframes: {
+			wiggle: {
+			  '0%, 100%': { transform: 'rotate(-60deg)  scale(0.9)' },
+			  '50%': { transform: 'rotate(80deg)  scale(1.1)' },
+			},
+		  },
+		  animation: {
+			wiggle: 'wiggle 1s ease-in-out infinite',
+		  },
   		fontSize: {
   			base: [
   				'18px',

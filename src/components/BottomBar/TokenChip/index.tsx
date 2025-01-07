@@ -113,128 +113,36 @@ const TokenChip = ({ token }: ChipProps) => {
   const handleContribute = async () => {
 
 
-  const encodedGeohash = Geohash.encode(Number(lat ? lat :  21.4225), Number(lng ? lng : 39.8262));
-  let contribution : Contribution = {
-    valid: false,
-    index: BigInt(0),
-    deposit: parseUnits(depositAmount.toString(),token.decimals),
-    withdraw: BigInt(0),
-    claims: BigInt(0),
-    limit: BigInt(0),
-    timestamp: BigInt(0),
-    contributor: address || ethers.ZeroAddress,
-    token: token.address,
-    geohash: encodedGeohash,
-    name: title,
-    url: url,
-    description: description,
-    color: generateHexColorFromAddress(address ? address : ethers.ZeroAddress),
-    image: "",
-    claimers: [],
-  };
-
-
-  await contribute(walletProvider,isConnected,address,contribution)
-  //setRefreshTrigger(!refreshTrigger)
-  }
-
+    const encodedGeohash = Geohash.encode(Number(lat ? lat :  21.4225), Number(lng ? lng : 39.8262));
+    let contribution : Contribution = {
+      valid: false,
+      index: BigInt(0),
+      deposit: parseUnits(depositAmount.toString(),token.decimals),
+      withdraw: BigInt(0),
+      claims: BigInt(0),
+      limit: BigInt(0),
+      timestamp: BigInt(0),
+      contributor: address || ethers.ZeroAddress,
+      token: token.address,
+      geohash: encodedGeohash,
+      name: title,
+      url: url,
+      description: description,
+      color: generateHexColorFromAddress(address ? address : ethers.ZeroAddress),
+      image: "",
+      claimers: [],
+    };
+  
+  
+    await contribute(walletProvider,isConnected,address,contribution)
+    //setRefreshTrigger(!refreshTrigger)
+    }
+  
 
   return (
 
     <>
 
-      <Modal  backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader {...moveProps} className="flex flex-col gap-1 items-start justify-center">
-                <User name={`Contribute with ${token.symbol}`}
-                  description={token.name}
-                  avatarProps={{
-                    className: "w-6 h-6",
-                    src: token.logoURI
-                  }} />
-              </ModalHeader>
-              <ModalBody>
-                <div className='w-full'>
-
-
-                  <div className='flex flex-col gap-2'>
-
-                    <div className='mt-2 w-full grid grid-cols-2 gap-2 text-xs py-2 border border-1 rounded-lg p-2' >
-                      <div className='w-full flex flex-col'>
-                        <span className='font-bold'>Token</span>
-                        <span>{token.name}</span>
-                      </div>
-                      <div className='w-full flex flex-col'>
-                        <span className='font-bold'>Symbol</span>
-                        <span>{token.symbol}</span>
-                      </div>
-                      <div className='w-full flex flex-col'>
-                        <span className='font-bold'>Decimals</span>
-                        <span>{token.decimals}</span>
-                      </div>
-
-                      <div className='w-full flex flex-col'>
-                        <span className='font-bold'>Balance</span>
-                        <span>{contributionInfo && contributionInfo.playerBalance ? formatUnits(contributionInfo.playerBalance, token.decimals) : "0.0000"}</span>
-                      </div>
-
-
-                    </div>
-
-                    <div className='w-full flex flex-col gap-2'>
-                      <Input  value={title} onValueChange={setTitle} isClearable label="Title" placeholder="Enter title" size={"lg"} type="text" />
-                      <Input  value={description} onValueChange={setDescription} isClearable label="Description" placeholder="Enter description" size={"lg"} type="text" />
-                      <Input  value={url} onValueChange={setURL} isClearable  label="URL" placeholder="Enter URL" size={"lg"} type="text" />
-
-                      <Slider
-                       value={depositAmount}
-                       onChange={(value) => {
-                        if (typeof value === "number") {
-                          setDepositAmount(value);
-                        } else if (Array.isArray(value)) {
-                          setDepositAmount(value[0]); // İlk değeri alıyoruz.
-                        }
-                      }}
-                        className="w-full"
-                        size='lg'
-                        label="Amount"
-                        getValue={(amount) => `${amount} ${token.symbol}`}
-                        maxValue={forceFormatUnits(contributionInfo?.playerBalance, token)}
-                        minValue={forceFormatUnits(contributionInfo?.nextContributionAmount, token)}
-                        step={0.1}
-                      />
-
-                    </div>
-
-                  </div>
-
-
-                </div>
-
-              </ModalBody>
-              <ModalFooter>
-                <div className='w-full grid grid-cols-2 justify-center'>
-                  <div className='w-full flex flex-row items-center justify-start'>
-                    <LatLngLogo />
-                  </div>
-                  <div className='w-full flex flex-row gap-2 justify-end'>
-                    <Button className='text-white' color="success" onPress={()=>{
-                      handleContribute()
-                    }}>
-                      Contribute
-                    </Button>
-                  </div>
-
-
-                </div>
-
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
       <div>
  
       <Button
