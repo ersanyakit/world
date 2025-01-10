@@ -1,7 +1,7 @@
 import { EMOJIS, TWEET_HEAD, TWEETS, TWITTER_USERS } from "#src/constants/constants";
 import { Tokens } from "#src/constants/tokens";
 import { Token } from "#src/types/web3.types";
-import { formatUnits, isAddress, keccak256, parseEther, parseUnits } from "ethers";
+import { ethers, formatUnits, isAddress, keccak256, parseEther, parseUnits } from "ethers";
 
 // Interface definition
 export interface TimestampDetails {
@@ -80,6 +80,15 @@ export const getTokenByAddress = (address: string) : Token | null => {
   return tokenInfo;
 }
 
+export const getTokenLogoByAddressAndChainID = (address: string, chainId: number): string => {
+  let tokenInfo = Object.values(Tokens).find((token) => token.address === address && token.chainId === chainId);
+
+  if (!tokenInfo) {
+    tokenInfo = Object.values(Tokens).find((token) => token.address === ethers.ZeroAddress && token.chainId === chainId);
+  }
+
+  return tokenInfo ? tokenInfo.logoURI : '';  // Return an empty string if no token info found
+};
 
 export const getTokenDecimalsByAddress = (address: string) : number => {
   const tokenInfo = Object.values(Tokens).find((token) => token.address == address);

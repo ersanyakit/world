@@ -8,7 +8,7 @@ import { useAppKitAccount, useAppKitProvider, useAppKit, useAppKitNetwork } from
 import { Contribution, ContributionInfo } from '#src/types/Contribution'
 import { ethers, formatEther, formatUnits, parseEther, parseUnits } from 'ethers'
 import LatLngLogo from '#components/TopBar/LatLngLogo'
-import { forceFormatUnits, generateHexColorFromAddress, generateShareURL, getTokenByAddress, getTokenDecimalsByAddress } from '#src/utils/helpers'
+import { forceFormatUnits, generateHexColorFromAddress, generateShareURL, getTokenByAddress, getTokenDecimalsByAddress, getTokenLogoByAddressAndChainID } from '#src/utils/helpers'
 import Leaflet from 'leaflet'
 import Geohash from 'ngeohash';
 import useInitContributors from '#src/hooks/useInitContributors'
@@ -65,14 +65,14 @@ const TreasuryButton = () => {
 
 
 
-            <Modal className='bg-black/30' size='full' scrollBehavior='inside' backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
+            <Modal className='bg-black/30' size='lg' scrollBehavior='inside' backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     {(onClose) => (
                         <>
                             <ModalHeader {...moveProps} className="flex flex-col gap-1 items-start justify-center">
                                 <User name={`Treasury`}
                                     classNames={{ base: "text-lime-500" }}
-                                    description={"Contribute to claim others’ assets."}
+                                    description={"View and manage the hidden wealth embedded within the map."}
                                     avatarProps={{
                                         className: "bg-transparent",
                                         src: "/assets/inventory.png"
@@ -83,21 +83,20 @@ const TreasuryButton = () => {
 
                                 <div className='w-full flex flex-col gap-2 rounded-lg'>
                                     {assets.map((asset, index) => (
-                                        <div className='w-full flex flex-row gap-2 items-center justify-start p-2'>
+                                        <div className='w-full flex flex-row gap-2 items-center justify-center p-2'>
                                             <Avatar
-                                                className="group bg-transparent transition-transform duration-300 ease-in-out transform group-hover:scale-90"
+                                                className="w-10 h-10 group bg-transparent transition-transform duration-300 ease-in-out transform group-hover:scale-90"
                                                 size="lg"
-                                                src={"/assets/inventory.png"}
+                                                src={getTokenLogoByAddressAndChainID(asset.token,Number(chainId))}
                                             />
 
                                             <div className='w-full grid grid-cols-2 gap-2'>
-                                                <div className={"w-full col-span-2 row-span-2"}>
-                                                 </div>   
+                                          
                                                 <div className="flex-none border-1 border-white/5 rounded-small text-center overflow-hidden">
                                                     <div className="text-tiny bg-black py-0.5 text-white">
                                                         Total Deposit
                                                     </div>
-                                                    <div className="flex items-center justify-center font-semibold text-3xl text-lime-500">
+                                                    <div className="flex items-center justify-center font-semibold text-sm text-lime-500">
                                                         {formatUnits(asset.deposit, getTokenDecimalsByAddress(asset.token))}
                                                     </div>
                                                 </div>
@@ -106,7 +105,7 @@ const TreasuryButton = () => {
                                                     <div className="text-tiny bg-black py-0.5 text-white">
                                                         Total Withdraw
                                                     </div>
-                                                    <div className="flex items-center justify-center font-semibold text-3xl text-lime-500">
+                                                    <div className="flex items-center justify-center font-semibold text-sm text-lime-500">
                                                     {formatUnits(asset.withdraw, getTokenDecimalsByAddress(asset.token))}
 
                                                     </div>

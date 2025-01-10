@@ -28,9 +28,9 @@ export interface CustomMarkerProps {
 
 export const CustomMarker = ({ place }: CustomMarkerProps) => {
   const { map } = useMapContext();
-      const { address, isConnected } = useAppKitAccount();
-      const { walletProvider } = useAppKitProvider('eip155');
-      const [contributionInfo, setContributionInfo] = useState<ContributionInfo | null>(null);
+    const { address, isConnected } = useAppKitAccount();
+    const { walletProvider } = useAppKitProvider('eip155');
+    const [contributionInfo, setContributionInfo] = useState<ContributionInfo | null>(null);
 
   const markerCategory = useMemo(
     () => place.token,
@@ -42,6 +42,8 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
     map?.closePopup();
   }, [map]);
 
+
+  
   const loadContributionInfo = async(place:Contribution)=>{
     const _contributionInfo = await getContributionInfo(place,walletProvider,isConnected,address)
     setContributionInfo(_contributionInfo)
@@ -54,9 +56,13 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
     }
   }
 
+  const loadData =  async (place:Contribution) => {
+    await loadContributionInfo(place)
+  }
+
   const handleMarkerClick = useCallback(() => {
     if (!map) return;
-    loadContributionInfo(place);
+    loadData(place);
     const clampZoom = map.getZoom() < 14 ? 14 : undefined;
     map.setView(decodeGeoHash(place.geohash), clampZoom);
   }, [map, place.geohash]);
