@@ -4,17 +4,19 @@ import { FormatAddressDesign } from '#src/utils/helpers';
 import React, { useEffect } from 'react';
 import { Unicon } from '#components/Unicon';
 import { Globe } from 'lucide-react';
-import { setSelectedNetwork } from '#src/utils/web3/clients';
+import { useContributionContext } from '#src/context/GlobalStateContext';
 
 const ConnectButton = () => {
   const { open } = useAppKit();
   const { address, isConnected } = useAppKitAccount();
   const { chainId } = useAppKitNetwork()
+  const {location, contributions, players, claims, assets,storeChainData } = useContributionContext();
 
   useEffect(()=>{
     if(chainId){
       console.log("Current Chain",chainId)
-      setSelectedNetwork(Number(chainId))
+      storeChainData(chainId)
+
     }
   },[chainId])
 

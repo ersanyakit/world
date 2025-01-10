@@ -2,6 +2,7 @@ import { createPublicClient, http, PublicClient } from 'viem';
 import { avalanche, chiliz, hardhat, spicy } from 'viem/chains';
 import { AvaxMainnet, ChilizMainnet, ChilizSpicyTestNet, HardhatTestnet } from './chains';
 import { NetworkClient, TNetwork } from '#src/types/web3.types';
+import { useContributionContext } from '#src/context/GlobalStateContext';
 
 export const chilizClient = createPublicClient({
   batch: {
@@ -54,6 +55,8 @@ export const NETWORKS : Record<string, NetworkClient>= {
 }
 
 export function getNetworkClient(chainId: number) : NetworkClient {
+
+  console.log("getNetworkClient: currentChainId",chainId)
   const network = Object.values(NETWORKS).find((net) => net.network.chainId && net.network.chainId === chainId);
   if (!network) {
     throw new Error(`Network with chainId ${chainId} not found`);
@@ -61,19 +64,10 @@ export function getNetworkClient(chainId: number) : NetworkClient {
   return network;
 }
 
-// Varsayılan Seçili Ağ
-let selectedNetwork = NETWORKS.chiliz;
 
-// Seçili Ağı Getiren Fonksiyon
+
+//todo:Number(0)
 export function getSelectedClient() {
-  return selectedNetwork.client;
-}
 
-// Ağ Değiştirme Fonksiyonu
-export function setSelectedNetwork(chainId: number) {
-  const network = Object.values(NETWORKS).find((net) => net.client.chain && net.client.chain.id === chainId);
-  if (!network) {
-    throw new Error(`Network with chainId ${chainId} not found`);
-  }
-  selectedNetwork = network; 
+  return getNetworkClient(Number(0))
 }

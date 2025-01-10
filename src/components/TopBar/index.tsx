@@ -28,7 +28,7 @@ const MapTopBar = () => {
 
 
   useEffect(()=>{
-    onOpen();
+    //onOpen();
   },[])
   
   return (

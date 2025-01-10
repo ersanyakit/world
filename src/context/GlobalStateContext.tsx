@@ -11,6 +11,7 @@ interface ContributionContextType {
   players:Player[];
   assets:Asset[];
   player:Player | null;
+  currentChainId : number | null;
   location: Leaflet.LatLng | undefined
   addClaims: (claims: Claim[]) => void;  // Toplu ekleme fonksiyonu
   addAssets: (assets: Asset[]) => void;  // Toplu ekleme fonksiyonu
@@ -19,11 +20,11 @@ interface ContributionContextType {
   addPlayer : (player:Player | null) => void
   addRegistrationFee : (fee:bigint) => void
   addLocation : (_location:Leaflet.LatLng | undefined) => void
+  storeChainData : (_chainId:number|any) => void
 
 }
 
 const ContributionContext = createContext<ContributionContextType | undefined>(undefined);
-
 export const useContributionContext = () => {
   const context = useContext(ContributionContext);
   if (!context) {
@@ -44,6 +45,7 @@ export const ContributionProvider: React.FC<ContributionProviderProps> = ({ chil
   const [player, setPlayer] = useState<Player | null>(null);
   const [registrationFee, setRegistrationFee] = useState<bigint>(BigInt(0));
   const [location, setLocation] = useState<Leaflet.LatLng | undefined>(undefined)
+  const [currentChainId,setChainId] = useState<number | null>(null);
 
   const addContributions = (contributions: Contribution[]) => {
     setContributions(contributions);
@@ -74,9 +76,12 @@ export const ContributionProvider: React.FC<ContributionProviderProps> = ({ chil
     setLocation(_location)
   }
 
+  const storeChainData = (_chainId : number | null) => {
+    setChainId(_chainId)
+  }
 
   return (
-    <ContributionContext.Provider value={{location,registrationFee, player, contributions,claims,players,assets,addRegistrationFee ,addPlayer,addContributions, addClaims, addPlayers,addAssets,addLocation }}>
+    <ContributionContext.Provider value={{currentChainId,location,registrationFee, player, contributions,claims,players,assets,storeChainData,addRegistrationFee ,addPlayer,addContributions, addClaims, addPlayers,addAssets,addLocation }}>
       {children}
     </ContributionContext.Provider>
   );

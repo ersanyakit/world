@@ -1,6 +1,6 @@
 import { useQueryContext } from "#src/context/GlobalQueryContext";
 import { useContributionContext } from "#src/context/GlobalStateContext";
-import { Button, Card, Input, Tab, Tabs } from "@nextui-org/react"
+import { Button, Card, Input, ScrollShadow, Tab, Tabs } from "@nextui-org/react"
 import { RegisterTAB } from "./ProfileTabs/Account/Register";
 import { AccountTAB } from "./ProfileTabs/Account/Account";
 import ConnectButton from "#components/common/connectButton";
@@ -65,19 +65,31 @@ export const ProfileTAB = () => {
                         }
                     </Tab>
                     <Tab key="referrals" title="Referrals">
-                        {player?.referrals.slice().reverse().map((referral, index) => (
-                            <ReferralCard key={index} referral={referral} />
-                        ))}
+                        <ScrollShadow hideScrollBar>
+                            <div className="w-full flex flex-col gap-2">
+                                {player?.referrals.slice().reverse().map((referral, index) => (
+                                    <ReferralCard key={index} referral={referral} />
+                                ))}
+                            </div>
+                        </ScrollShadow>
                     </Tab>
                     <Tab key="followers" title="Followers">
-                    {player?.followers.slice().reverse().map((followers, index) => (
-                            <ReferralCard key={index} referral={followers} />
-                        ))}
+                        <ScrollShadow hideScrollBar>
+                            <div className="w-full flex flex-col gap-2">
+                                {player?.followers.slice().reverse().map((followers, index) => (
+                                    <ReferralCard key={index} referral={followers} />
+                                ))}
+                            </div>
+                        </ScrollShadow>
                     </Tab>
                     <Tab key="followings" title="Followings">
-                    {player?.followings.slice().reverse().map((followings, index) => (
-                            <ReferralCard key={index} referral={followings} />
-                        ))}
+                        <ScrollShadow hideScrollBar>
+                            <div className="w-full flex flex-col gap-2">
+                                {player?.followings.slice().reverse().map((followings, index) => (
+                                    <ReferralCard key={index} referral={followings} />
+                                ))}
+                            </div>
+                        </ScrollShadow>
                     </Tab>
 
                 </Tabs>

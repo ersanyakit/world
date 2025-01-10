@@ -80,6 +80,15 @@ export const getTokenByAddress = (address: string) : Token | null => {
   return tokenInfo;
 }
 
+
+export const getTokenDecimalsByAddress = (address: string) : number => {
+  const tokenInfo = Object.values(Tokens).find((token) => token.address && address);
+  if (!tokenInfo) {
+    return 18
+  }
+  return tokenInfo.decimals;
+}
+
 export const generateShareURL = (address : any, contributionId : any) : string => {
   let url : string = ""
   if(!isAddress(address)){

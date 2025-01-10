@@ -84,7 +84,7 @@ export const PlayerTAB = () => {
     return (
         <>
   
-            <div className='w-full flex flex-col gap-2 py-2'>
+            <div className='w-full flex flex-col gap-2'>
                 {players.slice().reverse().map((player, index) => (
                     <PlayerCard key={index} player={player}/>
                 ))}
