@@ -12,6 +12,38 @@ import { Token } from "#src/types/web3.types";
         },
         {
             "chainId": 88888,
+            "address": "0xEd5740209FcF6974d6f3a5F11e295b5E468aC27c",
+            "name": "KEWL EXCHANGE",
+            "symbol": "KWL",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0xed5740209fcf6974d6f3a5f11e295b5e468ac27c/logo.svg"
+        },
+        {
+            "chainId": 88888,
+            "address": "0x8c0b6ea89DABA6516df9437a60cA481501781606",
+            "name": "KAYEN Token",
+            "symbol": "KAYEN",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x8c0b6ea89daba6516df9437a60ca481501781606/logo.svg"
+        },
+        {
+            "chainId": 88888,
+            "address": "0x9FAAE77622C49a01fc5817548D4b8f5C2763D9A5",
+            "name": "Chiliz Squad",
+            "symbol": "CHSQUAD",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x9faae77622c49a01fc5817548d4b8f5c2763d9a5/logo.svg"
+        },
+        {
+            "chainId": 88888,
+            "address": "0x2eBEc8E89BB4B9C3681BE4eAA85C391F1cd717cE",
+            "name": "DIVISWAP",
+            "symbol": "DSWAP",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x2ebec8e89bb4b9c3681be4eaa85c391f1cd717ce/logo.svg"
+        },
+        {
+            "chainId": 88888,
             "address": "0xF3928e7871eb136DD6648Ad08aEEF6B6ea893001",
             "name": "ChilizInu",
             "symbol": "ChzInu",
@@ -60,19 +92,11 @@ import { Token } from "#src/types/web3.types";
         },
         {
             "chainId": 88888,
-            "address": "0x9FAAE77622C49a01fc5817548D4b8f5C2763D9A5",
-            "name": "Chiliz Squad",
-            "symbol": "CHSQUAD",
+            "address": "0x60cfC65BA14C2f8B111Fc7B152bB11486FDEa822",
+            "name": "FanFanToken",
+            "symbol": "FANFAN",
             "decimals": 18,
-            "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x9faae77622c49a01fc5817548d4b8f5c2763d9a5/logo.svg"
-        },
-        {
-            "chainId": 88888,
-            "address": "0x2eBEc8E89BB4B9C3681BE4eAA85C391F1cd717cE",
-            "name": "DIVISWAP",
-            "symbol": "DSWAP",
-            "decimals": 18,
-            "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x2ebec8e89bb4b9c3681be4eaa85c391f1cd717ce/logo.svg"
+            "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x60cfc65ba14c2f8b111fc7b152bb11486fdea822/logo.svg"
         },
         {
             "chainId": 43114,
