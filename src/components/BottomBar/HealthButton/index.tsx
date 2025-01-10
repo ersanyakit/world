@@ -16,6 +16,7 @@ import { TWEET_HEAD, TWEETS } from '#src/constants/constants'
 import { Tokens } from '#src/constants/tokens'
 import TokenChip from '../TokenChip'
 import { useContributionContext } from '#src/context/GlobalStateContext'
+import ContributionCard from '#components/ContributionCard'
 
 export interface ChipProps {
   token: Token
@@ -34,8 +35,8 @@ const HealthButton = () => {
   const { walletProvider } = useAppKitProvider('eip155');
   const [contributionInfo, setContributionInfo] = useState<ContributionInfo | null>(null);
   const [token, setToken] = useState<Token | null>(null)
-  const [error,setError] = useState<any>(null)
-  const [isLoading,setLoaded] = useState<boolean>(false)
+  const [error, setError] = useState<any>(null)
+  const [isLoading, setLoaded] = useState<boolean>(false)
 
 
 
@@ -44,9 +45,9 @@ const HealthButton = () => {
   const [url, setURL] = useState(generateShareURL(address, undefined));
   const [depositAmount, setDepositAmount] = useState<number>(0);
 
- 
+
   const [refreshTrigger, setRefreshTrigger] = useState(false);
-  const {location, contributions, players, claims, assets,addLocation } = useContributionContext();
+  const { location, playerContributions, contributions, players, claims, assets, addLocation } = useContributionContext();
 
 
   const { chainId } = useAppKitNetwork()
@@ -61,13 +62,13 @@ const HealthButton = () => {
 
   const handleContribute = async () => {
     setLoaded(true)
-    if(!token){
-      setError({message:"Please select token!",exception:"Please select token!"})
+    if (!token) {
+      setError({ message: "Please select token!", exception: "Please select token!" })
       return
     }
 
-    if(!location){
-      setError({message:"Invalid Location!",exception:"Invalid Location!"})
+    if (!location) {
+      setError({ message: "Invalid Location!", exception: "Invalid Location!" })
       return
     }
 
@@ -93,22 +94,22 @@ const HealthButton = () => {
     };
 
 
-    let playerAllowance : bigint = contributionInfo ? contributionInfo.playerAllowance : BigInt(0)
-    if(contribution.deposit > playerAllowance){
-      let approvalResponse = await approve(walletProvider,isConnected,token,ethers.MaxUint256)
-      if(!approvalResponse.success){
+    let playerAllowance: bigint = contributionInfo ? contributionInfo.playerAllowance : BigInt(0)
+    if (contribution.deposit > playerAllowance) {
+      let approvalResponse = await approve(walletProvider, isConnected, token, ethers.MaxUint256)
+      if (!approvalResponse.success) {
         setError(approvalResponse.error)
         setLoaded(false)
-        return 
+        return
       }
     }
 
 
     let contributeResponse = await contribute(walletProvider, isConnected, address, contribution)
-    if(!contributeResponse.success){
+    if (!contributeResponse.success) {
       setError(contributeResponse.error)
       setLoaded(false)
-      return 
+      return
     }
     setLoaded(false)
   }
@@ -123,23 +124,23 @@ const HealthButton = () => {
     setToken(_token);
   }
 
-  const fetchContributionData = async (_token:Token) => {
+  const fetchContributionData = async (_token: Token) => {
     const _contributionInfo = await getContributionInfoByToken(_token, walletProvider, isConnected, address)
     setContributionInfo(_contributionInfo)
     console.log("getContributionInfoByToken", _contributionInfo, _token, isConnected, address)
   }
 
-  const handleApprove = async() => {
-    if(!token){
+  const handleApprove = async () => {
+    if (!token) {
       return;
     }
-      let response : ContractCallResponse = await approve(walletProvider,isConnected,token,ethers.MaxUint256)
-      console.log(response);
+    let response: ContractCallResponse = await approve(walletProvider, isConnected, token, ethers.MaxUint256)
+    console.log(response);
   }
 
 
   useEffect(() => {
-    if(token){
+    if (token) {
       fetchContributionData(token)
     }
 
@@ -153,145 +154,45 @@ const HealthButton = () => {
 
 
 
-      <Modal   backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal className='bg-black/30' size='lg' scrollBehavior='inside' backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader {...moveProps} className="flex flex-col gap-1 items-start justify-center">
-                <User name={`Contribute`}
-                classNames={{base:"text-lime-500"}}
-                  description={"Contribute to claim others’ assets."}
+                <User name={`My Contributions`}
+                  classNames={{ base: "text-lime-500" }}
+                  description={"Track your personal contributions, rewards, and progress within the MillionarMap ecosystem."}
                   avatarProps={{
-                    className: "bg-transparent",
-                    src: "/assets/gemstone.png"
+                    className: "w-16 h-16 bg-transparent",
+                    src: "/assets/health.png"
                   }} />
               </ModalHeader>
               <ModalBody>
-                {
-                  <div className='w-full'>
-                    {
-                      !token && <div className='w-full grid grid-cols-3 gap-2 items-center justify-center'>
-                        {Tokens.map((token, index) => (
-                          token.chainId == chainId && <>
-                            <div className='w-full flex items-center justify-center'>
-
-                              <Button
-                                className="w-full bg-lime-500/40"
-                                size="lg"
-                                isIconOnly
-                                radius="full"
-                                style={{ width: '64px', height: '64px' }}
-                                onPress={() => {
-                                  handleSelectToken(token)
-                                }}
-                              >
-                                <Avatar
-                                  className="group  transition-transform duration-300 ease-in-out transform group-hover:scale-90"
-                                  size="lg"
-                                  src={token.logoURI}
-                                />
-                              </Button>
-                            </div>
-                          </>
-                        ))}
-                      </div>
-                    }
 
 
-                    {
-                      token && <>
-                        <div className='flex flex-col gap-2'>
-                          <div className='w-full flex flex-row gap-2'>
-                            <div className='flex items-center justify-center flex flex-col gap-2'>
-                              <Button
-                                className="w-full bg-lime-500/40"
-                                size="lg"
-                                isIconOnly
-                                radius="full"
-                                style={{ width: '64px', height: '64px' }}
-                                onPress={() => {
-                                  setToken(null)
-                                }}
-                              >
-                                <Avatar
-                                  className="group  transition-transform duration-300 ease-in-out transform group-hover:scale-90"
-                                  size="lg"
-                                  src={token.logoURI}
-                                />
-                              </Button>
-                              <span className='text-xs text-lime-500 font-bold'>SELECT</span>
+                <div className="flex flex-col w-full justify-center items-center pt-4 gap-2">
 
-                            </div>
-                            <div className='mt-2 w-full grid grid-cols-2 gap-2 text-xs py-2 border border-1 rounded-lg p-2' >
-                              <div className='w-full flex flex-col'>
-                                <span className='font-bold'>Token</span>
-                                <span>{token.name}</span>
-                              </div>
-                              <div className='w-full flex flex-col'>
-                                <span className='font-bold'>Symbol</span>
-                                <span>{token.symbol}</span>
-                              </div>
-                              <div className='w-full flex flex-col'>
-                                <span className='font-bold'>Decimals</span>
-                                <span>{token.decimals}</span>
-                              </div>
 
-                              <div className='w-full flex flex-col'>
-                                <span className='font-bold'>Balance</span>
-                                <span>{contributionInfo && contributionInfo.playerBalance ? formatUnits(contributionInfo.playerBalance, token.decimals) : "0.0000"}</span>
-                              </div>
+                  {playerContributions.slice().reverse().map((contribution, index) => (
+                    <ContributionCard key={index} contribution={contribution} />
 
-                            </div>
-                          </div>
+                  ))}
 
 
 
-                          <div className='w-full flex flex-col gap-2'>
-                            <Input value={title} onValueChange={setTitle} isClearable label="Title" placeholder="Enter title" size={"lg"} type="text" />
-                            <Input value={description} onValueChange={setDescription} isClearable label="Description" placeholder="Enter description" size={"lg"} type="text" />
-                            <Input value={url} onValueChange={setURL} isClearable label="URL" placeholder="Enter URL" size={"lg"} type="text" />
 
-                            <Slider
-                              value={depositAmount}
-                              onChange={(value) => {
-                                if (typeof value === "number") {
-                                  setDepositAmount(value);
-                                } else if (Array.isArray(value)) {
-                                  setDepositAmount(value[0]); // İlk değeri alıyoruz.
-                                }
-                              }}
-                              className="w-full"
-                              size='lg'
-                              label="Amount"
-                              getValue={(amount) => `${amount} ${token.symbol}`}
-                              maxValue={forceFormatUnits(contributionInfo?.playerBalance, token)}
-                              minValue={0}
-                            />
-
-                          </div>
-
-                        </div>
-                      </>
-                    }
-
-
-                  </div>
-
-                }
-
+                </div>
               </ModalBody>
               <ModalFooter>
-                <div className='w-full grid grid-cols-2 justify-center'>
-                  <div className='w-full flex flex-row items-center justify-start'>
-                    <LatLngLogo />
-                  </div>
+                <div className='w-full  justify-center'>
+
                   <div className='w-full flex flex-row gap-2 justify-end'>
-                   
-                    <Button isLoading={isLoading} isDisabled={!token || !depositAmount || depositAmount === 0}
-                      className='text-white' color="success" onPress={() => {
-                        handleContribute()
+
+                    <Button
+                      className='text-white' color="danger" onPress={() => {
+                        onClose()
                       }}>
-                      Contribute
+                      Close
                     </Button>
                   </div>
 

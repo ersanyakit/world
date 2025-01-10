@@ -34,8 +34,8 @@ const TapButton = () => {
   const { walletProvider } = useAppKitProvider('eip155');
   const [contributionInfo, setContributionInfo] = useState<ContributionInfo | null>(null);
   const [token, setToken] = useState<Token | null>(null)
-  const [error,setError] = useState<any>(null)
-  const [isLoading,setLoaded] = useState<boolean>(false)
+  const [error, setError] = useState<any>(null)
+  const [isLoading, setLoaded] = useState<boolean>(false)
 
 
 
@@ -44,9 +44,9 @@ const TapButton = () => {
   const [url, setURL] = useState(generateShareURL(address, undefined));
   const [depositAmount, setDepositAmount] = useState<number>(0);
 
- 
+
   const [refreshTrigger, setRefreshTrigger] = useState(false);
-  const {location, contributions, players, claims, assets,addLocation } = useContributionContext();
+  const { location, contributions, players, claims, assets, addLocation } = useContributionContext();
 
 
   const { chainId } = useAppKitNetwork()
@@ -61,13 +61,13 @@ const TapButton = () => {
 
   const handleContribute = async () => {
     setLoaded(true)
-    if(!token){
-      setError({message:"Please select token!",exception:"Please select token!"})
+    if (!token) {
+      setError({ message: "Please select token!", exception: "Please select token!" })
       return
     }
 
-    if(!location){
-      setError({message:"Invalid Location!",exception:"Invalid Location!"})
+    if (!location) {
+      setError({ message: "Invalid Location!", exception: "Invalid Location!" })
       return
     }
 
@@ -93,22 +93,22 @@ const TapButton = () => {
     };
 
 
-    let playerAllowance : bigint = contributionInfo ? contributionInfo.playerAllowance : BigInt(0)
-    if(contribution.deposit > playerAllowance){
-      let approvalResponse = await approve(walletProvider,isConnected,token,ethers.MaxUint256)
-      if(!approvalResponse.success){
+    let playerAllowance: bigint = contributionInfo ? contributionInfo.playerAllowance : BigInt(0)
+    if (contribution.deposit > playerAllowance) {
+      let approvalResponse = await approve(walletProvider, isConnected, token, ethers.MaxUint256)
+      if (!approvalResponse.success) {
         setError(approvalResponse.error)
         setLoaded(false)
-        return 
+        return
       }
     }
 
 
     let contributeResponse = await contribute(walletProvider, isConnected, address, contribution)
-    if(!contributeResponse.success){
+    if (!contributeResponse.success) {
       setError(contributeResponse.error)
       setLoaded(false)
-      return 
+      return
     }
     setLoaded(false)
   }
@@ -123,23 +123,23 @@ const TapButton = () => {
     setToken(_token);
   }
 
-  const fetchContributionData = async (_token:Token) => {
+  const fetchContributionData = async (_token: Token) => {
     const _contributionInfo = await getContributionInfoByToken(_token, walletProvider, isConnected, address)
     setContributionInfo(_contributionInfo)
     console.log("getContributionInfoByToken", _contributionInfo, _token, isConnected, address)
   }
 
-  const handleApprove = async() => {
-    if(!token){
+  const handleApprove = async () => {
+    if (!token) {
       return;
     }
-      let response : ContractCallResponse = await approve(walletProvider,isConnected,token,ethers.MaxUint256)
-      console.log(response);
+    let response: ContractCallResponse = await approve(walletProvider, isConnected, token, ethers.MaxUint256)
+    console.log(response);
   }
 
 
   useEffect(() => {
-    if(token){
+    if (token) {
       fetchContributionData(token)
     }
 
@@ -153,13 +153,13 @@ const TapButton = () => {
 
 
 
-      <Modal   backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader {...moveProps} className="flex flex-col gap-1 items-start justify-center">
                 <User name={`Contribute`}
-                classNames={{base:"text-lime-500"}}
+                  classNames={{ base: "text-lime-500" }}
                   description={"Contribute to claim others’ assets."}
                   avatarProps={{
                     className: "bg-transparent",
@@ -238,7 +238,7 @@ const TapButton = () => {
 
                               <div className='w-full flex flex-col'>
                                 <span className='font-bold'>Balance</span>
-                                <span>{contributionInfo && contributionInfo.playerBalance ? formatUnits(contributionInfo.playerBalance, token.decimals) : "0.0000"}</span>
+                                <span>{contributionInfo && contributionInfo.playerBalance ? parseFloat(formatUnits(contributionInfo.playerBalance, token.decimals)).toFixed(4) : "0.0000"}</span>
                               </div>
 
                             </div>
@@ -251,6 +251,31 @@ const TapButton = () => {
                             <Input value={description} onValueChange={setDescription} isClearable label="Description" placeholder="Enter description" size={"lg"} type="text" />
                             <Input value={url} onValueChange={setURL} isClearable label="URL" placeholder="Enter URL" size={"lg"} type="text" />
 
+
+                            <Input
+                              value={depositAmount.toString()}
+                              onValueChange={(value) => {
+                                if (value === "") {
+                                  setDepositAmount(0);  // Reset to 0 if input is cleared
+                                } else if (typeof value === "string") {
+                                  const parsedValue = parseFloat(value); // Convert string to number
+                                  if (!isNaN(parsedValue)) {
+                                    setDepositAmount(parsedValue);
+                                  }
+                                } else if (Array.isArray(value)) {
+                                  const parsedValue = parseFloat(value[0]); // Convert the first value of the array to number
+                                  if (!isNaN(parsedValue)) {
+                                    setDepositAmount(parsedValue);
+                                  }
+                                }
+                              }}
+                              isClearable
+                              label="Amount"
+                              placeholder="Enter Amount"
+                              size={"lg"}
+                              type="text"
+                            />
+
                             <Slider
                               value={depositAmount}
                               onChange={(value) => {
@@ -262,7 +287,6 @@ const TapButton = () => {
                               }}
                               className="w-full"
                               size='lg'
-                              label="Amount"
                               getValue={(amount) => `${amount} ${token.symbol}`}
                               maxValue={forceFormatUnits(contributionInfo?.playerBalance, token)}
                               minValue={0}
@@ -286,7 +310,7 @@ const TapButton = () => {
                     <LatLngLogo />
                   </div>
                   <div className='w-full flex flex-row gap-2 justify-end'>
-                   
+
                     <Button isLoading={isLoading} isDisabled={!token || !depositAmount || depositAmount === 0}
                       className='text-white' color="success" onPress={() => {
                         handleContribute()

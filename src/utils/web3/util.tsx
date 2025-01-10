@@ -491,3 +491,28 @@ export const getContributionInfoByTokenEx = async (token: Token, walletProvider:
   }
 
 }
+
+
+export const getPlayerContributions = async (address: any): Promise<Contribution[]> => {
+  let response: Contribution[]  = [];
+  let contractInformation = getContractByName("DIAMOND", selectedNetwork.network.chainId)
+  try {
+    if (contractInformation) {
+      const contract = getContract({
+        address: contractInformation.address,
+        abi: contractInformation.abi,
+        client: {
+          public: selectedNetwork.client,
+        },
+      });
+
+      const res: Contribution | any = await contract.read.getPlayerContributions([address]);
+      console.log("getPlayerContributions", address, res)
+      response = res;
+    }
+    return response;
+  } catch (error) {
+    console.log('getPlayerContributions : ', error);
+    return response;
+  }
+}

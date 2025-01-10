@@ -12,7 +12,10 @@ interface ContributionContextType {
   assets:Asset[];
   player:Player | null;
   currentChainId : number | null;
-  location: Leaflet.LatLng | undefined
+  location: Leaflet.LatLng | undefined;
+  playerContributions: Contribution[];
+
+
   addClaims: (claims: Claim[]) => void;  // Toplu ekleme fonksiyonu
   addAssets: (assets: Asset[]) => void;  // Toplu ekleme fonksiyonu
   addPlayers: (players: Player[]) => void;  // Toplu ekleme fonksiyonu
@@ -21,6 +24,7 @@ interface ContributionContextType {
   addRegistrationFee : (fee:bigint) => void
   addLocation : (_location:Leaflet.LatLng | undefined) => void
   storeChainData : (_chainId:number|any) => void
+  addPlayerContributions:(contributions: Contribution[]) => void; 
 
 }
 
@@ -46,10 +50,18 @@ export const ContributionProvider: React.FC<ContributionProviderProps> = ({ chil
   const [registrationFee, setRegistrationFee] = useState<bigint>(BigInt(0));
   const [location, setLocation] = useState<Leaflet.LatLng | undefined>(undefined)
   const [currentChainId,setChainId] = useState<number | null>(null);
+  const [playerContributions, setUserContributions] = useState<Contribution[]>([]);
+
+
 
   const addContributions = (contributions: Contribution[]) => {
     setContributions(contributions);
   };
+
+  const addPlayerContributions = (contributions: Contribution[]) => {
+    setUserContributions(contributions);
+  };
+
 
   const addClaims = (claims: Claim[]) => {
     setClaims(claims);
@@ -76,12 +88,14 @@ export const ContributionProvider: React.FC<ContributionProviderProps> = ({ chil
     setLocation(_location)
   }
 
+
+
   const storeChainData = (_chainId : number | null) => {
     setChainId(_chainId)
   }
 
   return (
-    <ContributionContext.Provider value={{currentChainId,location,registrationFee, player, contributions,claims,players,assets,storeChainData,addRegistrationFee ,addPlayer,addContributions, addClaims, addPlayers,addAssets,addLocation }}>
+    <ContributionContext.Provider value={{playerContributions,currentChainId,location,registrationFee, player, contributions,claims,players,assets,storeChainData,addRegistrationFee ,addPlayer,addContributions, addClaims, addPlayers,addAssets,addLocation,addPlayerContributions }}>
       {children}
     </ContributionContext.Provider>
   );
