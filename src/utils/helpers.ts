@@ -73,7 +73,7 @@ export const generateHexColorFromAddress = (address: string): string => {
 }
 
 export const getTokenByAddress = (address: string) : Token | null => {
-  const tokenInfo = Object.values(Tokens).find((token) => token.address && address);
+  const tokenInfo = Object.values(Tokens).find((token) => token.address == address);
   if (!tokenInfo) {
     return null
   }
@@ -82,7 +82,8 @@ export const getTokenByAddress = (address: string) : Token | null => {
 
 
 export const getTokenDecimalsByAddress = (address: string) : number => {
-  const tokenInfo = Object.values(Tokens).find((token) => token.address && address);
+  const tokenInfo = Object.values(Tokens).find((token) => token.address == address);
+  console.log("address",address,tokenInfo)
   if (!tokenInfo) {
     return 18
   }

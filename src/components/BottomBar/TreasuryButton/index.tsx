@@ -91,6 +91,8 @@ const TreasuryButton = () => {
                                             />
 
                                             <div className='w-full grid grid-cols-2 gap-2'>
+                                                <div className={"w-full col-span-2 row-span-2"}>
+                                                 </div>   
                                                 <div className="flex-none border-1 border-white/5 rounded-small text-center overflow-hidden">
                                                     <div className="text-tiny bg-black py-0.5 text-white">
                                                         Total Deposit
