@@ -127,14 +127,14 @@ export const PinTAB = () => {
                                         </span>
                                         <div className="flex gap-2 w-full items-center">
                                             <Tooltip placement="right" className="font-sans text-xs" delay={10} color={"primary"}  content={"You will earn a 2% commission from every user who joins through your referral."}>
-                                            <Button target="_blank" href={generateTweetIntentURL(address,contribution.index)} as={Link} variant="solid" color="primary" fullWidth startContent={
+                                            <Button className="text-white" target="_blank" href={generateTweetIntentURL(address,contribution.index)} as={Link} variant="shadow" color="success" fullWidth startContent={
                                                 <Twitter />
                                             } endContent={
                                                 <ExternalLink />
                                             }
                                             >
                                                 <span className="w-full">
-                                            Tweet with My Referral Link
+                                            Tweet and Earn a 30% Referral Fee
                                             </span>
                                             </Button>
                                             </Tooltip>
