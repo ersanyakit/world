@@ -160,7 +160,7 @@ const BalanceEntry = ({ balanceEntry }: { balanceEntry: BalanceInfo }) => {
                     className: "bg-transparent",
                     src: token?.logoURI
                   }} />
-          <span className='text-lime-500'>{formatUnits(balanceEntry.balance,balanceEntry.decimals)}</span>
+          <span className='text-lime-500'>{parseFloat(formatUnits(balanceEntry.balance,balanceEntry.decimals)).toFixed(4)}</span>
   </div>)
 }
   return (
