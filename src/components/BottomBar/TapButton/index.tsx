@@ -42,7 +42,7 @@ const TapButton = () => {
   const [title, setTitle] = useState(TWEET_HEAD[Math.floor(Math.random() * TWEET_HEAD.length)]);
   const [description, setDescription] = useState(TWEETS[Math.floor(Math.random() * TWEETS.length)])
   const [url, setURL] = useState(generateShareURL(address, undefined));
-  const [depositAmount, setDepositAmount] = useState<number>(0);
+  const [depositAmount, setDepositAmount] = useState<string>("0");
 
 
   const [refreshTrigger, setRefreshTrigger] = useState(false);
@@ -153,7 +153,7 @@ const TapButton = () => {
 
 
 
-      <Modal backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
+<Modal className='bg-black/30' size='lg'  backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -222,23 +222,23 @@ const TapButton = () => {
                               <span className='text-xs text-lime-500 font-bold'>SELECT</span>
 
                             </div>
-                            <div className='mt-2 w-full grid grid-cols-2 gap-2 text-xs py-2 border border-1 rounded-lg p-2' >
+                            <div className='mt-2 w-full grid grid-cols-2 gap-2 text-xs py-2 border border-1 border-white/30  rounded-lg p-2' >
                               <div className='w-full flex flex-col'>
-                                <span className='font-bold'>Token</span>
-                                <span>{token.name}</span>
+                                <span className='font-bold text-danger'>Token</span>
+                                <span className='text-white'>{token.name}</span>
                               </div>
                               <div className='w-full flex flex-col'>
-                                <span className='font-bold'>Symbol</span>
-                                <span>{token.symbol}</span>
+                                <span className='font-bold  text-danger'>Symbol</span>
+                                <span  className='text-white'>{token.symbol}</span>
                               </div>
                               <div className='w-full flex flex-col'>
-                                <span className='font-bold'>Decimals</span>
-                                <span>{token.decimals}</span>
+                                <span className='font-bold  text-danger'>Decimals</span>
+                                <span  className='text-white'>{token.decimals}</span>
                               </div>
 
                               <div className='w-full flex flex-col'>
-                                <span className='font-bold'>Balance</span>
-                                <span>{contributionInfo && contributionInfo.playerBalance ? parseFloat(formatUnits(contributionInfo.playerBalance, token.decimals)).toFixed(4) : "0.0000"}</span>
+                                <span className='font-bold  text-danger'>Balance</span>
+                                <span  className='text-white'>{contributionInfo && contributionInfo.playerBalance ? parseFloat(formatUnits(contributionInfo.playerBalance, token.decimals)).toFixed(4) : "0.0000"}</span>
                               </div>
 
                             </div>
@@ -247,50 +247,142 @@ const TapButton = () => {
 
 
                           <div className='w-full flex flex-col gap-2'>
-                            <Input value={title} onValueChange={setTitle} isClearable label="Title" placeholder="Enter title" size={"lg"} type="text" />
-                            <Input value={description} onValueChange={setDescription} isClearable label="Description" placeholder="Enter description" size={"lg"} type="text" />
-                            <Input value={url} onValueChange={setURL} isClearable label="URL" placeholder="Enter URL" size={"lg"} type="text" />
+                            <Input 
+                             classNames={{
+                              label: "text-black/50 dark:text-white/90",
+                              input: [
+                                  "bg-transparent",
+                                  "text-black/90 dark:text-white/90",
+                                  "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                              ],
+                              innerWrapper: "bg-transparent",
+                              inputWrapper: [
+                                  "shadow-sm",
+                                  "bg-default-200/50",
+                                  "dark:bg-default/60",
+                                  "backdrop-blur-xl",
+                                  "backdrop-saturate-200",
+                                  "hover:bg-default-200/70",
+                                  "dark:hover:bg-default/70",
+                                  "group-data-[focus=true]:bg-default-200/50",
+                                  "dark:group-data-[focus=true]:bg-default/60",
+                                  "!cursor-text",
+                              ],
+                          }}
+                             value={title} onValueChange={setTitle} isClearable label="Title" placeholder="Enter title" size={"lg"} type="text" />
+                            <Input
+                            classNames={{
+                              label: "text-black/50 dark:text-white/90",
+                              input: [
+                                  "bg-transparent",
+                                  "text-black/90 dark:text-white/90",
+                                  "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                              ],
+                              innerWrapper: "bg-transparent",
+                              inputWrapper: [
+                                  "shadow-sm",
+                                  "bg-default-200/50",
+                                  "dark:bg-default/60",
+                                  "backdrop-blur-xl",
+                                  "backdrop-saturate-200",
+                                  "hover:bg-default-200/70",
+                                  "dark:hover:bg-default/70",
+                                  "group-data-[focus=true]:bg-default-200/50",
+                                  "dark:group-data-[focus=true]:bg-default/60",
+                                  "!cursor-text",
+                              ],
+                          }}
+                            value={description} onValueChange={setDescription} isClearable label="Description" placeholder="Enter description" size={"lg"} type="text" />
+                            <Input
+                            classNames={{
+                              label: "text-black/50 dark:text-white/90",
+                              input: [
+                                  "bg-transparent",
+                                  "text-black/90 dark:text-white/90",
+                                  "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                              ],
+                              innerWrapper: "bg-transparent",
+                              inputWrapper: [
+                                  "shadow-sm",
+                                  "bg-default-200/50",
+                                  "dark:bg-default/60",
+                                  "backdrop-blur-xl",
+                                  "backdrop-saturate-200",
+                                  "hover:bg-default-200/70",
+                                  "dark:hover:bg-default/70",
+                                  "group-data-[focus=true]:bg-default-200/50",
+                                  "dark:group-data-[focus=true]:bg-default/60",
+                                  "!cursor-text",
+                              ],
+                          }}
+                            value={url} onValueChange={setURL} isClearable label="URL" placeholder="Enter URL" size={"lg"} type="text" />
 
 
                             <Input
+                            classNames={{
+                              label: "text-lime-500/50 dark:text-lime-500/90",
+                              input: [
+                                  "bg-transparent",
+                                  "text-lime-500/90 dark:text-lime-500/90",
+                                  "placeholder:text-lime-500/50 dark:placeholder:text-lime-500/60",
+                              ],
+                              innerWrapper: "bg-transparent",
+                              inputWrapper: [
+                                  "shadow-sm",
+                                 
+                                  "bg-default-200/50",
+                                  "dark:bg-default/60",
+                                  "backdrop-blur-xl",
+                                  "backdrop-saturate-200",
+                                  "hover:bg-default-200/70",
+                                  "dark:hover:bg-default/70",
+                                  "group-data-[focus=true]:bg-default-200/50",
+                                  "dark:group-data-[focus=true]:bg-default/60",
+                                  "!cursor-text",
+                              ],
+                          }}
                               value={depositAmount.toString()}
+                              inputMode='decimal'
+                              autoComplete="off" autoCorrect="off" type="text"
+                              placeholder="Please enter amount" minLength={0} maxLength={100} spellCheck="false"
                               onValueChange={(value) => {
-                                if (value === "") {
-                                  setDepositAmount(0);  // Reset to 0 if input is cleared
-                                } else if (typeof value === "string") {
-                                  const parsedValue = parseFloat(value); // Convert string to number
-                                  if (!isNaN(parsedValue)) {
-                                    setDepositAmount(parsedValue);
-                                  }
-                                } else if (Array.isArray(value)) {
-                                  const parsedValue = parseFloat(value[0]); // Convert the first value of the array to number
-                                  if (!isNaN(parsedValue)) {
-                                    setDepositAmount(parsedValue);
-                                  }
+                                let e = value;
+                                console.log(value)
+                                const regex = /^[0-9]*\.?[0-9]*$/;
+                                e = e.replace(",", ".")
+                                if (regex.test(e)) {
+                                    setDepositAmount(e)
                                 }
+
                               }}
                               isClearable
                               label="Amount"
-                              placeholder="Enter Amount"
                               size={"lg"}
-                              type="text"
                             />
 
-                            <Slider
-                              value={depositAmount}
-                              onChange={(value) => {
-                                if (typeof value === "number") {
-                                  setDepositAmount(value);
-                                } else if (Array.isArray(value)) {
-                                  setDepositAmount(value[0]); // İlk değeri alıyoruz.
-                                }
-                              }}
-                              className="w-full"
-                              size='lg'
-                              getValue={(amount) => `${amount} ${token.symbol}`}
-                              maxValue={forceFormatUnits(contributionInfo?.playerBalance, token)}
-                              minValue={0}
-                            />
+<Slider
+  value={isNaN(parseFloat(depositAmount)) ? 0 : parseFloat(depositAmount)} // NaN kontrolü ve geçerli sayı
+  onChange={(value) => {
+    if (typeof value === "number") {
+      setDepositAmount(value.toFixed(4).toString());  // Sayıyı string'e dönüştürerek set ediyoruz
+    } else if (Array.isArray(value)) {
+      setDepositAmount(value[0].toFixed(4).toString()); // Array ise ilk değeri alıyoruz ve string'e dönüştürüyoruz
+    }
+  }}
+  className="w-full"
+  size='lg'
+  getValue={(amount) => {
+    // Eğer amount bir dizi ise, ilk değeri alıyoruz ve formatlıyoruz
+    const value = Array.isArray(amount) ? amount[0] : amount;
+    return `${value.toFixed(4)} ${token.symbol}`;
+  }}  maxValue={
+    contributionInfo?.playerBalance && contributionInfo.playerBalance > 0
+      ? forceFormatUnits(contributionInfo.playerBalance, token)
+      : 99999999 // Unlimited olarak ayarlanır
+  }
+  minValue={0}
+  step={0.1}
+/>
 
                           </div>
 
@@ -311,7 +403,7 @@ const TapButton = () => {
                   </div>
                   <div className='w-full flex flex-row gap-2 justify-end'>
 
-                    <Button isLoading={isLoading} isDisabled={!token || !depositAmount || depositAmount === 0}
+                    <Button isLoading={isLoading} isDisabled={!token || !depositAmount || parseFloat(depositAmount) === 0}
                       className='text-white' color="success" onPress={() => {
                         handleContribute()
                       }}>
