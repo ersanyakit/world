@@ -58,7 +58,7 @@ export const PlayerTAB = () => {
 
                                     <div className="flex-none border-1 border-white/5 rounded-small text-center overflow-hidden">
                                         <div className="text-tiny bg-black py-0.5 text-white">
-                                        Pins
+                                        Tasks
                                         </div>
                                         <div className="flex items-center justify-center font-semibold text-3xl text-default-500">
                                             {player.contributions.length}
