@@ -159,10 +159,10 @@ body{
           }
           
           .perspective-image {
-            transform: rotateX(308deg) rotateY(9deg);
+            transform: rotateX(9deg) rotateY(338deg);
             transform-origin: center; /* Döndürme merkezi */
             width: 250px;
-            height: 277px;
+            height: 309px;
             perspective: 1000px; /* Perspektif derinliği */
             box-shadow: 10px 20px 30px rgba(0, 0, 0, 0.5); /* Gölge */
             transition: transform 0.5s, box-shadow 0.5s; /* Animasyonlar */
