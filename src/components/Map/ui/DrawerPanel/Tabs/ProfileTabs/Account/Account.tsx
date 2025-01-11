@@ -264,7 +264,6 @@ return(<>
     value={player?.referral}
     variant="flat"
     size="lg"
-    isClearable
     label="Referral Address"
     placeholder="Enter your referral address"
     name="referral"
