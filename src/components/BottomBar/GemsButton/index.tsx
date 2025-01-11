@@ -1,14 +1,14 @@
 import { ContractCallResponse, Token } from '#src/types/web3.types'
-import { Avatar, Button, form, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Slider, useDisclosure, useDraggable, User } from '@nextui-org/react'
+import { Avatar, Button, form, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ScrollShadow, Slider, useDisclosure, useDraggable, User } from '@nextui-org/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import useMapContext from '../../Map/useMapContext'
 import L from 'leaflet'
 import { approve, contribute, getContributionInfoByToken } from '#src/utils/web3/util'
 import { useAppKitAccount, useAppKitProvider, useAppKit, useAppKitNetwork } from '@reown/appkit/react'
-import { Contribution, ContributionInfo } from '#src/types/Contribution'
+import { BalanceInfo, Contribution, ContributionInfo } from '#src/types/Contribution'
 import { ethers, formatEther, formatUnits, parseEther, parseUnits } from 'ethers'
 import LatLngLogo from '#components/TopBar/LatLngLogo'
-import { forceFormatUnits, generateHexColorFromAddress, generateShareURL } from '#src/utils/helpers'
+import { forceFormatUnits, generateHexColorFromAddress, generateShareURL, getTokenByAddress } from '#src/utils/helpers'
 import Leaflet from 'leaflet'
 import Geohash from 'ngeohash';
 import useInitContributors from '#src/hooks/useInitContributors'
@@ -45,7 +45,7 @@ const GemsButton = () => {
 
  
   const [refreshTrigger, setRefreshTrigger] = useState(false);
-  const {location, contributions, players, claims, assets,addLocation } = useContributionContext();
+  const {balances, location, contributions, players, claims, assets,addLocation } = useContributionContext();
 
 
   const { chainId } = useAppKitNetwork()
@@ -145,6 +145,24 @@ const GemsButton = () => {
   }, [token])
 
 
+
+const BalanceEntry = ({ balanceEntry }: { balanceEntry: BalanceInfo }) => {
+  const [token,setToken] = useState<Token | null>(null)
+
+  useEffect(()=>{
+    setToken(getTokenByAddress(balanceEntry.token))
+  },[balanceEntry])
+  return(<div className='w-full bg-black/20 hover:bg-black/60 rounded-lg border border-1 border-black/90 p-2 flex flex-row gap-2 items-center justify-between'>
+         <User name={token?.symbol}
+                classNames={{base:"text-lime-500"}}
+                  description={token?.name}
+                  avatarProps={{
+                    className: "bg-transparent",
+                    src: token?.logoURI
+                  }} />
+          <span className='text-lime-500'>{formatUnits(balanceEntry.balance,balanceEntry.decimals)}</span>
+  </div>)
+}
   return (
 
     <>
@@ -152,132 +170,35 @@ const GemsButton = () => {
 
 
 
-      <Modal   backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
+<Modal className='bg-black/30' size='lg'  backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader {...moveProps} className="flex flex-col gap-1 items-start justify-center">
-                <User name={`Contribute`}
+              <User name={`Balances`}
                 classNames={{base:"text-lime-500"}}
-                  description={"Contribute to claim others’ assets."}
+                  description={"View all of your assets, including your tokens and contributions.."}
                   avatarProps={{
                     className: "bg-transparent",
                     src: "/assets/gemstone.png"
                   }} />
               </ModalHeader>
               <ModalBody>
-                {
-                  <div className='w-full'>
-                    {
-                      !token && <div className='w-full grid grid-cols-3 gap-2 items-center justify-center'>
-                        {Tokens.map((token, index) => (
-                          token.chainId == chainId && <>
-                            <div className='w-full flex items-center justify-center'>
+                <ScrollShadow hideScrollBar={true} className=' h-[400px]'>
+            
+                      <div className='w-full flex flex-col gap-2  items-center justify-center'>
+                        {balances.map((balanceItem : BalanceInfo, index) => (
+                          
+                              <BalanceEntry key={`balance${index}`}  balanceEntry={balanceItem}/>
 
-                              <Button
-                                className="w-full bg-lime-500/40"
-                                size="lg"
-                                isIconOnly
-                                radius="full"
-                                style={{ width: '64px', height: '64px' }}
-                                onPress={() => {
-                                  handleSelectToken(token)
-                                }}
-                              >
-                                <Avatar
-                                  className="group  transition-transform duration-300 ease-in-out transform group-hover:scale-90"
-                                  size="lg"
-                                  src={token.logoURI}
-                                />
-                              </Button>
-                            </div>
-                          </>
+             
+                        
                         ))}
                       </div>
-                    }
+                      </ScrollShadow>
+ 
 
-
-                    {
-                      token && <>
-                        <div className='flex flex-col gap-2'>
-                          <div className='w-full flex flex-row gap-2'>
-                            <div className='flex items-center justify-center flex flex-col gap-2'>
-                              <Button
-                                className="w-full bg-lime-500/40"
-                                size="lg"
-                                isIconOnly
-                                radius="full"
-                                style={{ width: '64px', height: '64px' }}
-                                onPress={() => {
-                                  setToken(null)
-                                }}
-                              >
-                                <Avatar
-                                  className="group  transition-transform duration-300 ease-in-out transform group-hover:scale-90"
-                                  size="lg"
-                                  src={token.logoURI}
-                                />
-                              </Button>
-                              <span className='text-xs text-lime-500 font-bold'>SELECT</span>
-
-                            </div>
-                            <div className='mt-2 w-full grid grid-cols-2 gap-2 text-xs py-2 border border-1 rounded-lg p-2' >
-                              <div className='w-full flex flex-col'>
-                                <span className='font-bold'>Token</span>
-                                <span>{token.name}</span>
-                              </div>
-                              <div className='w-full flex flex-col'>
-                                <span className='font-bold'>Symbol</span>
-                                <span>{token.symbol}</span>
-                              </div>
-                              <div className='w-full flex flex-col'>
-                                <span className='font-bold'>Decimals</span>
-                                <span>{token.decimals}</span>
-                              </div>
-
-                              <div className='w-full flex flex-col'>
-                                <span className='font-bold'>Balance</span>
-                                <span>{contributionInfo && contributionInfo.playerBalance ? formatUnits(contributionInfo.playerBalance, token.decimals) : "0.0000"}</span>
-                              </div>
-
-                            </div>
-                          </div>
-
-
-
-                          <div className='w-full flex flex-col gap-2'>
-                            <Input value={title} onValueChange={setTitle} isClearable label="Title" placeholder="Enter title" size={"lg"} type="text" />
-                            <Input value={description} onValueChange={setDescription} isClearable label="Description" placeholder="Enter description" size={"lg"} type="text" />
-                            <Input value={url} onValueChange={setURL} isClearable label="URL" placeholder="Enter URL" size={"lg"} type="text" />
-
-                            <Slider
-                              value={depositAmount}
-                              onChange={(value) => {
-                                if (typeof value === "number") {
-                                  setDepositAmount(value);
-                                } else if (Array.isArray(value)) {
-                                  setDepositAmount(value[0]); // İlk değeri alıyoruz.
-                                }
-                              }}
-                              className="w-full"
-                              size='lg'
-                              label="Amount"
-                              getValue={(amount) => `${amount} ${token.symbol}`}
-                              maxValue={forceFormatUnits(contributionInfo?.playerBalance, token)}
-                              minValue={0}
-                            />
-
-                          </div>
-
-                        </div>
-                      </>
-                    }
-
-
-                  </div>
-
-                }
-
+            
               </ModalBody>
               <ModalFooter>
                 <div className='w-full grid grid-cols-2 justify-center'>
@@ -286,11 +207,11 @@ const GemsButton = () => {
                   </div>
                   <div className='w-full flex flex-row gap-2 justify-end'>
                    
-                    <Button isLoading={isLoading} isDisabled={!token || !depositAmount || depositAmount === 0}
-                      className='text-white' color="success" onPress={() => {
-                        handleContribute()
+                    <Button
+                      className='text-white' color="danger" onPress={() => {
+                        onClose()
                       }}>
-                      Contribute
+                      Close
                     </Button>
                   </div>
 

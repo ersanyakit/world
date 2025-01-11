@@ -1,5 +1,5 @@
 // context/GlobalStateContext.tsx
-import { Asset, Claim, Contribution, Player } from '#src/types/Contribution';
+import { Asset, BalanceInfo, Claim, Contribution, Player } from '#src/types/Contribution';
 import React, { createContext, useReducer, useContext, ReactNode, useState } from 'react';
 import Leaflet from 'leaflet'
 
@@ -10,6 +10,7 @@ interface ContributionContextType {
   claims:Claim[];
   players:Player[];
   assets:Asset[];
+  balances:BalanceInfo[];
   player:Player | null;
   currentChainId : number | null;
   location: Leaflet.LatLng | undefined;
@@ -25,6 +26,8 @@ interface ContributionContextType {
   addLocation : (_location:Leaflet.LatLng | undefined) => void
   storeChainData : (_chainId:number|any) => void
   addPlayerContributions:(contributions: Contribution[]) => void; 
+  addBalances:(balances: BalanceInfo[]) => void; 
+
 
 }
 
@@ -51,6 +54,8 @@ export const ContributionProvider: React.FC<ContributionProviderProps> = ({ chil
   const [location, setLocation] = useState<Leaflet.LatLng | undefined>(undefined)
   const [currentChainId,setChainId] = useState<number | null>(null);
   const [playerContributions, setUserContributions] = useState<Contribution[]>([]);
+  const [balances, setBalances] = useState<BalanceInfo[]>([]);
+
 
 
 
@@ -75,6 +80,12 @@ export const ContributionProvider: React.FC<ContributionProviderProps> = ({ chil
     setPlayers(players);
   };
 
+  const addBalances = (balances: BalanceInfo[]) => {
+    setBalances(balances);
+  };
+
+
+
 
   const addPlayer = (player:Player | null) => {
     setPlayer(player)
@@ -95,7 +106,7 @@ export const ContributionProvider: React.FC<ContributionProviderProps> = ({ chil
   }
 
   return (
-    <ContributionContext.Provider value={{playerContributions,currentChainId,location,registrationFee, player, contributions,claims,players,assets,storeChainData,addRegistrationFee ,addPlayer,addContributions, addClaims, addPlayers,addAssets,addLocation,addPlayerContributions }}>
+    <ContributionContext.Provider value={{balances,playerContributions,currentChainId,location,registrationFee, player, contributions,claims,players,assets,storeChainData,addRegistrationFee ,addPlayer,addContributions, addClaims, addPlayers,addAssets,addLocation,addPlayerContributions,addBalances }}>
       {children}
     </ContributionContext.Provider>
   );

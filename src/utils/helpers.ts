@@ -133,3 +133,9 @@ export const generateTweetIntentURL = (address: any, contributionId: any): strin
 
   return `https://twitter.com/intent/tweet?text=${encodedTweetText}`;
 };
+
+export const  getTokenAddressesByChainId = (chainId: number): string[] => {
+  return Tokens
+      .filter(token => token.chainId === chainId)
+      .map(token => token.address);
+}

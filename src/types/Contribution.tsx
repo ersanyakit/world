@@ -70,3 +70,8 @@ export interface Contribution {
     playerAllowance:bigint;
 }
 
+export interface BalanceInfo {
+  token: string;      // address'ler genellikle string olarak temsil edilir
+  balance: bigint;    // Solidity'deki uint256 tipi büyük sayılar içerdiği için string olarak saklanması önerilir
+  decimals: bigint;   // uint256 tipindeki decimals'ı number olarak alıyoruz
+}

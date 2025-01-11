@@ -2,10 +2,11 @@ import { BrowserProvider, Contract, ethers, formatUnits, isAddress, JsonRpcProvi
 import { getContract } from 'viem';
 import { chilizClient, hardhatClient, NETWORKS } from './clients';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
-import { Contribution, ContributionInfo, Player } from '#src/types/Contribution';
+import { BalanceInfo, Contribution, ContributionInfo, Player } from '#src/types/Contribution';
 import { useContributionContext } from '#src/context/GlobalStateContext';
 import { ContractCallResponse, Token } from '#src/types/web3.types';
 import { getContractByName } from './contracts';
+import { getTokenAddressesByChainId } from '../helpers';
 
 
 export let selectedNetwork = NETWORKS.chiliz; // Varsayılan ağ
@@ -513,6 +514,34 @@ export const getPlayerContributions = async (address: any): Promise<Contribution
     return response;
   } catch (error) {
     console.log('getPlayerContributions : ', error);
+    return response;
+  }
+}
+
+
+
+export const fetchBalances = async (address: any): Promise<BalanceInfo[]> => {
+  let response: BalanceInfo[]  = [];
+  let contractInformation = getContractByName("DIAMOND", selectedNetwork.network.chainId)
+  let tokens = getTokenAddressesByChainId( selectedNetwork.network.chainId)
+  console.log("tokens",tokens)
+  try {
+    if (contractInformation) {
+      const contract = getContract({
+        address: contractInformation.address,
+        abi: contractInformation.abi,
+        client: {
+          public: selectedNetwork.client,
+        },
+      });
+
+      const res: BalanceInfo | any = await contract.read.fetchBalances([tokens,address]);
+      console.log("fetchBalances", address, res)
+      response = res;
+    }
+    return response;
+  } catch (error) {
+    console.log('fetchBalances : ', error);
     return response;
   }
 }

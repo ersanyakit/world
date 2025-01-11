@@ -1,12 +1,12 @@
 import { useContributionContext } from '#src/context/GlobalStateContext';
 import { Player } from '#src/types/Contribution';
-import { getAssets, getClaimHistory, getContributors, getPlayers,getPlayer, getRegistrationFee, getPlayerContributions } from '#src/utils/web3/util';
+import { getAssets, getClaimHistory, getContributors, getPlayers,getPlayer, getRegistrationFee, getPlayerContributions, fetchBalances } from '#src/utils/web3/util';
 import { useAppKitAccount } from '@reown/appkit/react';
 import { ethers } from 'ethers';
 import { useEffect } from 'react';
 
 const useInitContributors = (refreshTrigger: boolean) => {
-  const { addContributions, addPlayers, addAssets, addClaims,addPlayer,addRegistrationFee,addPlayerContributions } = useContributionContext();
+  const { addContributions, addPlayers, addAssets, addClaims,addPlayer,addRegistrationFee,addPlayerContributions,addBalances } = useContributionContext();
   const { address, isConnected } = useAppKitAccount();
 
   useEffect(() => {
@@ -14,9 +14,13 @@ const useInitContributors = (refreshTrigger: boolean) => {
       try {
         let _fee : bigint = await getRegistrationFee();
         addRegistrationFee(_fee)
-        console.log("player:",address)
+
         let _player : Player | null  = await getPlayer(isConnected ? address : ethers.ZeroAddress) ?? null;
         addPlayer(_player);
+
+        let _balances   = await fetchBalances(isConnected ? address : ethers.ZeroAddress) ?? null;
+        addBalances(_balances);
+
         let _contributors = await getContributors();
         addContributions(_contributors);
 
