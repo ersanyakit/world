@@ -179,7 +179,7 @@ const BalanceEntry = ({ balanceEntry }: { balanceEntry: BalanceInfo }) => {
                 classNames={{base:"text-lime-500"}}
                   description={"View all of your assets, including your tokens and contributions.."}
                   avatarProps={{
-                    className: "bg-transparent",
+                    className: "w-16 h-16 bg-transparent",
                     src: "/assets/gemstone.png"
                   }} />
               </ModalHeader>

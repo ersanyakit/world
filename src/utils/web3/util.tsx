@@ -493,6 +493,72 @@ export const getContributionInfoByTokenEx = async (token: Token, walletProvider:
 
 }
 
+export const updateProfile = async (walletProvider: any, isConnected: any, player:Player | null): Promise<ContractCallResponse> => {
+
+  let callResponse: ContractCallResponse = { success: false, transaction: null, error: null }
+
+  if (!isConnected) {
+    callResponse.success = false;
+    callResponse.transaction = null;
+    callResponse.error = { message: "You are not connected." };
+    return callResponse;
+  }
+
+  if (!player) {
+    callResponse.success = false;
+    callResponse.transaction = null;
+    callResponse.error = { message: "Invalid player!" };
+    return callResponse;
+  }
+
+
+  if (!player.valid) {
+    callResponse.success = false;
+    callResponse.transaction = null;
+    callResponse.error = { message: "Invalid player!" };
+    return callResponse;
+  }
+
+
+  
+  let diamondContractParams = getContractByName("DIAMOND", selectedNetwork.network.chainId);
+
+  try {
+    let contractParams = {
+      address: ethers.getAddress(diamondContractParams.address) as any,
+      abi: diamondContractParams.abi,
+      rpcUrl: selectedNetwork.network.rpcUrl
+    }
+
+
+
+    const diamondContract: any = GetContractAt(contractParams);
+    const signer = await GetSigner(walletProvider);
+    console.log("diamondContractParams",diamondContractParams)
+
+    console.log("player",player)
+
+
+    const overrides = {
+      value: 0
+    }
+    const tx = await diamondContract
+      .connect(signer)
+      // @ts-ignore
+      .setProfile(player,overrides);
+
+    await tx.wait();
+    callResponse.success = true;
+    callResponse.error = null;
+    callResponse.transaction = tx;
+  }
+  catch (exception: any) {
+    callResponse.success = false;
+    callResponse.error = { message: "Register Failed!", exception: exception };
+  }
+  return callResponse
+}
+
 
 export const getPlayerContributions = async (address: any): Promise<Contribution[]> => {
   let response: Contribution[]  = [];

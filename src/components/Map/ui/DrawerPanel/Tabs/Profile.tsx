@@ -21,7 +21,7 @@ export const ProfileTAB = () => {
 
         return (
             <>
-                <Card shadow="sm" className='w-full cursor-pointer border border-1 border-black/50 bg-primary/5 hover:bg-black/30 transition-colors duration-200' key={Number(referral)}>
+                <Card shadow="sm" className='w-full cursor-pointer border border-1 border-black/30 bg-black/30 hover:bg-black/50 transition-colors duration-200' key={Number(referral)}>
                     <div className="flex flex-row items-center justify-center gap-2 p-2">
 
                         <div className="w-full flex flex-col gap-2 items-start justify-center">
@@ -64,8 +64,8 @@ export const ProfileTAB = () => {
             }
         </Tab>
         <Tab key="referrals" title="Referrals">
-            <ScrollShadow hideScrollBar>
-                <div className="w-full flex flex-col gap-2">
+        <ScrollShadow hideScrollBar={true} className=' h-[400px]'>
+        <div className="w-full flex flex-col gap-2">
 
 
                     {
@@ -87,8 +87,8 @@ export const ProfileTAB = () => {
             </ScrollShadow>
         </Tab>
         <Tab key="followers" title="Followers">
-            <ScrollShadow hideScrollBar>
-                <div className="w-full flex flex-col gap-2">
+        <ScrollShadow hideScrollBar={true} className=' h-[400px]'>
+        <div className="w-full flex flex-col gap-2">
                     {
                         player?.followers.length === 0 ? (
                             <NoItemAvailable
@@ -106,8 +106,8 @@ export const ProfileTAB = () => {
             </ScrollShadow>
         </Tab>
         <Tab key="followings" title="Followings">
-            <ScrollShadow hideScrollBar>
-                <div className="w-full flex flex-col gap-2">
+        <ScrollShadow hideScrollBar={true} className=' h-[400px]'>
+        <div className="w-full flex flex-col gap-2">
 
                     {
                         player?.followings.length === 0 ? (

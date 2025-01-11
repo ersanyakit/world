@@ -1,10 +1,83 @@
+import { encodeGeoHash } from "#lib/helper/geocoder";
 import { useQueryContext } from "#src/context/GlobalQueryContext";
 import { useContributionContext } from "#src/context/GlobalStateContext";
+import { Player } from "#src/types/Contribution";
+import { updateProfile } from "#src/utils/web3/util";
 import { Button, Input } from "@nextui-org/react"
+import { useAppKitAccount, useAppKitProvider } from "@reown/appkit/react";
+import { ethers } from "ethers";
+import { LatLngExpression } from "leaflet";
+import { useEffect, useState } from "react";
 
 export const AccountTAB = () => {
     const { refParam, cidParam } = useQueryContext();
-    const { contributions, players,player, claims, assets } = useContributionContext();
+    const { contributions, players,player, claims, assets,location } = useContributionContext();
+    const [isLoading ,setLoaded ] = useState<boolean>(false)
+      const { walletProvider } = useAppKitProvider('eip155');
+     const { address, isConnected } = useAppKitAccount();
+    
+    const defaultLocation: LatLngExpression = [40.712776, -74.005974];  // Örneğin, New York
+    const positionInfo: LatLngExpression = location ? [location.lat, location.lng] : defaultLocation;
+
+
+
+    const [newPlayer, setNewPlayer] = useState<Player>({
+        valid: false,
+        registered: false,
+        index: BigInt(0),
+        lastaccess: BigInt(0),
+        wallet: "",
+        referral: "",
+        avatar: "",
+        cover: "",
+        name: "",
+        bio: "",
+        twitter: "",
+        telegram: "",
+        instagram: "",
+        youtube: "",
+        facebook: "",
+        discord: "",
+        tiktok: "",
+        website: "",
+        geohash:encodeGeoHash(positionInfo),
+        contributions: [],
+        claims: [],
+        followers: [],
+        followings: [],
+        referrals: []
+      });
+
+
+      useEffect(() => {
+        setNewPlayer((prevPlayer) => ({
+          ...prevPlayer,  // Önceki state'in tüm özelliklerini koruyoruz
+          bio: player?.bio || prevPlayer?.bio,  
+          valid:player?.valid || prevPlayer?.valid,
+          registered:player?.registered || prevPlayer?.registered,
+          twitter: player?.twitter || prevPlayer?.twitter,  
+          telegram: player?.telegram || prevPlayer?.telegram,  
+          name: player?.name || prevPlayer?.name,  
+          geohash: player?.geohash || prevPlayer?.geohash,  
+          wallet:ethers.ZeroAddress,
+          referral:ethers.ZeroAddress,
+          referrals:[],
+          followers:[],
+          followings:[],
+          claims:[],
+          contributions:[]
+
+        }));
+      }, [player]);
+
+const handleUpdateProfile = async () => {
+    setLoaded(true)
+
+    const updateInfo = await updateProfile(walletProvider,isConnected,newPlayer)
+    console.log("updateInfo",updateInfo,newPlayer,player)
+    setLoaded(false)
+
+}
 
 return(<>
 <div className="w-full gap-2 flex flex-col">
@@ -32,16 +105,31 @@ return(<>
             "!cursor-text",
         ],
     }}
+    value={newPlayer?.name}
+    onValueChange={(value)=>{
+        setNewPlayer((prevPlayer) => ({
+            ...prevPlayer,
+            name: value,  // `name`'yu güncelle
+          }));
+    }}
     variant="flat"
     size="lg"
     isClearable
     label="Name"
     placeholder="Enter your name or nickname"
-    name="wallet"
+    name="name"
     fullWidth
 />
 
 <Input
+    value={newPlayer?.bio}
+    onValueChange={(value)=>{
+        setNewPlayer((prevPlayer) => ({
+            ...prevPlayer,
+            bio: value,  // `bio`'yu güncelle
+          }));
+    }}
+
     classNames={{
         label: "text-black/50 dark:text-white/90",
         input: [
@@ -74,7 +162,7 @@ return(<>
 
 <Input
     classNames={{
-        label: "text-black/50 dark:text-white/90",
+         label: "text-black/50 dark:text-white/90",
         input: [
             "bg-transparent",
             "text-black/90 dark:text-white/90",
@@ -94,10 +182,18 @@ return(<>
             "!cursor-text",
         ],
     }}
+    value={newPlayer.twitter}
+    onValueChange={(value)=>{
+        setNewPlayer((prevPlayer) => ({
+            ...prevPlayer,
+            twitter: value,  // `twitter`'yu güncelle
+          }));
+    }}
+
     variant="flat"
     size="lg"
     isClearable
-    label="Twitter Address"
+    label="Twitter [@millionarmap]"
     placeholder="Enter your Twitter username"
     name="twitter"
     fullWidth
@@ -127,9 +223,17 @@ return(<>
     variant="flat"
     size="lg"
     isClearable
-    label="Telegram Address"
+    label="Telegram [@millionarmap]"
     placeholder="Enter your telegram username"
     name="telegram"
+    value={newPlayer?.telegram}
+    onValueChange={(value)=>{
+        setNewPlayer((prevPlayer) => ({
+            ...prevPlayer,
+            telegram: value,  // `twitter`'yu güncelle
+          }));
+
+    }}
     fullWidth
 />
 
@@ -156,7 +260,8 @@ return(<>
             "!cursor-text",
         ],
     }}
-
+    isDisabled={true}
+    value={player?.referral}
     variant="flat"
     size="lg"
     isClearable
@@ -166,23 +271,15 @@ return(<>
     fullWidth
 />
 
-<span>{refParam}</span>
 
 
-{
-player ? (
-player.registered ? (
-<Button size="lg" color="primary">
+ 
+<Button isLoading={isLoading} onPress={()=>{
+    handleUpdateProfile()
+}} size="lg" color="primary">
 Update
 </Button>
-) : (
-<Button size="lg" color="primary">
-Register
-</Button>
-)
-) : null
-}
-
+ 
 
 </div>
 

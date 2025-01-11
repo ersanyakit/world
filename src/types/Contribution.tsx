@@ -26,13 +26,15 @@ export interface Contribution {
     player: string;            // address
   }
   
+  
+
   export interface Player {
     valid: boolean;
     registered: boolean;
-    index: bigint;  // Use `bigint` for uint256 type
-    lastaccess: bigint;  // Use `bigint` for uint256 type
-    wallet: string;  // Address type in Solidity maps to a string in TypeScript
-    referral: string;  // Address type in Solidity maps to a string in TypeScript
+    index: bigint;  // `uint256` olarak karşılık gelir
+    lastaccess: bigint;  // `uint256` olarak karşılık gelir
+    wallet: string;  // `address` tipi Solidity'de string olarak karşılık gelir
+    referral: string;  // `address` tipi Solidity'de string olarak karşılık gelir
     avatar: string;
     cover: string;
     name: string;
@@ -46,12 +48,13 @@ export interface Contribution {
     tiktok: string;
     website: string;
     geohash: string;
-    contributions: bigint[];  // Use `bigint[]` for uint256[] array
-    claims: bigint[];  // Use `bigint[]` for uint256[] array
-    followers: string[];  // Address array in Solidity maps to a string[] in TypeScript
-    followings: string[];  // Address array in Solidity maps to a string[] in TypeScript
-    referrals: string[];  // Address array in Solidity maps to a string[] in TypeScript
+    contributions: bigint[];  // `uint256[]` olarak karşılık gelir
+    claims: bigint[];  // `uint256[]` olarak karşılık gelir
+    followers: string[];  // `address[]` olarak karşılık gelir, string[] ile temsil edilir
+    followings: string[];  // `address[]` olarak karşılık gelir, string[] ile temsil edilir
+    referrals: string[];  // `address[]` olarak karşılık gelir, string[] ile temsil edilir
   }
+
   
   export interface Asset {
     valid: boolean;

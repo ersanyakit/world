@@ -65,7 +65,7 @@ const TreasuryButton = () => {
 
 
 
-            <Modal className='bg-black/30' size='lg'  backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
+            <Modal scrollBehavior='inside' className='bg-black/30' size='lg' backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     {(onClose) => (
                         <>
@@ -74,50 +74,52 @@ const TreasuryButton = () => {
                                     classNames={{ base: "text-lime-500" }}
                                     description={"View and manage the hidden wealth embedded within the map."}
                                     avatarProps={{
-                                        className: "bg-transparent",
+                                        className: "w-16 h-16 bg-transparent",
                                         src: "/assets/inventory.png"
                                     }} />
                             </ModalHeader>
                             <ModalBody>
+                                <ScrollShadow hideScrollBar={true} className='h-[400px]'>
 
 
-                                <div className='w-full h-full flex flex-col gap-2 rounded-lg'>
-                                    {assets.map((asset, index) => (
-                                        <div className='w-full flex flex-row gap-2 items-center justify-center p-2'>
-                                            <Avatar
-                                                className="w-10 h-10 group bg-transparent transition-transform duration-300 ease-in-out transform group-hover:scale-90"
-                                                size="lg"
-                                                src={getTokenLogoByAddressAndChainID(asset.token,Number(chainId))}
-                                            />
+                                    <div className='w-full h-full flex flex-col gap-2 rounded-lg'>
+                                        {assets.map((asset, index) => (
+                                            <div className='w-full flex flex-row gap-2 items-center justify-center p-2'>
+                                                <Avatar
+                                                    className="w-10 h-10 group bg-transparent transition-transform duration-300 ease-in-out transform group-hover:scale-90"
+                                                    size="lg"
+                                                    src={getTokenLogoByAddressAndChainID(asset.token, Number(chainId))}
+                                                />
 
-                                            <div className='w-full grid grid-cols-2 gap-2'>
-                                          
-                                                <div className="flex-none border-1 border-white/5 rounded-small text-center overflow-hidden">
-                                                    <div className="text-tiny bg-black py-0.5 text-white">
-                                                        Total Deposit
+                                                <div className='w-full grid grid-cols-2 gap-2'>
+
+                                                    <div className="flex-none border-1 border-white/5 rounded-small text-center overflow-hidden">
+                                                        <div className="text-tiny bg-black py-0.5 text-white">
+                                                            Total Deposit
+                                                        </div>
+                                                        <div className="flex items-center justify-center font-semibold text-sm text-lime-500">
+                                                            {formatUnits(asset.deposit, getTokenDecimalsByAddress(asset.token))}
+                                                        </div>
                                                     </div>
-                                                    <div className="flex items-center justify-center font-semibold text-sm text-lime-500">
-                                                        {formatUnits(asset.deposit, getTokenDecimalsByAddress(asset.token))}
+
+                                                    <div className="flex-none border-1 border-white/5 rounded-small text-center overflow-hidden">
+                                                        <div className="text-tiny bg-black py-0.5 text-white">
+                                                            Total Withdraw
+                                                        </div>
+                                                        <div className="flex items-center justify-center font-semibold text-sm text-lime-500">
+                                                            {formatUnits(asset.withdraw, getTokenDecimalsByAddress(asset.token))}
+
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                                <div className="flex-none border-1 border-white/5 rounded-small text-center overflow-hidden">
-                                                    <div className="text-tiny bg-black py-0.5 text-white">
-                                                        Total Withdraw
-                                                    </div>
-                                                    <div className="flex items-center justify-center font-semibold text-sm text-lime-500">
-                                                    {formatUnits(asset.withdraw, getTokenDecimalsByAddress(asset.token))}
 
-                                                    </div>
-                                                </div>
+
                                             </div>
+                                        ))}
+                                    </div>
+                                </ScrollShadow>
 
-
-
-                                        </div>
-                                    ))}
-                                </div>
-                         
 
 
 

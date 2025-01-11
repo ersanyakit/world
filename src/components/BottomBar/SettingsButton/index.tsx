@@ -1,5 +1,5 @@
 import { ContractCallResponse, Token } from '#src/types/web3.types'
-import { Avatar, Button, form, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Slider, useDisclosure, useDraggable, User } from '@nextui-org/react'
+import { Avatar, Button, form, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ScrollShadow, Slider, useDisclosure, useDraggable, User } from '@nextui-org/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import useMapContext from '../../Map/useMapContext'
 import L from 'leaflet'
@@ -62,10 +62,10 @@ const SettingsButton = () => {
               </ModalHeader>
               <ModalBody>
              
-                  <div className='w-full'>
+
                     <ProfileTAB/>
                 
-                  </div>
+          
 
                
 
