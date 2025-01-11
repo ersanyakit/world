@@ -55,8 +55,8 @@ export const getAvatar = (address : string) : string => {
   const hash = keccak256(address);
   const hashSegment = hash.slice(2, 10); // "0x" kısmını atla ve 8 karakter al
   const bigNumber = parseInt(hashSegment, 16); // 16 tabanından 10 tabanına dönüştür
-  let randNum = bigNumber % 57;
-  return `https://raw.githubusercontent.com/ersanyakit/maggoo/refs/heads/main/maggoo-app/public/full/Worm_${randNum}.png`
+  let randNum = bigNumber % 1515;
+  return `/assets/players/${randNum}.png`
 }
 
 export const forceFormatUnits = (value:any,token:Token): any => {
