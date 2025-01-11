@@ -21,7 +21,7 @@ export const LeafletMapContainer = ({ children, ...props }: LeafletMapContainerP
 
   return (
     <MapContainer
-      zoomControl={false} 
+      zoomControl={false} zoom={5}  maxBoundsViscosity={1.0} maxBounds={ [[-90, -180], [90, 180]]}
       ref={e => setMap && setMap(e || undefined)}
       className="absolute h-full w-full text-white outline-0"
       {...props}

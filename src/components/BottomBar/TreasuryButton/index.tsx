@@ -65,7 +65,7 @@ const TreasuryButton = () => {
 
 
 
-            <Modal className='bg-black/30' size='lg' scrollBehavior='inside' backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
+            <Modal className='bg-black/30' size='lg'  backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     {(onClose) => (
                         <>
@@ -81,7 +81,7 @@ const TreasuryButton = () => {
                             <ModalBody>
 
 
-                                <div className='w-full flex flex-col gap-2 rounded-lg'>
+                                <div className='w-full h-full flex flex-col gap-2 rounded-lg'>
                                     {assets.map((asset, index) => (
                                         <div className='w-full flex flex-row gap-2 items-center justify-center p-2'>
                                             <Avatar
@@ -117,6 +117,7 @@ const TreasuryButton = () => {
                                         </div>
                                     ))}
                                 </div>
+                         
 
 
 

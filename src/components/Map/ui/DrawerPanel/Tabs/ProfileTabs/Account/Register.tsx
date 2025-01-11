@@ -16,7 +16,7 @@ export const RegisterTAB = () => {
  const { address, isConnected } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider('eip155');
   const [isLoading,setLoading] = useState<boolean>(false)
-  const [refreshTrigger, setRefreshTrigger] = useState(true);
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
   useInitContributors(refreshTrigger);
 
     const handleRegister = async() => {
