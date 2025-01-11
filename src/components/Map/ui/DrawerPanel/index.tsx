@@ -22,6 +22,7 @@ import { PinTAB } from './Tabs/Pins';
 import { ClaimTAB } from './Tabs/Claims';
 import { PlayerTAB } from './Tabs/Players';
 import { ProfileTAB } from './Tabs/Profile';
+import { CopyX } from 'lucide-react';
 
 interface DrawerPanelProps {
   isOpen: boolean;
@@ -57,30 +58,7 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
                     <Tab key={"history"} title={"Claims"}></Tab>
                     <Tab key={"profile"} title={"Profile"}></Tab>
                   </Tabs>
-                  <Tooltip content="Close">
-                  <Button
-                    isIconOnly
-                    className=" text-default-400"
-                    size="sm"
-                    variant="light"
-                    onPress={onClose}
-                  >
-                    <svg
-                      fill="none"
-                      height="20"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      width="20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="m13 17 5-5-5-5M6 17l5-5-5-5" />
-                    </svg>
-                  </Button>
-                </Tooltip>
-
+                  
                 </div>
                 <div className="flex gap-1 items-center">
 
@@ -88,7 +66,7 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
                 </div>
               </DrawerHeader>
               <DrawerBody className="pt-14 px-0 ">
-                <div className="w-full bg-primary/60 text-lime-500 p-2">
+                <div className="w-full flex flex-row gap-2 items-center justify-between bg-primary/60 text-lime-500 p-2">
                   <h1 className="text-2xl">
                     {(() => {
                       switch (selected) {
@@ -105,6 +83,18 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
                       }
                     })()}
                   </h1>
+                  <Tooltip content="Close">
+                  <Button
+                    isIconOnly
+                    className=" text-default-400"
+                    size="sm"
+                    variant="light"
+                    onPress={onClose}
+                  >
+                    <CopyX />
+                  </Button>
+                </Tooltip>
+
                 </div>
 
                 <ScrollShadow hideScrollBar>
