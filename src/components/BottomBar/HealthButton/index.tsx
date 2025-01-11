@@ -17,6 +17,7 @@ import { Tokens } from '#src/constants/tokens'
 import TokenChip from '../TokenChip'
 import { useContributionContext } from '#src/context/GlobalStateContext'
 import ContributionCard from '#components/ContributionCard'
+import NoItemAvailable from '#components/NoItemAvailable'
 
 export interface ChipProps {
   token: Token
@@ -173,10 +174,15 @@ const HealthButton = () => {
                 <div className="flex flex-col w-full justify-center items-center pt-4 gap-2">
 
 
-                  {playerContributions.slice().reverse().map((contribution, index) => (
+                  {
+                    playerContributions.length > 0 ?
+                  playerContributions.slice().reverse().map((contribution, index) => (
                     <ContributionCard key={index} contribution={contribution} />
+                  ))
 
-                  ))}
+                  :<NoItemAvailable icon={"/assets/health-full.png"} title={"You haven’t placed any pins on the map."} description={"Please contribute to the map to maximize revenue and reach a larger audience, it is essential to implement effective strategies that engage more users and encourage greater spending."} />
+                
+                }
 
 
 

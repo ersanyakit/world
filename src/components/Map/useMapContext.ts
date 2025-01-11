@@ -8,7 +8,6 @@ const useMapContext = () => {
   const setMap = mapInstance?.setMap
   const leafletLib = mapInstance?.leafletLib
   const setLeafletLib = mapInstance?.setLeafletLib
-
   return { map, setMap, leafletLib, setLeafletLib }
 }
 

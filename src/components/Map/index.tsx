@@ -113,7 +113,7 @@ const LeafletMapInner = () => {
             : '100%',
         }}
       >
-        {true && allMarkersBoundCenter && clustersByCategory && (
+        {allMarkersBoundCenter && clustersByCategory && (
           <LeafletMapContainer
             center={allMarkersBoundCenter.centerPos}
             zoom={allMarkersBoundCenter.minZoom}
