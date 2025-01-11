@@ -1,5 +1,4 @@
 import LatLngLogo from '#components/TopBar/LatLngLogo'
-import { NavMenuVariant } from '#lib/AppConfig'
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Button, Link, useDisclosure, useDraggable, ModalContent, ModalHeader, ModalBody, ModalFooter, Modal } from '@nextui-org/react'
 import { Tokens } from "../../constants/tokens"
 import dynamic from 'next/dynamic';
