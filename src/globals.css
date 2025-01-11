@@ -158,3 +158,49 @@ body{
             }
           }
           
+          .perspective-image {
+            transform: rotateX(308deg) rotateY(9deg);
+            transform-origin: center; /* Döndürme merkezi */
+            width: 250px;
+            height: 277px;
+            perspective: 1000px; /* Perspektif derinliği */
+            box-shadow: 10px 20px 30px rgba(0, 0, 0, 0.5); /* Gölge */
+            transition: transform 0.5s, box-shadow 0.5s; /* Animasyonlar */
+            position: relative; /* Pseudo-element için gerekli */
+          }
+          
+          .perspective-image:hover {
+            box-shadow: 15px 25px 40px rgba(0, 0, 0, 0.7);
+          }
+          
+          /* Işıltı efekti */
+          .perspective-image::after {
+            content: ''; /* Pseudo-element içeriği */
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 300%;
+            height: 300%;
+            background: linear-gradient(
+              120deg,
+              rgba(255, 255, 255, 0) 0%,
+              rgba(255, 255, 255, 0.8) 50%,
+              rgba(255, 255, 255, 0) 100%
+            ); /* Işıltı efekti */
+            transform: rotate(25deg); /* Işıltının eğimi */
+            pointer-events: none; /* Işıltı fare etkileşimini engeller */
+            animation: shine-animation 3s infinite; /* Sonsuz döngü animasyonu */
+          }
+          
+          /* Işıltı animasyonu */
+          @keyframes shine-animation {
+            0% {
+              left: -150%;
+            }
+            50% {
+              left: 50%;
+            }
+            100% {
+              left: 150%;
+            }
+          }

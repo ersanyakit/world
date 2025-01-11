@@ -63,7 +63,7 @@ export const LocateButton = () => {
             name: 'Your Location',
             url: '', // Varsayılan URL
             description: 'You are here.',
-            color: '#00FF0080', // Varsayılan renk
+            color: '#00000080', // Varsayılan renk
             image: '', // Varsayılan görsel
             claimers: [], // Başlangıçta boş claimers
           }}

@@ -57,7 +57,7 @@ export const MapIcon: FunctionComponent<IconProps> = ({
       <img
         src={determineIconUrl()}
         alt="Map Icon"
-        className="rounded-full opacity-1 w-[60px] h-[80px]"
+        className={(contribution?.index == ethers.MaxUint256 ? "perspective-image " : " ") + " rounded-full opacity-1 w-[60px] h-[80px]"}
       />
     </div>
   );
