@@ -60,6 +60,22 @@ export const getAvatar = (address : string) : string => {
   return `/assets/players/${randNum}.png`
 }
 
+export const generateAlphaColorFromIndex = (index: bigint): string => {
+  // Hash benzeri bir algoritma ile tutarlı bir renk üret
+  const getChannel = (seed: bigint): number => {
+    const sinValue = Math.sin(Number(seed % BigInt(Number.MAX_SAFE_INTEGER)));
+    return (Math.abs(sinValue) * 256) % 256;
+  };
+
+  const r = Math.floor(getChannel(index * BigInt(123456)));
+  const g = Math.floor(getChannel(index * BigInt(789101)));
+  const b = Math.floor(getChannel(index * BigInt(112131)));
+  const alpha = Math.floor(0.6 * 255); // 40% transparency
+
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}${alpha.toString(16).padStart(2, '0')}`;
+};
+
+
 export const forceFormatUnits = (value:any,token:Token): any => {
   if(!value){
     value = parseUnits("0",token.decimals);

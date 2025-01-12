@@ -19,6 +19,7 @@ import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 import LeafletDivIcon from '../LeafletDivIcon';
 import { formatEther } from 'ethers';
 import { useContributionContext } from '#src/context/GlobalStateContext';
+import { generateAlphaColorFromIndex } from '#src/utils/helpers';
 
 const LeafletPopup = dynamic(() => import('../LeafletPopup'));
 
@@ -62,7 +63,7 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
       icon={LeafletDivIcon({
         source: (
           <MarkerIconWrapper
-            color={place.color}
+            color={generateAlphaColorFromIndex(place.index)}
             contribution={place}
             player={player}
           />
