@@ -140,11 +140,11 @@ export const generateTweetIntentURL = (address: any, contributionId: any): strin
 };
 
 export const generateTweetIntentByContribution = (contributionObject: Contribution): string => {
-  const shareURL = contributionObject.url;
+  const shareURL = contributionObject.url.replace('www.', '');
 
   let randomUsers : string = getRandomUsers(TWITTER_USERS,5).join(' ').concat(" @alex_dreyfus @millionarmap");
  
-  const tweetText = `${contributionObject.description}\n\n${contributionObject.url}/cid/${Number(contributionObject.index)}`;
+  const tweetText = `${contributionObject.description}\n\n${shareURL}/cid/${Number(contributionObject.index)}`;
 
   const encodedTweetText = encodeURIComponent(tweetText);
 
