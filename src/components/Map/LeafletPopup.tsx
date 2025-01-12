@@ -13,6 +13,7 @@ import { ethers } from 'ethers'
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
 import { claim, getContributionInfo } from '#src/utils/web3/util'
 import { generateTweetIntentURL, getTokenByAddress } from '#src/utils/helpers'
+import { Unicon } from '#components/Unicon'
 
 
 interface LeafletPopupProps extends PopupProps {
@@ -133,7 +134,10 @@ const LeafletPopup = ({
                 <div className='w-full flex flex-col gap-2 bg-black/50 rounded-lg p-2'>
                   <span className='w-full text-lime-500'>Claimers</span>
                   {contribution.claimers.map((claimer, index) => (
-                    <span className='w-full text-sm text-purple-500' key={`claim${index}`}>{claimer}</span>
+                    <div className='w-full flex flex-row gap-2 items-center justify-center bg-black p-2 rounded-lg' key={`claim${index}`}>
+                      <Unicon address={claimer} size={24} randomSeed={index}/>
+                    <span className='w-full text-xs text-purple-500' >{claimer}</span>
+                    </div>
                   ))}
 
                 </div>
