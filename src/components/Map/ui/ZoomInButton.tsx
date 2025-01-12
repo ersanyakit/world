@@ -19,7 +19,7 @@ export const ZoomInButton = () => {
 
   useEffect(() => {
     if (userPosition) {
-      map?.flyTo(userPosition)
+      map?.flyTo(userPosition,undefined,{animate:false})
     }
   }, [map, userPosition])
 

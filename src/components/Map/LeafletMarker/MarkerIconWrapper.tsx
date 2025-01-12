@@ -6,7 +6,7 @@ import { MapIcon } from '#components/Icons';
 
 export interface MarkerIconWrapperProps {
   contribution?: Contribution
-  player?: Player
+  player: Player | null
   color: string
   label?: string
 }

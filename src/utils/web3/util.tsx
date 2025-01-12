@@ -207,15 +207,20 @@ export async function getClaimHistory() {
   }
 }
 
-export const claim = async (walletProvider: any, isConnected: any, address: any, index: any) => {
+export const claim = async (walletProvider: any, isConnected: any, address: any, index: any) : Promise<ContractCallResponse> => {
+  let callResponse: ContractCallResponse = { success: false, transaction: null, error: null }
 
-  return
+  if (!isConnected) {
+    callResponse.success = false;
+    callResponse.transaction = null;
+    callResponse.error = { message: "You are not connected." };
+    return callResponse;
+  }
+
+
   let contractInformation = getContractByName("DIAMOND", selectedNetwork.network.chainId)
 
-  if (isConnected === false) {
-    return;
-  }
-  // wait modal
+ 
   try {
     const contract = GetContractAt(contractInformation);
     const signer = await GetSigner(walletProvider);
@@ -225,14 +230,17 @@ export const claim = async (walletProvider: any, isConnected: any, address: any,
       // @ts-ignore
       .claim(index);
 
-    await tx.wait(1);
-    // close wait modal
-    // success modal
-  } catch (error) {
-    console.log("claimError", error)
-    // close wait modal
-    // error modal
+    await tx.wait();
+
+    callResponse.success = true;
+    callResponse.error = null;
+    callResponse.transaction = tx;
   }
+  catch (exception: any) {
+    callResponse.success = false;
+    callResponse.error = { message: "Claim Failed!", exception: exception };
+  }
+  return callResponse
 }
 
 export const approve = async (walletProvider: any, isConnected: any, token: Token, amount: bigint): Promise<ContractCallResponse> => {

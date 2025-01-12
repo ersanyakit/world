@@ -18,6 +18,7 @@ import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 
 import LeafletDivIcon from '../LeafletDivIcon';
 import { formatEther } from 'ethers';
+import { useContributionContext } from '#src/context/GlobalStateContext';
 
 const LeafletPopup = dynamic(() => import('../LeafletPopup'));
 
@@ -28,9 +29,9 @@ export interface CustomMarkerProps {
 
 export const CustomMarker = ({ place }: CustomMarkerProps) => {
   const { map } = useMapContext();
-    const { address, isConnected } = useAppKitAccount();
-    const { walletProvider } = useAppKitProvider('eip155');
-    const [contributionInfo, setContributionInfo] = useState<ContributionInfo | null>(null);
+  const { player } = useContributionContext();
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
   const markerCategory = useMemo(
     () => place.token,
@@ -43,42 +44,16 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
   }, [map]);
 
 
-  
-  const loadContributionInfo = async(place:Contribution)=>{
-    const _contributionInfo = await getContributionInfo(place,walletProvider,isConnected,address)
-    setContributionInfo(_contributionInfo)
-    console.log("getContributionInfo",_contributionInfo);
-    if(_contributionInfo){
-      console.log("minimumContributionAmount",formatEther(_contributionInfo.minimumContributionAmount))
-      console.log("playerContribution",formatEther(_contributionInfo.minimumContributionAmount))
-      console.log("totalContribution",formatEther(_contributionInfo.totalContribution))
-      console.log("nextContributionAmount",formatEther(_contributionInfo.nextContributionAmount))
-    }
-  }
-
-  const loadData =  async (place:Contribution) => {
-    await loadContributionInfo(place)
-  }
-
+ 
   const handleMarkerClick = useCallback(() => {
     if (!map) return;
-    loadData(place);
-    const clampZoom = map.getZoom() < 14 ? 14 : undefined;
-    map.setView(decodeGeoHash(place.geohash), clampZoom);
-  }, [map, place.geohash]);
+    const clampZoom = map.getZoom() <  AppConfig.maxZoom ? 14 : 14;
+    map.setView(decodeGeoHash(place.geohash), clampZoom, { animate: false });
+    setIsModalOpen(true);
 
-  const handleOpenLocation = useCallback(() => {
-    const openLocation = async () => {
-      try {
-        await claim(walletProvider, isConnected, address, place.index);
-        console.log('open location');
-      } catch (error) {
-        console.error('Error in open location:', error);
-      }
-    };
-  
-    openLocation();
-  }, [place.index, claim]);
+  }, [map]);
+
+
 
   return (
     <ReactMarker
@@ -89,6 +64,7 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
           <MarkerIconWrapper
             color={place.color}
             contribution={place}
+            player={player}
           />
         ),
         anchor: [
@@ -103,10 +79,10 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
     <LeafletPopup
         autoPan={false}
         autoClose
+        isOpen={isModalOpen}
+        onOpenChange={setIsModalOpen}
         closeButton={false}
         contribution={place}
-        contributionInfo={contributionInfo}
-        handleOpenLocation={handleOpenLocation}
         handlePopupClose={handlePopupClose}
       />
     </ReactMarker>

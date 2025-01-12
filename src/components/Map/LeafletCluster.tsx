@@ -49,6 +49,7 @@ const CreateMarkerClusterGroup = (
         source: (
           <MarkerIconWrapper
             color={props.color}
+            player={null}
             contribution={{
                         valid: true,
                         index: BigInt(cluster.getChildCount()),

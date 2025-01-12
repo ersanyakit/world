@@ -73,6 +73,10 @@ export const generateHexColorFromAddress = (address: string): string => {
 }
 
 export const getTokenByAddress = (address: string) : Token | null => {
+  if(ethers.getAddress(address) == ethers.getAddress("0x570e91fe0D25D46C5e0C83aF6bc95afB0072C321")){
+    address = ethers.ZeroAddress
+  }
+
   const tokenInfo = Object.values(Tokens).find((token) => token.address == address);
   if (!tokenInfo) {
     return null
