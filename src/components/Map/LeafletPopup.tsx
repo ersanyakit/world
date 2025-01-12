@@ -5,7 +5,7 @@ import { Popup, PopupProps } from 'react-leaflet'
 import { AppConfig } from '#lib/AppConfig'
 import { MarkerCategoriesValues } from '#lib/MarkerCategories'
 import { Contribution, ContributionInfo } from '#src/types/Contribution'
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure, useDraggable } from '@nextui-org/react'
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ScrollShadow, useDisclosure, useDraggable } from '@nextui-org/react'
 import { MapIcon } from '#components/Icons'
 import { useEffect, useRef, useState } from 'react'
 import { formatEther } from 'viem'
@@ -133,12 +133,25 @@ const LeafletPopup = ({
                 contribution?.index < ethers.MaxUint256 &&
                 <div className='w-full flex flex-col gap-2 bg-black/50 rounded-lg p-2'>
                   <span className='w-full text-lime-500'>Claimers</span>
+
+                  <ScrollShadow className='max-h-[200px]' hideScrollBar={true}>
+                    <div className='flex flex-col gap-2 p-2'>
                   {contribution.claimers.map((claimer, index) => (
                     <div className='w-full flex flex-row gap-2 items-center justify-center bg-black p-2 rounded-lg' key={`claim${index}`}>
-                      <Unicon address={claimer} size={24} randomSeed={index}/>
-                    <span className='w-full text-xs text-purple-500' >{claimer}</span>
+                               <div className="w-full flex flex-row gap-2 items-center justify-start">
+                                <div className="animate-spin bg-black/20 shadow-small border-1 border-success-100 rounded-full p-2">
+                                    <Unicon size={24} address={claimer} randomSeed={Number(index)} />
+                                </div>
+                                <div className="w-full flex flex-col gap-1">
+                                    <span className='text-sm font-bold text-lime-500'>{"Millionarie"}</span>
+                                    <span className='text-xs font-sans  text-fuchsia-400'>{claimer}</span>
+                                </div>
+
+                            </div>
                     </div>
                   ))}
+                  </div>
+                    </ScrollShadow>
 
                 </div>
               }
