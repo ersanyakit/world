@@ -175,8 +175,8 @@ body{
           }
           
           @keyframes rotate {
-            0% {
-              transform: rotateX(0deg) rotateY(0deg); /* Start at 0 degrees */
+            0%, 100% {
+              transform: rotateX(0deg) rotateY(0deg); /* Ensure start and end match for seamless loop */
             }
             25% {
               transform: rotateX(10deg) rotateY(50deg); /* Start with slight rotation */
@@ -186,9 +186,6 @@ body{
             }
             75% {
               transform: rotateX(30deg) rotateY(200deg); /* Continue rotation */
-            }
-            100% {
-              transform: rotateX(40deg) rotateY(300deg); /* End with a smooth finish */
             }
           }
 
