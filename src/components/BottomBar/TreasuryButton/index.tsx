@@ -98,7 +98,7 @@ const TreasuryButton = () => {
                                                             Total Deposit
                                                         </div>
                                                         <div className="flex items-center justify-center font-semibold text-sm text-lime-500">
-                                                            {formatUnits(asset.deposit, getTokenDecimalsByAddress(asset.token))}
+                                                            {parseFloat(formatUnits(asset.deposit, getTokenDecimalsByAddress(asset.token))).toFixed(4)}
                                                         </div>
                                                     </div>
 
@@ -106,8 +106,8 @@ const TreasuryButton = () => {
                                                         <div className="text-tiny bg-black py-0.5 text-white">
                                                             Total Withdraw
                                                         </div>
-                                                        <div className="flex items-center justify-center font-semibold text-sm text-lime-500">
-                                                            {formatUnits(asset.withdraw, getTokenDecimalsByAddress(asset.token))}
+                                                        <div className="flex items-start justify-center font-semibold text-sm text-lime-500">
+                                                            {parseFloat(formatUnits(asset.withdraw, getTokenDecimalsByAddress(asset.token))).toFixed(4)}
 
                                                         </div>
                                                     </div>
