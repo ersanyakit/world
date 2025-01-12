@@ -160,9 +160,8 @@ body{
           
           .perspective-image {
             transform-origin: center center;
-            animation: rotate 5s linear infinite;  /* Animation runs for 10 seconds, infinitely */
-            transform: rotateX(0deg) rotateY(4deg);  /* Start with no X rotation and fixed Y */
-
+            animation: rotate 10s ease-in-out infinite;  /* Improved easing for smoother transition */
+ 
             width: 244px !important;
             height: 270px !important;
             perspective: 1000px; /* Perspektif derinliği */
@@ -179,17 +178,17 @@ body{
             0% {
               transform: rotateX(0deg) rotateY(0deg); /* Start at 0 degrees */
             }
-            30% {
-              transform: rotateX(0deg) rotateY(30deg); /* Start at 0 degrees */
+            25% {
+              transform: rotateX(10deg) rotateY(50deg); /* Start with slight rotation */
             }
             50% {
-              transform: rotateX(0deg) rotateY(70deg); /* Start at 0 degrees */
+              transform: rotateX(20deg) rotateY(120deg); /* Smooth and gradual rotation */
             }
-            70% {
-              transform: rotateX(0deg) rotateY(90deg); /* Start at 0 degrees */
+            75% {
+              transform: rotateX(30deg) rotateY(200deg); /* Continue rotation */
             }
             100% {
-              transform: rotateX(0deg) rotateY(300deg); /* End at 300 degrees */
+              transform: rotateX(40deg) rotateY(300deg); /* End with a smooth finish */
             }
           }
 
