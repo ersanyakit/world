@@ -14,6 +14,7 @@ import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
 import { claim, getContributionInfo } from '#src/utils/web3/util'
 import { generateTweetIntentURL, getTokenByAddress } from '#src/utils/helpers'
 import { Unicon } from '#components/Unicon'
+import { useContributionContext } from '#src/context/GlobalStateContext'
 
 
 interface LeafletPopupProps extends PopupProps {
@@ -40,6 +41,7 @@ const LeafletPopup = ({
   const [isShared, setShared] = useState<boolean>(false)
   const [isShareLoading, setShareLoading] = useState<boolean>(false)
   const [isClaimLoading, setClaimLoading] = useState<boolean>(false)
+  const { player } = useContributionContext();
 
   useEffect(() => {
     if (isOpen) {
@@ -104,10 +106,10 @@ const LeafletPopup = ({
                 {contribution.description}
               </p>
 
-              <div className='w-full rounded-lg bg-black/50'>
+              <div className='w-full flex flex-col gap-2 rounded-lg bg-black/50'>
                 {
                   contribution?.index < ethers.MaxUint256 && <>
-                    <div className='mt-2 w-full grid grid-cols-2 gap-2 text-xs py-2 rounded-lg p-2' >
+                    <div className='mt-2 w-full grid grid-cols-3 gap-2 text-xs py-2 rounded-lg p-2' >
                       <div className='w-full flex flex-col'>
                         <span className='font-bold text-lime-500'>Total Claims</span>
                         <span className='text-purple-500 text-lg'>{Number(contribution.claims)}</span>
@@ -120,15 +122,27 @@ const LeafletPopup = ({
                         <span className='font-bold text-lime-500'>Total Contribution</span>
                         <span className='text-purple-500 text-lg'>{contributionInfo ? ethers.formatUnits(contributionInfo?.totalContribution,getTokenByAddress(contribution.token)?.decimals) : ""}</span>
                       </div>
-                      <div className='w-full flex flex-col hidden' >
-                        <span className='font-bold  text-lime-500'>Your Contribution</span>
-                        <span className='text-purple-500 text-lg'>{contributionInfo ? ethers.formatEther(contributionInfo?.playerContribution) : ""}</span>
+                      <div className='w-full flex flex-col' >
+                        <span className='font-bold  text-lime-500'>Your Contributions</span>
+                        <span className='text-purple-500 text-lg'>{player?.contributions.length}</span>
+                      </div>
+                      <div className='w-full flex flex-col' >
+                        <span className='font-bold  text-lime-500'>Your Claims</span>
+                        <span className='text-purple-500 text-lg'>{player?.claims.length}</span>
+                      </div>
+                      <div className='w-full flex flex-col' >
+                        <span className='font-bold  text-lime-500'>Can I Claim?</span>
+                        <span className='text-purple-500 text-lg'>{player && player?.contributions.length > player?.claims.length ? "YES" : "NO"}</span>
                       </div>
                     </div>
+                   
                   </>
                 }
+             
               </div>
-
+              <div className='w-full p-2 rounded-lg bg-danger/15'>
+                      <span className=' text-danger-500 text-center text-sm'>Total number of contributions must be greater than total number of claims.</span>
+                    </div>
               {
                 contribution?.index < ethers.MaxUint256 &&
                 <div className='w-full flex flex-col gap-2 bg-black/50 rounded-lg p-2'>
