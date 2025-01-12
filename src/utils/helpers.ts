@@ -1,5 +1,6 @@
 import { EMOJIS, TWEET_HEAD, TWEETS, TWITTER_USERS } from "#src/constants/constants";
 import { Tokens } from "#src/constants/tokens";
+import { Contribution } from "#src/types/Contribution";
 import { Token } from "#src/types/web3.types";
 import { ethers, formatUnits, isAddress, keccak256, parseEther, parseUnits } from "ethers";
 
@@ -132,6 +133,18 @@ export const generateTweetIntentURL = (address: any, contributionId: any): strin
 
   const randomHead = TWEET_HEAD[Math.floor(Math.random() * TWEET_HEAD.length)];
   const tweetText = `🥇${randomHead} ${randomEmoji}\n\n🥈${randomTweet}\n\n🚀🚀🚀${shareURL}\n\n🥉Shoutout to: ${randomUsers}`;
+
+  const encodedTweetText = encodeURIComponent(tweetText);
+
+  return `https://twitter.com/intent/tweet?text=${encodedTweetText}`;
+};
+
+export const generateTweetIntentByContribution = (contributionObject: Contribution): string => {
+  const shareURL = contributionObject.url;
+
+  let randomUsers : string = getRandomUsers(TWITTER_USERS,5).join(' ').concat(" @alex_dreyfus @millionarmap");
+ 
+  const tweetText = `${contributionObject.description}\n\n${contributionObject.url}/cid/${Number(contributionObject.index)}`;
 
   const encodedTweetText = encodeURIComponent(tweetText);
 

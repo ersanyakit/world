@@ -1,6 +1,6 @@
 import { Button, Card, CardBody, Link, Tooltip } from '@nextui-org/react';
 import {  useAppKit, useAppKitAccount, useAppKitNetwork } from '@reown/appkit/react';
-import { FormatAddressDesign, generateTweetIntentURL, getTokenByAddress, TimestampDetails, unixToTimestampDetails } from '#src/utils/helpers';
+import { FormatAddressDesign, generateTweetIntentByContribution, generateTweetIntentURL, getTokenByAddress, TimestampDetails, unixToTimestampDetails } from '#src/utils/helpers';
 import React, { useEffect, useState } from 'react';
 import { Unicon } from '#components/Unicon';
 import { ExternalLink, Globe, Twitter } from 'lucide-react';
@@ -123,7 +123,7 @@ const ContributionCard = ({ contribution }: { contribution: Contribution }) => {
                                     </span>
                                     <div className="flex gap-2 w-full items-center">
                                         <Tooltip placement="right" className="font-sans text-xs" delay={10} color={"primary"}  content={"You will earn a 30% commission from every user who joins through your referral."}>
-                                        <Button className="text-white" target="_blank" href={generateTweetIntentURL(address ? address : contribution.contributor,contribution.index)} as={Link} variant="shadow" color="success" fullWidth startContent={
+                                        <Button className="text-white" target="_blank" href={contribution.token == "0x75D28E4c65aCD2EB6efCB0D200869E89C2c1ef1f" ? generateTweetIntentByContribution(contribution) :  generateTweetIntentURL(address ? address : contribution.contributor,contribution.index)} as={Link} variant="shadow" color="success" fullWidth startContent={
                                             <Twitter />
                                         } endContent={
                                             <ExternalLink />
