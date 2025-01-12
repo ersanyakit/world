@@ -159,10 +159,12 @@ body{
           }
           
           .perspective-image {
-            transform: rotateX(9deg) rotateY(338deg);
-            transform-origin: center; /* Döndürme merkezi */
-            width: 250px;
-            height: 309px;
+            transform-origin: center center;
+            animation: rotate 5s linear infinite;  /* Animation runs for 10 seconds, infinitely */
+            transform: rotateX(0deg) rotateY(4deg);  /* Start with no X rotation and fixed Y */
+
+            width: 244px !important;
+            height: 270px !important;
             perspective: 1000px; /* Perspektif derinliği */
             box-shadow: 10px 20px 30px rgba(0, 0, 0, 0.5); /* Gölge */
             transition: transform 0.5s, box-shadow 0.5s; /* Animasyonlar */
@@ -173,6 +175,24 @@ body{
             box-shadow: 15px 25px 40px rgba(0, 0, 0, 0.7);
           }
           
+          @keyframes rotate {
+            0% {
+              transform: rotateX(0deg) rotateY(0deg); /* Start at 0 degrees */
+            }
+            30% {
+              transform: rotateX(0deg) rotateY(30deg); /* Start at 0 degrees */
+            }
+            50% {
+              transform: rotateX(0deg) rotateY(70deg); /* Start at 0 degrees */
+            }
+            70% {
+              transform: rotateX(0deg) rotateY(90deg); /* Start at 0 degrees */
+            }
+            100% {
+              transform: rotateX(0deg) rotateY(300deg); /* End at 300 degrees */
+            }
+          }
+
           /* Işıltı efekti */
           .perspective-image::after {
             content: ''; /* Pseudo-element içeriği */
