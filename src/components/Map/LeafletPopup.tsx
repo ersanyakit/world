@@ -12,7 +12,7 @@ import { formatEther } from 'viem'
 import { ethers } from 'ethers'
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
 import { claim, getContributionInfo } from '#src/utils/web3/util'
-import { generateTweetIntentURL } from '#src/utils/helpers'
+import { generateTweetIntentURL, getTokenByAddress } from '#src/utils/helpers'
 
 
 interface LeafletPopupProps extends PopupProps {
@@ -117,7 +117,7 @@ const LeafletPopup = ({
                       </div>
                       <div className='w-full flex flex-col'>
                         <span className='font-bold text-lime-500'>Total Contribution</span>
-                        <span className='text-purple-500 text-lg'>{contributionInfo ? ethers.formatEther(contributionInfo?.totalContribution) : ""}</span>
+                        <span className='text-purple-500 text-lg'>{contributionInfo ? ethers.formatUnits(contributionInfo?.totalContribution,getTokenByAddress(contribution.token)?.decimals) : ""}</span>
                       </div>
                       <div className='w-full flex flex-col hidden' >
                         <span className='font-bold  text-lime-500'>Your Contribution</span>
