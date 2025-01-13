@@ -57,6 +57,7 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -89,6 +90,7 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -100,123 +102,145 @@ body {
 
 
 html,
-body{
+body {
   position: fixed !important;
   width: 100vw !important;
   height: 100vh !important;
   overflow: none !important;
-  -webkit-touch-callout:none;
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-    user-select:none;
-    padding: 0 !important;
-    margin: 0 !important;
-
- 
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 0 !important;
+  margin: 0 !important;
 
 
-    justify-content: center;
-    align-items: center;
-
-    background-color: rgb(167, 243, 208);
-    background-image: radial-gradient(at 38% 32%, rgb(91, 33, 182) 0, transparent 46%), radial-gradient(at 30% 87%, rgb(2, 132, 199) 0, transparent 52%), radial-gradient(at 58% 53%, rgb(96, 165, 250) 0, transparent 59%), radial-gradient(at 20% 77%, rgb(15, 118, 110) 0, transparent 56%), radial-gradient(at 97% 42%, rgb(253, 230, 138) 0, transparent 58%), radial-gradient(at 65% 69%, rgb(113, 63, 18) 0, transparent 18%);
-
-    background-size: 100% 100%;
-    animation: gradientAnimation 2s ease-in-out infinite; /* Yavaş, yumuşak animasyon */
 
 
-          }
+  justify-content: center;
+  align-items: center;
 
-          @keyframes gradientAnimation {
-            0% {
-              background-image: 
-                radial-gradient(at 38% 32%, rgb(91, 33, 182) 0, transparent 46%), 
-                radial-gradient(at 30% 87%, rgb(2, 132, 199) 0, transparent 52%), 
-                radial-gradient(at 58% 53%, rgb(96, 165, 250) 0, transparent 59%), 
-                radial-gradient(at 20% 77%, rgb(15, 118, 110) 0, transparent 56%), 
-                radial-gradient(at 97% 42%, rgb(253, 230, 138) 0, transparent 58%), 
-                radial-gradient(at 65% 69%, rgb(113, 63, 18) 0, transparent 18%);
-            }
-            50% {
-              background-image: 
-                radial-gradient(at 60% 20%, rgb(91, 33, 182) 0, transparent 46%), 
-                radial-gradient(at 40% 70%, rgb(2, 132, 199) 0, transparent 52%), 
-                radial-gradient(at 20% 40%, rgb(96, 165, 250) 0, transparent 59%), 
-                radial-gradient(at 80% 90%, rgb(15, 118, 110) 0, transparent 56%), 
-                radial-gradient(at 10% 50%, rgb(253, 230, 138) 0, transparent 58%), 
-                radial-gradient(at 30% 80%, rgb(113, 63, 18) 0, transparent 18%);
-            }
-            100% {
-              background-image: 
-                radial-gradient(at 38% 32%, rgb(91, 33, 182) 0, transparent 46%), 
-                radial-gradient(at 30% 87%, rgb(2, 132, 199) 0, transparent 52%), 
-                radial-gradient(at 58% 53%, rgb(96, 165, 250) 0, transparent 59%), 
-                radial-gradient(at 20% 77%, rgb(15, 118, 110) 0, transparent 56%), 
-                radial-gradient(at 97% 42%, rgb(253, 230, 138) 0, transparent 58%), 
-                radial-gradient(at 65% 69%, rgb(113, 63, 18) 0, transparent 18%);
-            }
-          }
-          
-          .perspective-image {
-            transform-origin: center center;
-            animation: rotate 10s ease-in-out infinite;  /* Improved easing for smoother transition */
- 
-            width: 244px !important;
-            height: 270px !important;
-            perspective: 1000px; /* Perspektif derinliği */
-            box-shadow: 10px 20px 30px rgba(0, 0, 0, 0.5); /* Gölge */
-            transition: transform 0.5s, box-shadow 0.5s; /* Animasyonlar */
-            position: relative; /* Pseudo-element için gerekli */
-          }
-          
-          .perspective-image:hover {
-            box-shadow: 15px 25px 40px rgba(0, 0, 0, 0.7);
-          }
-          
-          @keyframes rotate {
-            0%, 100% {
-              transform: rotateX(0deg) rotateY(0deg); /* Ensure start and end match for seamless loop */
-            }
-            25% {
-              transform: rotateX(10deg) rotateY(50deg); /* Start with slight rotation */
-            }
-            50% {
-              transform: rotateX(20deg) rotateY(120deg); /* Smooth and gradual rotation */
-            }
-            75% {
-              transform: rotateX(30deg) rotateY(200deg); /* Continue rotation */
-            }
-          }
+  background-color: rgb(167, 243, 208);
+  background-image: radial-gradient(at 38% 32%, rgb(91, 33, 182) 0, transparent 46%), radial-gradient(at 30% 87%, rgb(2, 132, 199) 0, transparent 52%), radial-gradient(at 58% 53%, rgb(96, 165, 250) 0, transparent 59%), radial-gradient(at 20% 77%, rgb(15, 118, 110) 0, transparent 56%), radial-gradient(at 97% 42%, rgb(253, 230, 138) 0, transparent 58%), radial-gradient(at 65% 69%, rgb(113, 63, 18) 0, transparent 18%);
 
-          /* Işıltı efekti */
-          .perspective-image::after {
-            content: ''; /* Pseudo-element içeriği */
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 300%;
-            height: 300%;
-            background: linear-gradient(
-              120deg,
-              rgba(255, 255, 255, 0) 0%,
-              rgba(255, 255, 255, 0.8) 50%,
-              rgba(255, 255, 255, 0) 100%
-            ); /* Işıltı efekti */
-            transform: rotate(25deg); /* Işıltının eğimi */
-            pointer-events: none; /* Işıltı fare etkileşimini engeller */
-            animation: shine-animation 3s infinite; /* Sonsuz döngü animasyonu */
-          }
-          
-          /* Işıltı animasyonu */
-          @keyframes shine-animation {
-            0% {
-              left: -150%;
-            }
-            50% {
-              left: 50%;
-            }
-            100% {
-              left: 150%;
-            }
-          }
+  background-size: 100% 100%;
+  animation: gradientAnimation 2s ease-in-out infinite;
+  /* Yavaş, yumuşak animasyon */
+
+
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-image:
+      radial-gradient(at 38% 32%, rgb(91, 33, 182) 0, transparent 46%),
+      radial-gradient(at 30% 87%, rgb(2, 132, 199) 0, transparent 52%),
+      radial-gradient(at 58% 53%, rgb(96, 165, 250) 0, transparent 59%),
+      radial-gradient(at 20% 77%, rgb(15, 118, 110) 0, transparent 56%),
+      radial-gradient(at 97% 42%, rgb(253, 230, 138) 0, transparent 58%),
+      radial-gradient(at 65% 69%, rgb(113, 63, 18) 0, transparent 18%);
+  }
+
+  50% {
+    background-image:
+      radial-gradient(at 60% 20%, rgb(91, 33, 182) 0, transparent 46%),
+      radial-gradient(at 40% 70%, rgb(2, 132, 199) 0, transparent 52%),
+      radial-gradient(at 20% 40%, rgb(96, 165, 250) 0, transparent 59%),
+      radial-gradient(at 80% 90%, rgb(15, 118, 110) 0, transparent 56%),
+      radial-gradient(at 10% 50%, rgb(253, 230, 138) 0, transparent 58%),
+      radial-gradient(at 30% 80%, rgb(113, 63, 18) 0, transparent 18%);
+  }
+
+  100% {
+    background-image:
+      radial-gradient(at 38% 32%, rgb(91, 33, 182) 0, transparent 46%),
+      radial-gradient(at 30% 87%, rgb(2, 132, 199) 0, transparent 52%),
+      radial-gradient(at 58% 53%, rgb(96, 165, 250) 0, transparent 59%),
+      radial-gradient(at 20% 77%, rgb(15, 118, 110) 0, transparent 56%),
+      radial-gradient(at 97% 42%, rgb(253, 230, 138) 0, transparent 58%),
+      radial-gradient(at 65% 69%, rgb(113, 63, 18) 0, transparent 18%);
+  }
+}
+
+.perspective-image {
+  transform-origin: center center;
+  animation: rotate 10s ease-in-out infinite;
+  /* Improved easing for smoother transition */
+
+  width: 100px !important;
+  height: 120px !important;
+  perspective: 1000px;
+  /* Perspektif derinliği */
+  box-shadow: 10px 20px 30px rgba(0, 0, 0, 0.5);
+  /* Gölge */
+  transition: transform 0.5s, box-shadow 0.5s;
+  /* Animasyonlar */
+  position: relative;
+  /* Pseudo-element için gerekli */
+}
+
+.perspective-image:hover {
+  box-shadow: 15px 25px 40px rgba(0, 0, 0, 0.7);
+}
+
+@keyframes rotate {
+
+  0%,
+  100% {
+    transform: rotateX(0deg) rotateY(0deg);
+    /* Ensure start and end match for seamless loop */
+  }
+
+  25% {
+    transform: rotateX(10deg) rotateY(50deg);
+    /* Start with slight rotation */
+  }
+
+  50% {
+    transform: rotateX(20deg) rotateY(120deg);
+    /* Smooth and gradual rotation */
+  }
+
+  75% {
+    transform: rotateX(30deg) rotateY(200deg);
+    /* Continue rotation */
+  }
+}
+
+/* Işıltı efekti */
+.perspective-image::after {
+  content: '';
+  /* Pseudo-element içeriği */
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 300%;
+  height: 300%;
+  background: linear-gradient(120deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.8) 50%,
+      rgba(255, 255, 255, 0) 100%);
+  /* Işıltı efekti */
+  transform: rotate(25deg);
+  /* Işıltının eğimi */
+  pointer-events: none;
+  /* Işıltı fare etkileşimini engeller */
+  animation: shine-animation 3s infinite;
+  /* Sonsuz döngü animasyonu */
+}
+
+/* Işıltı animasyonu */
+@keyframes shine-animation {
+  0% {
+    left: -150%;
+  }
+
+  50% {
+    left: 50%;
+  }
+
+  100% {
+    left: 150%;
+  }
+}

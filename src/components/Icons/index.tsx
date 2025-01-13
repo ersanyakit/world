@@ -4,10 +4,11 @@ import {Image} from "@nextui-org/image";
 import { ethers } from 'ethers';
 import { getAvatar } from '#src/utils/helpers';
 import { generateLogo } from '#lib/helper/geocoder';
+import { isContribution } from '#lib/utils';
 
 interface IconProps {
   player?: Player | null;
-  contribution?: Contribution | null;
+  contribution?: Contribution | Player | null;
   width?: number;
   height?: number;
 }
@@ -34,18 +35,21 @@ export const MapIcon: FunctionComponent<IconProps> = ({
   // İkon URL'sini belirler
   const determineIconUrl = (): string => {
     if (contribution) {
-      if (contribution.index === ethers.MaxUint256) {
-        return getAvatar(contribution.contributor);
+
+      let checkIsContribution : boolean = isContribution(contribution);
+      
+      if (!checkIsContribution) {
+        return  getAvatar((contribution as Player).wallet);
       }
       if (player && ethers.isAddress(player.wallet)) {
         const normalizedAddress = ethers.getAddress(player.wallet);
-        const isClaimer = contribution.claimers.some(
+        const isClaimer = (contribution as Contribution).claimers.some(
           (claimer) => ethers.getAddress(claimer) === normalizedAddress
         );
         const isContributor =
-          normalizedAddress === ethers.getAddress(contribution.contributor);
+          normalizedAddress === ethers.getAddress((contribution as Contribution).contributor);
         if (isClaimer || isContributor) {
-          return getTokenLogoByAddress(contribution.token);
+          return getTokenLogoByAddress((contribution as Contribution).token);
         }
       }
     }
@@ -57,7 +61,7 @@ export const MapIcon: FunctionComponent<IconProps> = ({
       <img
         src={determineIconUrl()}
         alt="Map Icon"
-        className={(contribution?.index == ethers.MaxUint256 ? "perspective-image " : " ") + " rounded-full opacity-1 w-[60px] h-[80px]"}
+        className={(isContribution(contribution) ? " " : " perspective-image  ") + " rounded-full opacity-1 w-[60px] h-[80px]"}
       />
     </div>
   );

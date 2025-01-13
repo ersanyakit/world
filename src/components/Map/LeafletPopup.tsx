@@ -4,7 +4,7 @@ import { Popup, PopupProps } from 'react-leaflet'
 
 import { AppConfig } from '#lib/AppConfig'
 import { MarkerCategoriesValues } from '#lib/MarkerCategories'
-import { Contribution, ContributionInfo } from '#src/types/Contribution'
+import { Contribution, ContributionInfo, Player } from '#src/types/Contribution'
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ScrollShadow, useDisclosure, useDraggable } from '@nextui-org/react'
 import { MapIcon } from '#components/Icons'
 import { useEffect, useRef, useState } from 'react'
@@ -12,14 +12,15 @@ import { formatEther } from 'viem'
 import { ethers } from 'ethers'
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
 import { claim, getContributionInfo } from '#src/utils/web3/util'
-import { generateTweetIntentByContribution, generateTweetIntentURL, getTokenByAddress } from '#src/utils/helpers'
+import { generateTweetIntentByContribution, generateTweetIntentURL, getAvatar, getTokenByAddress } from '#src/utils/helpers'
 import { Unicon } from '#components/Unicon'
 import { useContributionContext } from '#src/context/GlobalStateContext'
+import { isContribution } from '#lib/utils'
 
 
 interface LeafletPopupProps extends PopupProps {
   handlePopupClose: (active?: boolean) => void
-  contribution: Contribution
+  contribution: Contribution | Player
   isOpen: boolean // pass this from parent
   onOpenChange: (open: boolean) => void // pass this from parent
 }
@@ -32,7 +33,10 @@ const LeafletPopup = ({
   onOpenChange,
   ...props
 }: LeafletPopupProps) => {
-  const { name, description } = contribution
+
+  const [name,setName] = useState<string>("")
+  const [description,setDescription] = useState<string>("")
+
   const targetRef = useRef(null);
   const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
   const { address, isConnected } = useAppKitAccount();
@@ -45,7 +49,15 @@ const LeafletPopup = ({
 
   useEffect(() => {
     if (isOpen) {
-      loadData(contribution);
+
+      if (isContribution(contribution)) {
+        setName(contribution.name)
+        setDescription(contribution.description)
+        loadData(contribution);
+      }else{
+        setName((contribution as Player).name )
+        setDescription((contribution as Player).wallet )
+      }
       setShared(false)
     }
   }, [isOpen])
@@ -90,6 +102,93 @@ const LeafletPopup = ({
   }
 
 
+  interface PlayerContentProps {
+    player: Player | null;
+  }
+  
+  const PlayerContent: React.FC<PlayerContentProps> = ({ player }) => {
+
+    return(    <div className='w-full p-2 rounded-lg'>
+    
+    <div className="flex flex-col gap-2 items-center justify-center">
+      <img
+        src={getAvatar(player ? player?.wallet : ethers.ZeroAddress)}
+        alt="Map Icon"
+        className={"w-[250px] h-full"}
+      />
+    </div>
+    </div>)
+
+  }
+
+  interface ContributionContentProps {
+    contribution: Contribution;
+  }
+  
+  const ContributionContent: React.FC<ContributionContentProps> = ({ contribution }) => {
+    return (
+      <>
+
+        <p className='text-red-500 text-center bg-black/50 p-2 rounded-lg'>
+          {contribution.description}
+        </p>
+
+        <div className='w-full flex flex-col gap-2 rounded-lg bg-black/50'>
+          {
+            contribution?.index < ethers.MaxUint256 && <>
+              <div className='mt-2 w-full grid grid-cols-3 gap-2 text-xs py-2 rounded-lg p-2' >
+                <div className='w-full flex flex-col'>
+                  <span className='font-bold text-lime-500'>Total Claims</span>
+                  <span className='text-purple-500 text-xs  text-center'>{Number(contribution.claims)}</span>
+                </div>
+                <div className='w-full flex flex-col'>
+                  <span className='font-bold text-lime-500'>Maximum Claims</span>
+                  <span className='text-purple-500 text-xs text-center'>{Number(contribution.limit)}</span>
+                </div>
+                <div className='w-full flex flex-col'>
+                  <span className='font-bold text-lime-500'>Total Contribution</span>
+                  <span className='text-purple-500 text-xs  text-center'>{contributionInfo ? ethers.formatUnits(contributionInfo?.totalContribution, getTokenByAddress(contribution.token)?.decimals) : ""}</span>
+                </div>
+
+
+              </div>
+
+            </>
+          }
+
+        </div>
+    
+        {
+          contribution?.index < ethers.MaxUint256 &&
+          <div className='w-full flex flex-col gap-2 bg-black/50 rounded-lg p-2'>
+            <span className='w-full text-lime-500'>Claimers</span>
+
+            <ScrollShadow className='max-h-[200px]' hideScrollBar={true}>
+              <div className='flex flex-col gap-2 p-2'>
+                {contribution.claimers.map((claimer, index) => (
+                  <div className='w-full flex flex-row gap-2 items-center justify-center bg-black p-2 rounded-lg' key={`claim${index}`}>
+                    <div className="w-full flex flex-row gap-2 items-center justify-start">
+                      <div className="animate-spin bg-black/20 shadow-small border-1 border-success-100 rounded-full p-2">
+                        <Unicon size={24} address={claimer} randomSeed={Number(index)} />
+                      </div>
+                      <div className="w-full flex flex-col gap-1">
+                        <span className='text-sm font-bold text-lime-500'>{"Millionarie"}</span>
+                        <span className='text-xs font-sans  text-fuchsia-400'>{claimer}</span>
+                      </div>
+
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </ScrollShadow>
+
+          </div>
+        }
+      </>
+    )
+  }
+
+
 
   return (
     <Modal scrollBehavior='inside' className='bg-black/30' ref={targetRef} size='lg' backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -103,63 +202,12 @@ const LeafletPopup = ({
               <span>{contribution.name}</span>
             </ModalHeader>
             <ModalBody className='flex flex-col gap-2'>
-              <p className='text-red-500 text-center bg-black/50 p-2 rounded-lg'>
-                {contribution.description}
-              </p>
-
-              <div className='w-full flex flex-col gap-2 rounded-lg bg-black/50'>
-                {
-                  contribution?.index < ethers.MaxUint256 && <>
-                    <div className='mt-2 w-full grid grid-cols-3 gap-2 text-xs py-2 rounded-lg p-2' >
-                      <div className='w-full flex flex-col'>
-                        <span className='font-bold text-lime-500'>Total Claims</span>
-                        <span className='text-purple-500 text-xs  text-center'>{Number(contribution.claims)}</span>
-                      </div>
-                      <div className='w-full flex flex-col'>
-                        <span className='font-bold text-lime-500'>Maximum Claims</span>
-                        <span className='text-purple-500 text-xs text-center'>{Number(contribution.limit)}</span>
-                      </div>
-                      <div className='w-full flex flex-col'>
-                        <span className='font-bold text-lime-500'>Total Contribution</span>
-                        <span className='text-purple-500 text-xs  text-center'>{contributionInfo ? ethers.formatUnits(contributionInfo?.totalContribution,getTokenByAddress(contribution.token)?.decimals) : ""}</span>
-                      </div>
-                
-                      
-                    </div>
-                   
-                  </>
-                }
-             
-              </div>
-              <div className='w-full p-2 rounded-lg bg-danger/50 hidden'>
-                      <span className=' text-white text-center text-sm'>Total number of contributions must be greater than total number of claims.</span>
-                    </div>
               {
-                contribution?.index < ethers.MaxUint256 &&
-                <div className='w-full flex flex-col gap-2 bg-black/50 rounded-lg p-2'>
-                  <span className='w-full text-lime-500'>Claimers</span>
-
-                  <ScrollShadow className='max-h-[200px]' hideScrollBar={true}>
-                    <div className='flex flex-col gap-2 p-2'>
-                  {contribution.claimers.map((claimer, index) => (
-                    <div className='w-full flex flex-row gap-2 items-center justify-center bg-black p-2 rounded-lg' key={`claim${index}`}>
-                               <div className="w-full flex flex-row gap-2 items-center justify-start">
-                                <div className="animate-spin bg-black/20 shadow-small border-1 border-success-100 rounded-full p-2">
-                                    <Unicon size={24} address={claimer} randomSeed={Number(index)} />
-                                </div>
-                                <div className="w-full flex flex-col gap-1">
-                                    <span className='text-sm font-bold text-lime-500'>{"Millionarie"}</span>
-                                    <span className='text-xs font-sans  text-fuchsia-400'>{claimer}</span>
-                                </div>
-
-                            </div>
-                    </div>
-                  ))}
-                  </div>
-                    </ScrollShadow>
-
-                </div>
+                isContribution(contribution) ? <ContributionContent contribution={contribution}/>
+                : <PlayerContent player={contribution}/>
               }
+              
+
 
             </ModalBody>
             <ModalFooter>
@@ -167,7 +215,7 @@ const LeafletPopup = ({
                 Close
               </Button>
               {
-                contribution?.index < ethers.MaxUint256 && (
+                 isContribution(contribution) && (
                   <>
                     <Button
                       isLoading={isShareLoading}
@@ -177,7 +225,7 @@ const LeafletPopup = ({
                       color="success"
                       onPress={handleShare}
                     >
-                      {isShareLoading ?  "Verifying..." : "Tweet to Claim"}
+                      {isShareLoading ? "Verifying..." : "Tweet to Claim"}
                     </Button>
                     <Button
                       isDisabled={!isShared}

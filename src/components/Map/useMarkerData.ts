@@ -5,10 +5,12 @@ import Geohash from 'ngeohash';
 import useMapContext from '#components/Map/useMapContext'
 import { AppConfig } from '#lib/AppConfig'
 import { PlacesClusterType, PlacesType } from '#lib/Places'
-import { Contribution } from '#src/types/Contribution'
+import { Contribution, Player } from '#src/types/Contribution'
+import { isContribution } from '#lib/utils';
+import { decodeGeoHash } from '#lib/helper/geocoder';
 
 interface useMapDataValues {
-  locations?: Contribution[]
+  locations?: (Contribution | Player)[];
   map?: Map
   viewportWidth?: number
   viewportHeight?: number
@@ -21,7 +23,7 @@ interface allMarkerPosValues {
 
 const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMapDataValues) => {
   const [allMarkersBoundCenter, setAllMarkersBoundCenter] = useState<allMarkerPosValues>({
-    minZoom: AppConfig.minZoom - 5,
+    minZoom: AppConfig.maxZoom,//AppConfig.minZoom > 5 ? AppConfig.minZoom - 5 : AppConfig.minZoom,
     centerPos: AppConfig.baseCenter,
   })
   const { leafletLib } = useMapContext()
@@ -32,8 +34,12 @@ const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMap
 
     const coordsSum: LatLngExpression[] = []
     locations.forEach(item => {
-      let decodedGeoHash = Geohash.decode(item.geohash)
-      let position: LatLngExpression = [decodedGeoHash.latitude, decodedGeoHash.longitude];
+      let geoHashParamStr = "";
+      if(item.geohash == ""){
+        geoHashParamStr = isContribution(item) ? "" : item.wallet
+      }
+      let geoHashStr = item.geohash;
+      let position: LatLngExpression = decodeGeoHash(geoHashStr,geoHashParamStr)
       coordsSum.push(position)
     })
     return leafletLib.latLngBounds(coordsSum)
@@ -42,12 +48,17 @@ const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMap
   const clustersByCategory = useMemo(() => {
     if (!locations) return undefined
 
+    
+ 
     const groupedLocations = locations.reduce<PlacesClusterType>((acc, location) => {
-      const { token } = location
-      if (!acc[token]) {
-        acc[token] = []
+      
+    const key = isContribution(location) ? location.geohash : location.geohash;
+
+     // const { token } = location
+      if (!acc[key]) {
+        acc[key] = []
       }
-      acc[token].push(location)
+      acc[key].push(location)
       return acc
     }, {})
 
@@ -56,26 +67,46 @@ const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMap
       markers: groupedLocations[key],
     }))
 
-    return mappedClusters
+    return  mappedClusters
   }, [locations])
 
   useEffect(() => {
-    if (!allMarkerBounds || !map) return
-    if (!viewportWidth || !viewportHeight) return
-
-
-    try{
-      map.invalidateSize()
+    // Eğer allMarkerBounds veya map geçerli değilse işlemi sonlandır
+    if (!allMarkerBounds || !map || !viewportWidth || !viewportHeight) {
+      return;
+    }
+  
+  
+    try {
+      // `allMarkerBounds.isValid()` ile geçerli olup olmadığını kontrol et
+      if (!allMarkerBounds.isValid()) {
+        console.log("Invalid allMarkerBounds:", allMarkerBounds);
+        return; // Geçersiz sınır verisi ile devam etme
+      }
+  
+      // `map` nesnesinin geçerli olduğuna emin ol
+      if (!map) {
+        console.error("Map is not available");
+        return;
+      }
+  
+      map.invalidateSize(); // Harita boyutlarını güncelleme
+  
+      // Zoom seviyesini hesapla
+      const zoom = map.getBoundsZoom(allMarkerBounds);
+      // Harita merkezini hesapla
+      const center = allMarkerBounds.getCenter();
+  
+      /*
       setAllMarkersBoundCenter({
-        minZoom: map.getBoundsZoom(allMarkerBounds),
-        centerPos: [allMarkerBounds.getCenter().lat, allMarkerBounds.getCenter().lng],
-      })
-  } catch (error) {
-    console.error("Error in map or bounds handling:", error);
-  }
-
- 
-  }, [allMarkerBounds, map, viewportWidth, viewportHeight])
+        minZoom: zoom,
+        centerPos: [center.lat, center.lng],
+      });
+      */
+    } catch (error) {
+      console.error("Error in map or bounds handling:", error);
+    }
+  }, [allMarkerBounds, map, viewportWidth, viewportHeight]);
 
   return { clustersByCategory, allMarkersBoundCenter }
 }

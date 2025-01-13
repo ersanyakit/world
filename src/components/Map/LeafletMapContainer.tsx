@@ -4,6 +4,7 @@ import { MapContainer, TileLayer } from 'react-leaflet'
 
 import useMapContext from './useMapContext'
 import L from 'leaflet'
+import { AppConfig } from '#lib/AppConfig'
 
 interface LeafletMapContainerProps extends MapOptions {
   children: JSX.Element | JSX.Element[]
@@ -21,7 +22,8 @@ export const LeafletMapContainer = ({ children, ...props }: LeafletMapContainerP
 
   return (
     <MapContainer
-      zoomControl={false} zoom={5}  maxBoundsViscosity={1.0} maxBounds={ [[-90, -180], [90, 180]]}
+    key={"coder"}
+      zoomControl={false} zoom={AppConfig.maxZoom}  maxBoundsViscosity={1.0} maxBounds={ [[-90, -180], [90, 180]]}
       ref={e => setMap && setMap(e || undefined)}
       className="absolute h-full w-full text-white outline-0"
       {...props}

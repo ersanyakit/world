@@ -20,12 +20,13 @@ import LeafletDivIcon from '../LeafletDivIcon';
 import { formatEther } from 'ethers';
 import { useContributionContext } from '#src/context/GlobalStateContext';
 import { generateAlphaColorFromIndex } from '#src/utils/helpers';
+import { isContribution } from '#lib/utils';
 
 const LeafletPopup = dynamic(() => import('../LeafletPopup'));
 
 
 export interface CustomMarkerProps {
-  place: Contribution;
+  place: Contribution | Player;
 }
 
 export const CustomMarker = ({ place }: CustomMarkerProps) => {
@@ -34,10 +35,9 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const markerCategory = useMemo(
-    () => place.token,
-    [place.token]
-  );
+    const markerCategory = useMemo(() => {
+      return isContribution(place) ? place.token : place.wallet;
+    }, [place]);
 
   const handlePopupClose = useCallback(() => {
     if (!map) return;
@@ -58,7 +58,8 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
 
   return (
     <ReactMarker
-      position={decodeGeoHash(place.geohash)}
+    key={`entry${place.geohash}${place.index}${place.name}`}
+      position={decodeGeoHash(place.geohash,isContribution(place) ? place.geohash : place.wallet)}
       // @ts-ignore
       icon={LeafletDivIcon({
         source: (
@@ -66,6 +67,7 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
             color={generateAlphaColorFromIndex(place.index)}
             contribution={place}
             player={player}
+           
           />
         ),
         anchor: [

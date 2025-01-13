@@ -59,7 +59,7 @@ const ZoomOutButton = dynamic(
 
 const LeafletMapInner = () => {
   const { map } = useMapContext();
-  const { contributions, addContributions } = useContributionContext();
+  const { contributions,players, addContributions } = useContributionContext();
 
   const {
     width: viewportWidth,
@@ -70,8 +70,10 @@ const LeafletMapInner = () => {
     refreshRate: 200,
   });
 
+  const locations = [...contributions, ...players]; // contributions ve players birleştirildi
+
   const { clustersByCategory, allMarkersBoundCenter } = useMarkerData({
-    locations: contributions,
+    locations: locations,
     map,
     viewportWidth,
     viewportHeight,
@@ -130,15 +132,15 @@ const LeafletMapInner = () => {
                 <ZoomInButton />
                 <ZoomOutButton />
 
-                {Object.values(clustersByCategory).map((item) => (
+                {Object.values(clustersByCategory).map((item,index) => (
                   <LeafletCluster
-                    key={item.category}
+                    key={`${item.category}${index}`}
                     icon={MarkerCategories[Category.CAT1].icon}
                     color={MarkerCategories[Category.CAT1].color}
                     chunkedLoading
                   >
-                    {item.markers.map((marker) => (
-                      <CustomMarker place={marker} key={Number(marker.index)} />
+                    {item.markers.map((marker,markerIndex) => (
+                      <CustomMarker place={marker} key={`marker${markerIndex}${marker.name}${marker.index}`} />
                     ))}
                   </LeafletCluster>
                 ))}

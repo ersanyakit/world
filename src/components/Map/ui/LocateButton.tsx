@@ -11,11 +11,13 @@ import { Button } from '@nextui-org/react'
 import { encodeGeoHash } from '#lib/helper/geocoder'
 import { ethers, parseEther } from 'ethers'
 import { useAppKitAccount } from '@reown/appkit/react'
+import { useContributionContext } from '#src/context/GlobalStateContext'
 
 export const LocateButton = () => {
   const { map } = useMapContext()
   const [userPosition, setUserPosition] = useState<LatLngExpression | undefined>(undefined)
   const { address, isConnected } = useAppKitAccount();
+  const {player, balances, location, contributions, players, claims, assets,addLocation } = useContributionContext();
 
   const handleClick = useCallback(() => {
     if ('geolocation' in navigator) {
@@ -31,7 +33,7 @@ export const LocateButton = () => {
     if (userPosition) {
       map?.flyTo(userPosition)
     }
-  }, [map, userPosition])
+  }, [map, userPosition,player])
 
   return (
     <>
@@ -47,26 +49,9 @@ export const LocateButton = () => {
       >
         <LocateFixed size={AppConfig.ui.mapIconSize} />
       </Button>
-      {userPosition && (
+      {userPosition && player && (
         <CustomMarker
-          place={{
-            valid: true,
-            index: ethers.MaxUint256,
-            deposit: parseEther("0"),
-            withdraw: parseEther("0"),
-            claims: parseEther("0"),
-            limit: parseEther("0"),
-            timestamp: Date.now(),
-            contributor: isConnected ? ethers.getAddress(address as string) : ethers.ZeroAddress, // Varsayılan contributor adresi
-            token: ethers.ZeroAddress, // Varsayılan token adresi
-            geohash: encodeGeoHash(userPosition),
-            name: 'Your Location',
-            url: '', // Varsayılan URL
-            description: 'You are here.',
-            color: '#00000080', // Varsayılan renk
-            image: '', // Varsayılan görsel
-            claimers: [], // Başlangıçta boş claimers
-          }}
+          place={player}
         />
       )}
     </>

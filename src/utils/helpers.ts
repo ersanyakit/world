@@ -1,6 +1,7 @@
+import { isContribution } from "#lib/utils";
 import { EMOJIS, TWEET_HEAD, TWEETS, TWITTER_USERS } from "#src/constants/constants";
 import { Tokens } from "#src/constants/tokens";
-import { Contribution } from "#src/types/Contribution";
+import { Contribution, Player } from "#src/types/Contribution";
 import { Token } from "#src/types/web3.types";
 import { ethers, formatUnits, isAddress, keccak256, parseEther, parseUnits } from "ethers";
 
@@ -146,7 +147,6 @@ export const generateTweetIntentURL = (address: any, contributionId: any): strin
 
   const randomTweet = TWEETS[Math.floor(Math.random() * TWEETS.length)];
 
-  const randomHead = TWEET_HEAD[Math.floor(Math.random() * TWEET_HEAD.length)];
   const tweetText = `🥇${randomHead} ${randomEmoji}\n\n🥈${randomTweet}\n\n🚀🚀🚀${shareURL}\n\n🥉Shoutout to: ${randomUsers}`;
 
   const encodedTweetText = encodeURIComponent(tweetText);
@@ -160,6 +160,7 @@ function containsLink(tweetText: string): boolean {
   return urlPattern.test(tweetText);
 }
 
+const randomHead : string = TWEET_HEAD[Math.floor(Math.random() * TWEET_HEAD.length)];
 
 export const randomUsers: string = [
   ...getRandomUsers(TWITTER_USERS, 3), 
@@ -169,13 +170,16 @@ export const randomUsers: string = [
   "@el33th4xor"
 ].join(' ');
 
-export const generateTweetIntentByContribution = (contributionObject: Contribution): string => {
+export const generateTweetIntentByContribution = (contributionObject: Contribution | Player): string => {
 
  
-  var tweetText = `${contributionObject.description}`;
+  var checkIsContribution : boolean  = isContribution(contributionObject)
+  var tweetText = checkIsContribution ? `${(contributionObject as Contribution).description }` : randomHead ;
+
+  let walletAddress = checkIsContribution ? (contributionObject as Contribution).contributor : (contributionObject as Player).wallet
 
   if(!containsLink(tweetText)){
-    let shareURL = generateShareURL(contributionObject.contributor,contributionObject.index);
+    let shareURL = generateShareURL(walletAddress,contributionObject.index);
     tweetText = `${tweetText}\n\n${randomUsers}\n\n${shareURL}`
   }
   const encodedTweetText = encodeURIComponent(tweetText);
