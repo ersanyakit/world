@@ -16,11 +16,11 @@ const MarkerIconWrapper = ({ contribution,player, color, label }: MarkerIconWrap
 
   return (
     <div className="relative m-0 inline-flex p-0">
-      {label && (
+     
         <span className="absolute -inset-2 rounded-full opacity-40" style={{ backgroundColor: color }} />
-      )}
+   
       <div
-        className="relative inline-block rounded-full bg-primary p-2 text-white"
+        className="relative inline-block rounded-full  p-2 text-white"
         style={{ backgroundColor: color }}
       >
         {contribution  && <MapIcon player={player} width={64} height={86} contribution={contribution} />}
