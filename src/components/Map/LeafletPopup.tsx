@@ -112,15 +112,15 @@ const LeafletPopup = ({
                     <div className='mt-2 w-full grid grid-cols-3 gap-2 text-xs py-2 rounded-lg p-2' >
                       <div className='w-full flex flex-col'>
                         <span className='font-bold text-lime-500'>Total Claims</span>
-                        <span className='text-purple-500 text-lg'>{Number(contribution.claims)}</span>
+                        <span className='text-purple-500 text-xs  text-center'>{Number(contribution.claims)}</span>
                       </div>
                       <div className='w-full flex flex-col'>
                         <span className='font-bold text-lime-500'>Maximum Claims</span>
-                        <span className='text-purple-500 text-lg'>{Number(contribution.limit)}</span>
+                        <span className='text-purple-500 text-xs text-center'>{Number(contribution.limit)}</span>
                       </div>
                       <div className='w-full flex flex-col'>
                         <span className='font-bold text-lime-500'>Total Contribution</span>
-                        <span className='text-purple-500 text-lg'>{contributionInfo ? ethers.formatUnits(contributionInfo?.totalContribution,getTokenByAddress(contribution.token)?.decimals) : ""}</span>
+                        <span className='text-purple-500 text-xs  text-center'>{contributionInfo ? ethers.formatUnits(contributionInfo?.totalContribution,getTokenByAddress(contribution.token)?.decimals) : ""}</span>
                       </div>
                 
                       
