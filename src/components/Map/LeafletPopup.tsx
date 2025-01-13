@@ -122,18 +122,8 @@ const LeafletPopup = ({
                         <span className='font-bold text-lime-500'>Total Contribution</span>
                         <span className='text-purple-500 text-lg'>{contributionInfo ? ethers.formatUnits(contributionInfo?.totalContribution,getTokenByAddress(contribution.token)?.decimals) : ""}</span>
                       </div>
-                      <div className='w-full flex flex-col' >
-                        <span className='font-bold  text-lime-500'>Your Contributions</span>
-                        <span className='text-purple-500 text-lg'>{player?.contributions.length}</span>
-                      </div>
-                      <div className='w-full flex flex-col' >
-                        <span className='font-bold  text-lime-500'>Your Claims</span>
-                        <span className='text-purple-500 text-lg'>{player?.claims.length}</span>
-                      </div>
-                      <div className='w-full flex flex-col' >
-                        <span className='font-bold  text-lime-500'>Can I Claim?</span>
-                        <span className='text-purple-500 text-lg'>{"YES"}</span>
-                      </div>
+                
+                      
                     </div>
                    
                   </>
