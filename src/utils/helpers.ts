@@ -142,7 +142,6 @@ export const getRandomUsers = (users: string[], count: number): string[] => {
 
 export const generateTweetIntentURL = (address: any, contributionId: any): string => {
   const shareURL = generateShareURL(address, contributionId);
-  let randomUsers : string = getRandomUsers(TWITTER_USERS,3).join(' ').concat(" @alex_dreyfus @millionarmap @PepperChain @el33th4xor");
   const randomEmoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
 
   const randomTweet = TWEETS[Math.floor(Math.random() * TWEETS.length)];
@@ -161,11 +160,19 @@ function containsLink(tweetText: string): boolean {
   return urlPattern.test(tweetText);
 }
 
+
+export const randomUsers: string = [
+  ...getRandomUsers(TWITTER_USERS, 3), 
+  "@alex_dreyfus", 
+  "@millionarmap", 
+  "@PepperChain", 
+  "@el33th4xor"
+].join(' ');
+
 export const generateTweetIntentByContribution = (contributionObject: Contribution): string => {
 
  
   var tweetText = `${contributionObject.description}`;
-  let randomUsers : string = getRandomUsers(TWITTER_USERS,3).join(' ').concat(" @alex_dreyfus @millionarmap @PepperChain @el33th4xor");
 
   if(!containsLink(tweetText)){
     let shareURL = generateShareURL(contributionObject.contributor,contributionObject.index);

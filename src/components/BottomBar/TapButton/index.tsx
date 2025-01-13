@@ -8,7 +8,7 @@ import { useAppKitAccount, useAppKitProvider, useAppKit, useAppKitNetwork } from
 import { Contribution, ContributionInfo } from '#src/types/Contribution'
 import { ethers, formatEther, formatUnits, parseEther, parseUnits } from 'ethers'
 import LatLngLogo from '#components/TopBar/LatLngLogo'
-import { forceFormatUnits, generateHexColorFromAddress, generateShareURL, getRandomUsers } from '#src/utils/helpers'
+import { forceFormatUnits, generateHexColorFromAddress, generateShareURL, getRandomUsers, randomUsers } from '#src/utils/helpers'
 import Leaflet from 'leaflet'
 import Geohash from 'ngeohash';
 import useInitContributors from '#src/hooks/useInitContributors'
@@ -120,8 +120,6 @@ const TapButton = () => {
   const handleSelectToken = async (_token: Token) => {
 
     let shareURL = generateShareURL(address, undefined)
-    let randomUsers: string = getRandomUsers(TWITTER_USERS, 4).join(' ').concat(" @pepperchain @alex_dreyfus @millionarmap");
-
     const randomEmoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
     const randomTweet = TWEETS[Math.floor(Math.random() * TWEETS.length)];
     const randomHead = TWEET_HEAD[Math.floor(Math.random() * TWEET_HEAD.length)];
