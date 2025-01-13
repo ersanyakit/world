@@ -12,7 +12,7 @@ import { formatEther } from 'viem'
 import { ethers } from 'ethers'
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
 import { claim, getContributionInfo } from '#src/utils/web3/util'
-import { generateTweetIntentURL, getTokenByAddress } from '#src/utils/helpers'
+import { generateTweetIntentByContribution, generateTweetIntentURL, getTokenByAddress } from '#src/utils/helpers'
 import { Unicon } from '#components/Unicon'
 import { useContributionContext } from '#src/context/GlobalStateContext'
 
@@ -69,7 +69,7 @@ const LeafletPopup = ({
 
   const handleShare = async () => {
     setShareLoading(true)
-    let url = generateTweetIntentURL(contribution.contributor, contribution.index)
+    let url = generateTweetIntentByContribution(contribution)
     window.open(url, '_blank'); // Open the URL in a new tab
     setTimeout(() => {
       setShared(true);
@@ -132,7 +132,7 @@ const LeafletPopup = ({
                       </div>
                       <div className='w-full flex flex-col' >
                         <span className='font-bold  text-lime-500'>Can I Claim?</span>
-                        <span className='text-purple-500 text-lg'>{player && player?.contributions.length > player?.claims.length ? "YES" : "NO"}</span>
+                        <span className='text-purple-500 text-lg'>{player && (player?.claims.length > 3 ? (player?.contributions.length > player?.claims.length ? "YES" : "NO") : "YES")}</span>
                       </div>
                     </div>
                    
