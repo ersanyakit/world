@@ -155,13 +155,22 @@ export const generateTweetIntentURL = (address: any, contributionId: any): strin
   return `https://twitter.com/intent/tweet?text=${encodedTweetText}`;
 };
 
+
+function containsLink(tweetText: string): boolean {
+  const urlPattern = /(https?:\/\/[^\s]+)/g; // URL'leri eşleştiren regex
+  return urlPattern.test(tweetText);
+}
+
 export const generateTweetIntentByContribution = (contributionObject: Contribution): string => {
-  const shareURL = generateShareURL(contributionObject.contributor,contributionObject.index) //contributionObject.url.replace('www.', '');
 
-  let randomUsers : string = getRandomUsers(TWITTER_USERS,5).join(' ').concat(" @alex_dreyfus @millionarmap");
  
-  const tweetText = `${contributionObject.description}\n\n${shareURL}`;
+  var tweetText = `${contributionObject.description}`;
+  let randomUsers : string = getRandomUsers(TWITTER_USERS,5).join(' ').concat(" @alex_dreyfus @millionarmap");
 
+  if(!containsLink(tweetText)){
+    let shareURL = generateShareURL(contributionObject.contributor,contributionObject.index);
+    tweetText = `${tweetText}\n\n${randomUsers}\n\n${shareURL}`
+  }
   const encodedTweetText = encodeURIComponent(tweetText);
 
   return `https://twitter.com/intent/tweet?text=${encodedTweetText}`;
