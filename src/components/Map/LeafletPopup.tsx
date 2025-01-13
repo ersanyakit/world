@@ -132,7 +132,7 @@ const LeafletPopup = ({
                       </div>
                       <div className='w-full flex flex-col' >
                         <span className='font-bold  text-lime-500'>Can I Claim?</span>
-                        <span className='text-purple-500 text-lg'>{player && (player?.claims.length > 3 ? (player?.contributions.length > player?.claims.length ? "YES" : "NO") : "YES")}</span>
+                        <span className='text-purple-500 text-lg'>{"YES"}</span>
                       </div>
                     </div>
                    
@@ -140,8 +140,8 @@ const LeafletPopup = ({
                 }
              
               </div>
-              <div className='w-full p-2 rounded-lg bg-danger/15'>
-                      <span className=' text-danger-500 text-center text-sm'>Total number of contributions must be greater than total number of claims.</span>
+              <div className='w-full p-2 rounded-lg bg-danger/50 hidden'>
+                      <span className=' text-white text-center text-sm'>Total number of contributions must be greater than total number of claims.</span>
                     </div>
               {
                 contribution?.index < ethers.MaxUint256 &&
