@@ -133,7 +133,7 @@ export const generateShareURL = (address : any, contributionId : any) : string =
 } 
 
 
-const getRandomUsers = (users: string[], count: number): string[] => {
+export const getRandomUsers = (users: string[], count: number): string[] => {
   const shuffled = [...users].sort(() => Math.random() - 0.5); // Shuffle the array
   const selectedUsers = shuffled.slice(0, count); // Select the first `count` users
   return selectedUsers.map(user => `@${user}`); // Add "@" to the beginning of each username

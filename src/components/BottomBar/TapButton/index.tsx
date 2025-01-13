@@ -8,11 +8,11 @@ import { useAppKitAccount, useAppKitProvider, useAppKit, useAppKitNetwork } from
 import { Contribution, ContributionInfo } from '#src/types/Contribution'
 import { ethers, formatEther, formatUnits, parseEther, parseUnits } from 'ethers'
 import LatLngLogo from '#components/TopBar/LatLngLogo'
-import { forceFormatUnits, generateHexColorFromAddress, generateShareURL } from '#src/utils/helpers'
+import { forceFormatUnits, generateHexColorFromAddress, generateShareURL, getRandomUsers } from '#src/utils/helpers'
 import Leaflet from 'leaflet'
 import Geohash from 'ngeohash';
 import useInitContributors from '#src/hooks/useInitContributors'
-import { TWEET_HEAD, TWEETS } from '#src/constants/constants'
+import { EMOJIS, TWEET_HEAD, TWEETS, TWITTER_USERS } from '#src/constants/constants'
 import { Tokens } from '#src/constants/tokens'
 import TokenChip from '../TokenChip'
 import { useContributionContext } from '#src/context/GlobalStateContext'
@@ -120,6 +120,18 @@ const TapButton = () => {
   }
 
   const handleSelectToken = async (_token: Token) => {
+
+    let shareURL = generateShareURL(address, undefined)
+    let randomUsers: string = getRandomUsers(TWITTER_USERS, 4).join(' ').concat(" @pepperchain @alex_dreyfus @millionarmap");
+
+    const randomEmoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+    const randomTweet = TWEETS[Math.floor(Math.random() * TWEETS.length)];
+    const randomHead = TWEET_HEAD[Math.floor(Math.random() * TWEET_HEAD.length)];
+    const tweetText = `🥇${randomHead} ${randomEmoji}\n\n🥈${randomTweet}\n\n🚀🚀🚀${shareURL}\n\n🥉Shoutout to: ${randomUsers}`;
+
+    setTitle(randomHead);
+    setDescription(tweetText)
+    setURL(shareURL);
     setToken(_token);
   }
 
@@ -153,7 +165,7 @@ const TapButton = () => {
 
 
 
-<Modal className='bg-black/30' size='lg'  backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal className='bg-black/30' size='lg' backdrop='blur' ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -224,21 +236,21 @@ const TapButton = () => {
                             </div>
                             <div className='mt-2 w-full grid grid-cols-2 gap-2 text-xs py-2 border border-1 border-white/30  rounded-lg p-2' >
                               <div className='w-full flex flex-col'>
-                                <span className='font-bold text-danger'>Token</span>
+                                <span className='font-bold text-lime-500'>Token</span>
                                 <span className='text-white'>{token.name}</span>
                               </div>
                               <div className='w-full flex flex-col'>
-                                <span className='font-bold  text-danger'>Symbol</span>
-                                <span  className='text-white'>{token.symbol}</span>
+                                <span className='font-bold   text-lime-500'>Symbol</span>
+                                <span className='text-white'>{token.symbol}</span>
                               </div>
                               <div className='w-full flex flex-col'>
-                                <span className='font-bold  text-danger'>Decimals</span>
-                                <span  className='text-white'>{token.decimals}</span>
+                                <span className='font-bold   text-lime-500'>Decimals</span>
+                                <span className='text-white'>{token.decimals}</span>
                               </div>
 
                               <div className='w-full flex flex-col'>
-                                <span className='font-bold  text-danger'>Balance</span>
-                                <span  className='text-white'>{contributionInfo && contributionInfo.playerBalance ? parseFloat(formatUnits(contributionInfo.playerBalance, token.decimals)).toFixed(4) : "0.0000"}</span>
+                                <span className='font-bold   text-lime-500'>Balance</span>
+                                <span className='text-white'>{contributionInfo && contributionInfo.playerBalance ? parseFloat(formatUnits(contributionInfo.playerBalance, token.decimals)).toFixed(4) : "0.0000"}</span>
                               </div>
 
                             </div>
@@ -247,39 +259,16 @@ const TapButton = () => {
 
 
                           <div className='w-full flex flex-col gap-2'>
-                            <Input 
-                             classNames={{
-                              label: "text-black/50 dark:text-white/90",
-                              input: [
-                                  "bg-transparent",
-                                  "text-black/90 dark:text-white/90",
-                                  "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                              ],
-                              innerWrapper: "bg-transparent",
-                              inputWrapper: [
-                                  "shadow-sm",
-                                  "bg-default-200/50",
-                                  "dark:bg-default/60",
-                                  "backdrop-blur-xl",
-                                  "backdrop-saturate-200",
-                                  "hover:bg-default-200/70",
-                                  "dark:hover:bg-default/70",
-                                  "group-data-[focus=true]:bg-default-200/50",
-                                  "dark:group-data-[focus=true]:bg-default/60",
-                                  "!cursor-text",
-                              ],
-                          }}
-                             value={title} onValueChange={setTitle} isClearable label="Title" placeholder="Enter title" size={"lg"} type="text" />
                             <Input
-                            classNames={{
-                              label: "text-black/50 dark:text-white/90",
-                              input: [
+                              classNames={{
+                                label: "text-black/50 dark:text-white/90",
+                                input: [
                                   "bg-transparent",
                                   "text-black/90 dark:text-white/90",
                                   "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                              ],
-                              innerWrapper: "bg-transparent",
-                              inputWrapper: [
+                                ],
+                                innerWrapper: "bg-transparent",
+                                inputWrapper: [
                                   "shadow-sm",
                                   "bg-default-200/50",
                                   "dark:bg-default/60",
@@ -290,19 +279,19 @@ const TapButton = () => {
                                   "group-data-[focus=true]:bg-default-200/50",
                                   "dark:group-data-[focus=true]:bg-default/60",
                                   "!cursor-text",
-                              ],
-                          }}
-                            value={description} onValueChange={setDescription} isClearable label="Description" placeholder="Enter description" size={"lg"} type="text" />
+                                ],
+                              }}
+                              value={title} onValueChange={setTitle} isClearable label="Title" placeholder="Enter title" size={"lg"} type="text" />
                             <Input
-                            classNames={{
-                              label: "text-black/50 dark:text-white/90",
-                              input: [
+                              classNames={{
+                                label: "text-black/50 dark:text-white/90",
+                                input: [
                                   "bg-transparent",
                                   "text-black/90 dark:text-white/90",
                                   "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                              ],
-                              innerWrapper: "bg-transparent",
-                              inputWrapper: [
+                                ],
+                                innerWrapper: "bg-transparent",
+                                inputWrapper: [
                                   "shadow-sm",
                                   "bg-default-200/50",
                                   "dark:bg-default/60",
@@ -313,23 +302,46 @@ const TapButton = () => {
                                   "group-data-[focus=true]:bg-default-200/50",
                                   "dark:group-data-[focus=true]:bg-default/60",
                                   "!cursor-text",
-                              ],
-                          }}
-                            value={url} onValueChange={setURL} isClearable label="URL" placeholder="Enter URL" size={"lg"} type="text" />
+                                ],
+                              }}
+                              value={description} onValueChange={setDescription} isClearable label="Description" placeholder="Enter description" size={"lg"} type="text" />
+                            <Input
+                              classNames={{
+                                label: "text-black/50 dark:text-white/90",
+                                input: [
+                                  "bg-transparent",
+                                  "text-black/90 dark:text-white/90",
+                                  "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                                ],
+                                innerWrapper: "bg-transparent",
+                                inputWrapper: [
+                                  "shadow-sm",
+                                  "bg-default-200/50",
+                                  "dark:bg-default/60",
+                                  "backdrop-blur-xl",
+                                  "backdrop-saturate-200",
+                                  "hover:bg-default-200/70",
+                                  "dark:hover:bg-default/70",
+                                  "group-data-[focus=true]:bg-default-200/50",
+                                  "dark:group-data-[focus=true]:bg-default/60",
+                                  "!cursor-text",
+                                ],
+                              }}
+                              value={url} onValueChange={setURL} isClearable label="URL" placeholder="Enter URL" size={"lg"} type="text" />
 
 
                             <Input
-                            classNames={{
-                              label: "text-lime-500/50 dark:text-lime-500/90",
-                              input: [
+                              classNames={{
+                                label: "text-lime-500/50 dark:text-lime-500/90",
+                                input: [
                                   "bg-transparent",
                                   "text-lime-500/90 dark:text-lime-500/90",
                                   "placeholder:text-lime-500/50 dark:placeholder:text-lime-500/60",
-                              ],
-                              innerWrapper: "bg-transparent",
-                              inputWrapper: [
+                                ],
+                                innerWrapper: "bg-transparent",
+                                inputWrapper: [
                                   "shadow-sm",
-                                 
+
                                   "bg-default-200/50",
                                   "dark:bg-default/60",
                                   "backdrop-blur-xl",
@@ -339,8 +351,8 @@ const TapButton = () => {
                                   "group-data-[focus=true]:bg-default-200/50",
                                   "dark:group-data-[focus=true]:bg-default/60",
                                   "!cursor-text",
-                              ],
-                          }}
+                                ],
+                              }}
                               value={depositAmount.toString()}
                               inputMode='decimal'
                               autoComplete="off" autoCorrect="off" type="text"
@@ -351,7 +363,7 @@ const TapButton = () => {
                                 const regex = /^[0-9]*\.?[0-9]*$/;
                                 e = e.replace(",", ".")
                                 if (regex.test(e)) {
-                                    setDepositAmount(e)
+                                  setDepositAmount(e)
                                 }
 
                               }}
@@ -360,29 +372,29 @@ const TapButton = () => {
                               size={"lg"}
                             />
 
-<Slider
-  value={isNaN(parseFloat(depositAmount)) ? 0 : parseFloat(depositAmount)} // NaN kontrolü ve geçerli sayı
-  onChange={(value) => {
-    if (typeof value === "number") {
-      setDepositAmount(value.toFixed(4).toString());  // Sayıyı string'e dönüştürerek set ediyoruz
-    } else if (Array.isArray(value)) {
-      setDepositAmount(value[0].toFixed(4).toString()); // Array ise ilk değeri alıyoruz ve string'e dönüştürüyoruz
-    }
-  }}
-  className="w-full"
-  size='lg'
-  getValue={(amount) => {
-    // Eğer amount bir dizi ise, ilk değeri alıyoruz ve formatlıyoruz
-    const value = Array.isArray(amount) ? amount[0] : amount;
-    return `${value.toFixed(4)} ${token.symbol}`;
-  }}  maxValue={
-    contributionInfo?.playerBalance && contributionInfo.playerBalance > 0
-      ? forceFormatUnits(contributionInfo.playerBalance, token)
-      : 99999999 // Unlimited olarak ayarlanır
-  }
-  minValue={0}
-  step={0.1}
-/>
+                            <Slider
+                              value={isNaN(parseFloat(depositAmount)) ? 0 : parseFloat(depositAmount)} // NaN kontrolü ve geçerli sayı
+                              onChange={(value) => {
+                                if (typeof value === "number") {
+                                  setDepositAmount(value.toFixed(4).toString());  // Sayıyı string'e dönüştürerek set ediyoruz
+                                } else if (Array.isArray(value)) {
+                                  setDepositAmount(value[0].toFixed(4).toString()); // Array ise ilk değeri alıyoruz ve string'e dönüştürüyoruz
+                                }
+                              }}
+                              className="w-full"
+                              size='lg'
+                              getValue={(amount) => {
+                                // Eğer amount bir dizi ise, ilk değeri alıyoruz ve formatlıyoruz
+                                const value = Array.isArray(amount) ? amount[0] : amount;
+                                return `${value.toFixed(4)} ${token.symbol}`;
+                              }} maxValue={
+                                contributionInfo?.playerBalance && contributionInfo.playerBalance > 0
+                                  ? forceFormatUnits(contributionInfo.playerBalance, token)
+                                  : 99999999 // Unlimited olarak ayarlanır
+                              }
+                              minValue={0}
+                              step={0.1}
+                            />
 
                           </div>
 

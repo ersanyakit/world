@@ -74,7 +74,7 @@ const LeafletPopup = ({
     setTimeout(() => {
       setShared(true);
       setShareLoading(false)
-    }, 5000);
+    }, 10000);
   }
 
 
@@ -186,7 +186,7 @@ const LeafletPopup = ({
                       color="success"
                       onPress={handleShare}
                     >
-                      Tweet to Claim
+                      {isShareLoading ?  "Verifying..." : "Tweet to Claim"}
                     </Button>
                     <Button
                       isDisabled={!isShared}
