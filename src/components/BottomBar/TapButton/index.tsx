@@ -56,8 +56,6 @@ const TapButton = () => {
 
 
 
-  useEffect(() => { }, [contributionInfo?.playerBalance])
-
 
   const handleContribute = async () => {
     setLoaded(true)

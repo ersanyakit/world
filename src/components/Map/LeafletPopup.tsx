@@ -46,6 +46,7 @@ const LeafletPopup = ({
   useEffect(() => {
     if (isOpen) {
       loadData(contribution);
+      setShared(false)
     }
   }, [isOpen])
 
