@@ -1,5 +1,5 @@
 import { ContractCallResponse, Token } from '#src/types/web3.types'
-import { Avatar, Button, form, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Slider, useDisclosure, useDraggable, User } from '@nextui-org/react'
+import { Avatar, Button, form, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Slider, Textarea, useDisclosure, useDraggable, User } from '@nextui-org/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import useMapContext from '../../Map/useMapContext'
 import L from 'leaflet'
@@ -282,30 +282,37 @@ const TapButton = () => {
                                 ],
                               }}
                               value={title} onValueChange={setTitle} isClearable label="Title" placeholder="Enter title" size={"lg"} type="text" />
-                            <Input
-                              classNames={{
-                                label: "text-black/50 dark:text-white/90",
-                                input: [
-                                  "bg-transparent",
-                                  "text-black/90 dark:text-white/90",
-                                  "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                                ],
-                                innerWrapper: "bg-transparent",
-                                inputWrapper: [
-                                  "shadow-sm",
-                                  "bg-default-200/50",
-                                  "dark:bg-default/60",
-                                  "backdrop-blur-xl",
-                                  "backdrop-saturate-200",
-                                  "hover:bg-default-200/70",
-                                  "dark:hover:bg-default/70",
-                                  "group-data-[focus=true]:bg-default-200/50",
-                                  "dark:group-data-[focus=true]:bg-default/60",
-                                  "!cursor-text",
-                                ],
-                              }}
-                              value={description} onValueChange={setDescription} isClearable label="Description" placeholder="Enter description" size={"lg"} type="text" />
-                            <Input
+                            
+                            
+                            
+                            <Textarea 
+                            
+                            classNames={{
+                              label: "text-black/50 dark:text-white/90",
+                              input: [
+                                "bg-transparent",
+                                "text-black/90 dark:text-white/90",
+                                "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                              ],
+                              innerWrapper: "bg-transparent",
+                              inputWrapper: [
+                                "shadow-sm",
+                                "bg-default-200/50",
+                                "dark:bg-default/60",
+                                "backdrop-blur-xl",
+                                "backdrop-saturate-200",
+                                "hover:bg-default-200/70",
+                                "dark:hover:bg-default/70",
+                                "group-data-[focus=true]:bg-default-200/50",
+                                "dark:group-data-[focus=true]:bg-default/60",
+                                "!cursor-text",
+                              ],
+                            }}
+                            isClearable={true}
+                            value={description} onValueChange={setDescription} 
+                            label="Description" placeholder="Enter your description" />
+
+                             <Input
                               classNames={{
                                 label: "text-black/50 dark:text-white/90",
                                 input: [
