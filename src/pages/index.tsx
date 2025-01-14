@@ -13,7 +13,7 @@ import { Toaster } from '#components/ui/sonner'
 
 const getRandomImage = () => {
   const randomIndex = Math.floor(Math.random() * 11);
-  const imageURL = `https://www.millionarmap.com/assets/og/${randomIndex}.webp`
+  const imageURL = `https://millionarmap.com/assets/og/${randomIndex}.webp`
   return imageURL
 };
 
