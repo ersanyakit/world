@@ -10,12 +10,12 @@ import { toast } from "sonner"
 import { Toaster } from '#components/ui/sonner'
 
 
-
 const getRandomImage = () => {
-  const randomIndex = Math.floor(Math.random() * 35);
-  const imageURL = `https://www.millionarmap.com/assets/og/${randomIndex}.jpg`
+  const randomIndex = Math.floor(Math.random() * 11);
+  const imageURL = `https://millionarmap.com/assets/og/${randomIndex}.webp`
   return imageURL
 };
+
 
 const getTitle = () => {
   return "MILLIONARMAP - Your Map to Financial Freedom";
