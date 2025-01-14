@@ -46,7 +46,7 @@ const CreateMarkerClusterGroup = (
     showCoverageOnHover: true,  // Kapsama alanı gösterilsin
     spiderfyOnEveryZoom: true,  // Yalnızca max zoomda yayılma
     zoomToBoundsOnClick: true,  // Küme tıklandığında zoom yapılsın
-    spiderfyDistanceMultiplier: 10,  // İşaretçilerin yayılma mesafesi
+    spiderfyDistanceMultiplier: 5,  // İşaretçilerin yayılma mesafesi
   
     // @ts-ignore
     iconCreateFunction: (cluster) =>
