@@ -22,8 +22,8 @@ export const LeafletMapContainer = ({ children, ...props }: LeafletMapContainerP
 
   return (
     <MapContainer
-    key={"coder"}
-      zoomControl={false} zoom={AppConfig.maxZoom}  maxBoundsViscosity={1.0} maxBounds={ [[-90, -180], [90, 180]]}
+    key={"map"}
+      zoomControl={false} zoom={AppConfig.maxZoom} fadeAnimation={false} zoomAnimation={false}  maxBoundsViscosity={1.0} maxBounds={ [[-90, -180], [90, 180]]}
       ref={e => setMap && setMap(e || undefined)}
       className="absolute h-full w-full text-white outline-0"
       {...props}
@@ -32,10 +32,7 @@ export const LeafletMapContainer = ({ children, ...props }: LeafletMapContainerP
 
 
    
- <TileLayer
-      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    />
+
  
   
 
