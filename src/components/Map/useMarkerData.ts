@@ -8,6 +8,7 @@ import { PlacesClusterType, PlacesType } from '#lib/Places'
 import { Contribution, Player } from '#src/types/Contribution'
 import { isContribution } from '#lib/utils';
 import { decodeGeoHash } from '#lib/helper/geocoder';
+import { Category } from '#lib/MarkerCategories';
 
 interface useMapDataValues {
   locations?: (Contribution | Player)[];
@@ -42,19 +43,17 @@ const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMap
       let position: LatLngExpression = decodeGeoHash(geoHashStr,geoHashParamStr)
       coordsSum.push(position)
     })
+
     return leafletLib.latLngBounds(coordsSum)
   }, [leafletLib, locations])
 
   const clustersByCategory = useMemo(() => {
     if (!locations) return undefined
 
-    
- 
     const groupedLocations = locations.reduce<PlacesClusterType>((acc, location) => {
       
-    const key = isContribution(location) ? location.geohash : location.geohash;
+    const key = isContribution(location) ? Category.TREASURY : Category.PLAYER;
 
-     // const { token } = location
       if (!acc[key]) {
         acc[key] = []
       }
@@ -69,6 +68,8 @@ const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMap
 
     return  mappedClusters
   }, [locations])
+
+ 
 
   useEffect(() => {
     // Eğer allMarkerBounds veya map geçerli değilse işlemi sonlandır
@@ -106,7 +107,7 @@ const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMap
     } catch (error) {
       console.error("Error in map or bounds handling:", error);
     }
-  }, [allMarkerBounds, map, viewportWidth, viewportHeight]);
+  }, [allMarkerBounds, map,viewportWidth, viewportHeight]);
 
   return { clustersByCategory, allMarkersBoundCenter }
 }

@@ -1,12 +1,11 @@
-import { Leaf, LocateFixed, LucideProps, PersonStanding } from 'lucide-react'
+import { Gem, Leaf, LocateFixed, LucideProps, PersonStanding, User, Users } from 'lucide-react'
 import { FunctionComponent } from 'react'
 import colors from 'tailwindcss/colors'
 
 export enum Category {
   LOCATE = 0,
-  CAT1 = 1,
-  CAT2 = 2,
-  TREASURY = 3
+  PLAYER = 1,
+  TREASURY = 2
 }
 
 export interface MarkerCategoriesValues {
@@ -23,24 +22,19 @@ type MarkerCategoryType = {
 const MarkerCategories: MarkerCategoryType = {
   [Category.LOCATE]: {
     name: 'User Location',
-    icon: LocateFixed,
-    color: colors.green[400],
+    icon: User,
+    color: colors.red[400],
     hideInMenu: false,
   },
-  [Category.CAT1]: {
-    name: 'Category 1',
-    icon: Leaf,
-    color: colors.blue[400],
-  },
-  [Category.CAT2]: {
-    name: 'Category 2',
-    icon: PersonStanding,
-    color: colors.red[400],
+  [Category.PLAYER]: {
+    name: 'PLAYER',
+    icon: Users,
+    color: colors.green[400],
   },
   [Category.TREASURY]: {
-    name: 'Treasury',
-    icon: PersonStanding,
-    color: colors.red[400],
+    name: 'TREASURY',
+    icon: Gem,
+    color: colors.red[500],
   },
 }
 

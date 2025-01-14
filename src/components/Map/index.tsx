@@ -1,6 +1,5 @@
 import BottomBar from '#components/BottomBar';
 import MarkerCategories, { Category } from '#lib/MarkerCategories';
-import { Places } from '#lib/Places';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { useResizeDetector } from 'react-resize-detector';
@@ -139,8 +138,8 @@ const LeafletMapInner = () => {
                 {Object.values(clustersByCategory).map((item,index) => (
                   <LeafletCluster
                     key={`cluster${item.category}${index}`}
-                    icon={MarkerCategories[Category.CAT1].icon}
-                    color={MarkerCategories[Category.CAT1].color}
+                    icon={MarkerCategories[item.category as Category].icon}
+                    color={MarkerCategories[item.category as Category].color}
                     chunkedLoading={false}
                   
                   >

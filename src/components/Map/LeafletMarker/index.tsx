@@ -48,8 +48,8 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
  
   const handleMarkerClick = useCallback(() => {
     if (!map) return;
-    const clampZoom = map.getZoom() <  AppConfig.maxZoom ? 14 : 14;
-    map.setView(decodeGeoHash(place.geohash), clampZoom, { animate: false });
+   // const clampZoom = map.getZoom();// <  AppConfig.maxZoom ? 14 : 14;
+   // map.setView(decodeGeoHash(place.geohash), clampZoom, { animate: false });
     setIsModalOpen(true);
 
   }, [map]);

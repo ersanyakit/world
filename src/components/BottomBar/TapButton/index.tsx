@@ -282,6 +282,7 @@ const TapButton = () => {
                             
                             
                             <Textarea 
+                            cols={2}
                             
                             classNames={{
                               label: "text-black/50 dark:text-white/90",
