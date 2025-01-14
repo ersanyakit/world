@@ -30,16 +30,9 @@ export const LeafletMapContainer = ({ children, ...props }: LeafletMapContainerP
     >
  
 
-
-   
  <TileLayer
       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
-    />
- 
- <TileLayer
-      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      url="https://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png"
+      url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
     />
  
      
