@@ -66,7 +66,7 @@ const LeafletMapInner = () => {
     ref: viewportRef,
   } = useResizeDetector({
     refreshMode: 'debounce',
-    refreshRate: 5000,
+    refreshRate: 600,
   });
 
   const locations = [...contributions, ...players]; // contributions ve players birleştirildi
