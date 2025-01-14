@@ -67,7 +67,7 @@ const LeafletMapInner = () => {
     ref: viewportRef,
   } = useResizeDetector({
     refreshMode: 'debounce',
-    refreshRate: 200,
+    refreshRate: 5000,
   });
 
   const locations = [...contributions, ...players]; // contributions ve players birleştirildi
@@ -132,12 +132,15 @@ const LeafletMapInner = () => {
                 <ZoomInButton />
                 <ZoomOutButton />
 
+
+
                 {Object.values(clustersByCategory).map((item,index) => (
                   <LeafletCluster
-                    key={`${item.category}${index}`}
+                    key={`cluster${item.category}${index}`}
                     icon={MarkerCategories[Category.CAT1].icon}
                     color={MarkerCategories[Category.CAT1].color}
-                    chunkedLoading
+                    chunkedLoading={false}
+                  
                   >
                     {item.markers.map((marker,markerIndex) => (
                       <CustomMarker place={marker} key={`marker${markerIndex}${marker.name}${marker.index}`} />
