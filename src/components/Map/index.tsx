@@ -120,8 +120,8 @@ const LeafletMapInner = () => {
             zoom={allMarkersBoundCenter.minZoom}
             maxZoom={AppConfig.maxZoom}
             minZoom={AppConfig.minZoom}
-            zoomAnimation={false}
-            fadeAnimation={false}
+            zoomAnimation={true}
+            fadeAnimation={true}
           >
             {!isLoading ? (
               <>

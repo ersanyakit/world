@@ -39,14 +39,14 @@ const CreateMarkerClusterGroup = (
 ) => {
   const markerClusterGroup = new Leaflet.MarkerClusterGroup({
     removeOutsideVisibleBounds: true,
-    spiderfyOnMaxZoom: false,  // Küme en yüksek zoom seviyesinde yayılsın
+    spiderfyOnMaxZoom: true,  // Küme en yüksek zoom seviyesinde yayılsın
     spiderLegPolylineOptions: {
       className: 'hidden', // Yayılma çizgilerini gizle
     },
     showCoverageOnHover: true,  // Kapsama alanı gösterilsin
-    spiderfyOnEveryZoom: false,  // Yalnızca max zoomda yayılma
+    spiderfyOnEveryZoom: true,  // Yalnızca max zoomda yayılma
     zoomToBoundsOnClick: true,  // Küme tıklandığında zoom yapılsın
-    spiderfyDistanceMultiplier: 3,  // İşaretçilerin yayılma mesafesi
+    spiderfyDistanceMultiplier: 10,  // İşaretçilerin yayılma mesafesi
   
     // @ts-ignore
     iconCreateFunction: (cluster) =>
