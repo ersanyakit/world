@@ -17,8 +17,8 @@ const metadata = {
 createAppKit({
   adapters: [new EthersAdapter()],
   metadata:metadata,
-  networks: [avalanche,chiliz],
-  defaultNetwork: avalanche,
+  networks: [chiliz,avalanche],
+  defaultNetwork: chiliz,
   chainImages:{
     88888:"/assets/chains/chz.svg"
   },
