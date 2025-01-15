@@ -12,20 +12,32 @@ import { useChainId } from '#src/context/ChainIdProvider';
 import useMapContext from '#components/Map/useMapContext';
 import { decodeGeoHash } from '#lib/helper/geocoder';
 import { LatLngExpression } from 'leaflet';
+import { toast } from 'sonner';
 
 
 const ContributionCard = ({ contribution }: { contribution: Contribution }) => {
     const [dateTimeDetails,setDateTimeDetails] = useState<TimestampDetails | null>(unixToTimestampDetails(contribution.timestamp))
       const chainId = useChainId()
       const { map } = useMapContext()
+      const {player} = useContributionContext()
     
     const [tokenInfo,setTokenInfo] = useState<Token | null>(getTokenByAddress(chainId, contribution.token))
 
     const handleFly = async () => {
-        let markerPosition : LatLngExpression = decodeGeoHash(contribution.geohash)
-        if (map) {
-            map.setView(markerPosition, map.getZoom(), { animate: false });
+        if(!player){
+            return;
         }
+        if(player?.contributions.length > 20){
+            let markerPosition : LatLngExpression = decodeGeoHash(contribution.geohash)
+            if (map) {
+                map.setView(markerPosition, map.getZoom(), { animate: false });
+            }
+        }else{
+            toast.error('You need to make at least 20 contributions to use this feature.')
+
+
+        }
+   
     }
 
     return(
