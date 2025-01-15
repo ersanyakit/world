@@ -3,7 +3,7 @@ import {  useAppKit, useAppKitAccount, useAppKitNetwork } from '@reown/appkit/re
 import { FormatAddressDesign, generateTweetIntentByContribution, generateTweetIntentURL, getTokenByAddress, TimestampDetails, unixToTimestampDetails } from '#src/utils/helpers';
 import React, { useEffect, useState } from 'react';
 import { Unicon } from '#components/Unicon';
-import { ExternalLink, Globe, Bird } from 'lucide-react';
+import { ExternalLink, Globe, Bird, Navigation, ArrowUpRight, MapPin } from 'lucide-react';
 import { useContributionContext } from '#src/context/GlobalStateContext';
 import { Contribution } from '#src/types/Contribution';
 import { formatUnits } from 'ethers';
@@ -16,14 +16,11 @@ const ContributionCard = ({ contribution }: { contribution: Contribution }) => {
       const chainId = useChainId()
     
     const [tokenInfo,setTokenInfo] = useState<Token | null>(getTokenByAddress(chainId, contribution.token))
-    const { address, isConnected } = useAppKitAccount();
 
-    return(<>
+    return(
        <Card shadow="sm"  className='w-full cursor-pointer border border-1 border-black/50 bg-primary/5 hover:bg-black/50 transition-colors duration-200' key={Number(contribution.index)}>
                     <CardBody>
-                        <div className="flex flex-col gap-2">
-
-                            <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2">
                                 <div className="flex gap-3 items-center">
                                     <div className="flex-none border-1 border-white/5  rounded-small text-center w-11 overflow-hidden">
                                         <div className="text-tiny bg-black py-0.5 text-white">
@@ -49,25 +46,7 @@ const ContributionCard = ({ contribution }: { contribution: Contribution }) => {
                                 </div>
                                 <div className="flex flex-row gap-3 items-start">
                                     <div className="flex items-center justify-center flex-none border-1 border-white/5 rounded-small w-11 min-w-11 h-11">
-                                        <svg
-                                            className="text-red-500"
-                                            height="20"
-                                            viewBox="0 0 16 16"
-                                            width="20"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <g
-                                                fill="none"
-                                                fillRule="evenodd"
-                                                stroke="currentColor"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth="1.5"
-                                            >
-                                                <path d="M2 6.854C2 11.02 7.04 15 8 15s6-3.98 6-8.146C14 3.621 11.314 1 8 1S2 3.62 2 6.854" />
-                                                <path d="M9.5 6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
-                                            </g>
-                                        </svg>
+                                    <MapPin className='text-danger-500' />
                                     </div>
                                     <div className="w-full flex flex-col gap-0.5">
                                         
@@ -75,20 +54,7 @@ const ContributionCard = ({ contribution }: { contribution: Contribution }) => {
                                             isExternal
                                             showAnchorIcon
                                             anchorIcon={
-                                                <svg
-                                                    className="group-hover:text-inherit text-default-400 transition-[color,transform] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                                                    fill="none"
-                                                    height="16"
-                                                    stroke="currentColor"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth="2"
-                                                    viewBox="0 0 24 24"
-                                                    width="16"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path d="M7 17 17 7M7 7h10v10" />
-                                                </svg>
+                                                <ArrowUpRight />
                                             }
                                             className="group gap-x-0.5 text-medium text-lime-500 font-medium"
                                             href={contribution.url}
@@ -141,13 +107,12 @@ const ContributionCard = ({ contribution }: { contribution: Contribution }) => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
                     </CardBody>
 
 
                 </Card>
-    </>)
+    )
 }
 
 export default ContributionCard;

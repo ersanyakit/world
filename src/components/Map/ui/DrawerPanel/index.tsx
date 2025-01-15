@@ -37,7 +37,7 @@ const DrawerPanel: FC<DrawerPanelProps> = ({ isOpen, onClose }) => {
     <>
       <Drawer
         hideCloseButton
-        backdrop="blur"
+        //backdrop="blur"
         placement="left"
         classNames={{
           base: 'rounded-lg  bg-black/40 border border-1 border-black/40 shadow-lg',
