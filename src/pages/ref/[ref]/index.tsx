@@ -2,18 +2,18 @@ import Head from 'next/head'
 import Map from '#components/Map'
 import { Alert, Button } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { getAssets, getClaimHistory, getContributors, getPlayers } from '#src/utils/web3/util'
 import { useContributionContext } from '#src/context/GlobalStateContext'
 import useInitContributors from '#src/hooks/useInitContributors'
 import { useAppKitAccount } from '@reown/appkit/react'
 import { toast } from "sonner"
 import { Toaster } from '#components/ui/sonner'
+import { useChainId } from '#src/context/ChainIdProvider'
 
 
 
 const getRandomImage = () => {
-  const randomIndex = Math.floor(Math.random() * 35);
-  const imageURL = `https://www.millionarmap.com/assets/og/${randomIndex}.jpg`
+  const randomIndex = Math.floor(Math.random() * 11);
+  const imageURL = `https://millionarmap.com/assets/og/${randomIndex}.webp`
   return imageURL
 };
 
@@ -27,8 +27,9 @@ const RefPage = () => {
   const randomImage = getRandomImage(); // Get a random image URL
 
   const [refreshTrigger, setRefreshTrigger] = useState(true);
+   const chainId = useChainId()
 
-  useInitContributors(refreshTrigger);
+  useInitContributors(chainId,refreshTrigger);
 
   useEffect(() => {
     if (refreshTrigger) {
@@ -40,7 +41,7 @@ const RefPage = () => {
     if (isConnected) {
       setRefreshTrigger(!refreshTrigger)
     }
-  }, [isConnected, address])
+  }, [isConnected, address,chainId])
 
 
 

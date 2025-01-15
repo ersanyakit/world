@@ -40,3 +40,4 @@ export const HardhatTestnet: TNetwork = {
   image: 'https://millionarmap.com/assets/chains/error.svg',
 };
 
+

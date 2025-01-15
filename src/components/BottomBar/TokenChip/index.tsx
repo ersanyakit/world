@@ -3,7 +3,6 @@ import { Avatar, Button, form, Input, Modal, ModalBody, ModalContent, ModalFoote
 import { useCallback, useEffect, useRef, useState } from 'react'
 import useMapContext from '../../Map/useMapContext'
 import L from 'leaflet'
-import { contribute, getContributionInfoByToken } from '#src/utils/web3/util'
 import { useAppKitAccount, useAppKitProvider,useAppKit, useAppKitNetwork } from '@reown/appkit/react'
 import { Contribution, ContributionInfo } from '#src/types/Contribution'
 import { ethers, formatEther, formatUnits, parseEther, parseUnits } from 'ethers'
@@ -13,6 +12,8 @@ import Leaflet from 'leaflet'
 import Geohash from 'ngeohash';
 import useInitContributors from '#src/hooks/useInitContributors'
 import { TWEET_HEAD, TWEETS } from '#src/constants/constants'
+import { contribute, getContributionInfoByToken } from '#src/hooks/useContractByName'
+import { useChainId } from '#src/context/ChainIdProvider'
 
 export interface ChipProps {
   token: Token
@@ -43,8 +44,9 @@ const TokenChip = ({ token }: ChipProps) => {
     const lat = location?.lat
     const lng = location?.lng
     const [refreshTrigger, setRefreshTrigger] = useState(false);
+   const chainId = useChainId()
 
-    useInitContributors(refreshTrigger);
+    useInitContributors(chainId,refreshTrigger);
 
   
     useEffect(() => {
@@ -65,7 +67,7 @@ const TokenChip = ({ token }: ChipProps) => {
 
   const initDefaults = async () => {
 
-    const _contributionInfo = await getContributionInfoByToken(token, walletProvider, isConnected, address)
+    const _contributionInfo = await getContributionInfoByToken(chainId,token, walletProvider, isConnected, address)
     setContributionInfo(_contributionInfo)
     console.log("getContributionInfoByToken", _contributionInfo, token, isConnected, address)
   }
@@ -134,7 +136,7 @@ const TokenChip = ({ token }: ChipProps) => {
     };
   
   
-    await contribute(walletProvider,isConnected,address,contribution)
+    await contribute(chainId,walletProvider,isConnected,address,contribution)
     //setRefreshTrigger(!refreshTrigger)
     }
   

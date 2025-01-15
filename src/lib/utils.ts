@@ -15,7 +15,7 @@ export const isContribution = (location: Player | Contribution | null | undefine
 
 
 export const extractTweetId = (url: string): string => {
-  const regex = /^(https:\/\/(twitter\.com|x\.com)\/[^\/]+\/status\/(\d+))$/;
+  const regex = /^(https:\/\/(twitter\.com|x\.com)\/[^\/]+\/status\/(\d+))(?:\?[^\/]*)?$/;
   const match = url.match(regex);
   if (match && match[3]) {
     return match[3];  // match[3] => Tweet ID'si

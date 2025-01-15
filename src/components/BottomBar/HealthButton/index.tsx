@@ -3,7 +3,6 @@ import { Avatar, Button, form, Input, Modal, ModalBody, ModalContent, ModalFoote
 import { useCallback, useEffect, useRef, useState } from 'react'
 import useMapContext from '../../Map/useMapContext'
 import L from 'leaflet'
-import { approve, contribute, getContributionInfoByToken } from '#src/utils/web3/util'
 import { useAppKitAccount, useAppKitProvider, useAppKit, useAppKitNetwork } from '@reown/appkit/react'
 import { Contribution, ContributionInfo } from '#src/types/Contribution'
 import { ethers, formatEther, formatUnits, parseEther, parseUnits } from 'ethers'
@@ -18,6 +17,8 @@ import TokenChip from '../TokenChip'
 import { useContributionContext } from '#src/context/GlobalStateContext'
 import ContributionCard from '#components/ContributionCard'
 import NoItemAvailable from '#components/NoItemAvailable'
+import { approve, contribute, getContributionInfoByToken } from '#src/hooks/useContractByName'
+import { useChainId } from '#src/context/ChainIdProvider'
 
 export interface ChipProps {
   token: Token
@@ -51,10 +52,10 @@ const HealthButton = () => {
   const { location, playerContributions, contributions, players, claims, assets, addLocation } = useContributionContext();
 
 
-  const { chainId } = useAppKitNetwork()
+  const chainId = useChainId()
 
 
-  useInitContributors(refreshTrigger);
+  useInitContributors(chainId,refreshTrigger);
 
 
 
@@ -97,7 +98,7 @@ const HealthButton = () => {
 
     let playerAllowance: bigint = contributionInfo ? contributionInfo.playerAllowance : BigInt(0)
     if (contribution.deposit > playerAllowance) {
-      let approvalResponse = await approve(walletProvider, isConnected, token, ethers.MaxUint256)
+      let approvalResponse = await approve(chainId,walletProvider, isConnected, token, ethers.MaxUint256)
       if (!approvalResponse.success) {
         setError(approvalResponse.error)
         setLoaded(false)
@@ -106,7 +107,7 @@ const HealthButton = () => {
     }
 
 
-    let contributeResponse = await contribute(walletProvider, isConnected, address, contribution)
+    let contributeResponse = await contribute(chainId,walletProvider, isConnected, address, contribution)
     if (!contributeResponse.success) {
       setError(contributeResponse.error)
       setLoaded(false)
@@ -126,7 +127,7 @@ const HealthButton = () => {
   }
 
   const fetchContributionData = async (_token: Token) => {
-    const _contributionInfo = await getContributionInfoByToken(_token, walletProvider, isConnected, address)
+    const _contributionInfo = await getContributionInfoByToken(chainId,_token, walletProvider, isConnected, address)
     setContributionInfo(_contributionInfo)
     console.log("getContributionInfoByToken", _contributionInfo, _token, isConnected, address)
   }
@@ -135,7 +136,7 @@ const HealthButton = () => {
     if (!token) {
       return;
     }
-    let response: ContractCallResponse = await approve(walletProvider, isConnected, token, ethers.MaxUint256)
+    let response: ContractCallResponse = await approve(chainId,walletProvider, isConnected, token, ethers.MaxUint256)
     console.log(response);
   }
 

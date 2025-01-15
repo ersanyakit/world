@@ -1,5 +1,4 @@
 import { Tokens } from '#src/constants/tokens';
-import { getNetworkClient } from '#src/utils/web3/clients';
 import { ethers } from 'ethers';
 import { LatLngExpression } from 'leaflet';
 import Geohash from 'ngeohash';

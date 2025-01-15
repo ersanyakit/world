@@ -3,7 +3,6 @@ import { Avatar, Button, form, Input, Modal, ModalBody, ModalContent, ModalFoote
 import { useCallback, useEffect, useRef, useState } from 'react'
 import useMapContext from '../../Map/useMapContext'
 import L from 'leaflet'
-import { approve, contribute, getContributionInfoByToken } from '#src/utils/web3/util'
 import { useAppKitAccount, useAppKitProvider, useAppKit, useAppKitNetwork } from '@reown/appkit/react'
 import { BalanceInfo, Contribution, ContributionInfo } from '#src/types/Contribution'
 import { ethers, formatEther, formatUnits, parseEther, parseUnits } from 'ethers'
@@ -15,6 +14,8 @@ import useInitContributors from '#src/hooks/useInitContributors'
 import { TWEET_HEAD, TWEETS } from '#src/constants/constants'
 import { Tokens } from '#src/constants/tokens'
 import { useContributionContext } from '#src/context/GlobalStateContext'
+import { approve, contribute, getContributionInfoByToken } from '#src/hooks/useContractByName'
+import { useChainId } from '#src/context/ChainIdProvider'
 
 export interface ChipProps {
   token: Token
@@ -35,7 +36,7 @@ const GemsButton = () => {
   const [token, setToken] = useState<Token | null>(null)
   const [error,setError] = useState<any>(null)
   const [isLoading,setLoaded] = useState<boolean>(false)
-
+  const chainId = useChainId()
 
 
   const [title, setTitle] = useState(TWEET_HEAD[Math.floor(Math.random() * TWEET_HEAD.length)]);
@@ -48,10 +49,8 @@ const GemsButton = () => {
   const {balances, location, contributions, players, claims, assets,addLocation } = useContributionContext();
 
 
-  const { chainId } = useAppKitNetwork()
 
-
-  useInitContributors(refreshTrigger);
+  useInitContributors(chainId,refreshTrigger);
 
 
 
@@ -94,7 +93,7 @@ const GemsButton = () => {
 
     let playerAllowance : bigint = contributionInfo ? contributionInfo.playerAllowance : BigInt(0)
     if(contribution.deposit > playerAllowance){
-      let approvalResponse = await approve(walletProvider,isConnected,token,ethers.MaxUint256)
+      let approvalResponse = await approve(chainId,walletProvider,isConnected,token,ethers.MaxUint256)
       if(!approvalResponse.success){
         setError(approvalResponse.error)
         setLoaded(false)
@@ -103,7 +102,7 @@ const GemsButton = () => {
     }
 
 
-    let contributeResponse = await contribute(walletProvider, isConnected, address, contribution)
+    let contributeResponse = await contribute(chainId,walletProvider, isConnected, address, contribution)
     if(!contributeResponse.success){
       setError(contributeResponse.error)
       setLoaded(false)
@@ -123,7 +122,7 @@ const GemsButton = () => {
   }
 
   const fetchContributionData = async (_token:Token) => {
-    const _contributionInfo = await getContributionInfoByToken(_token, walletProvider, isConnected, address)
+    const _contributionInfo = await getContributionInfoByToken(chainId,_token, walletProvider, isConnected, address)
     setContributionInfo(_contributionInfo)
     console.log("getContributionInfoByToken", _contributionInfo, _token, isConnected, address)
   }
@@ -132,7 +131,7 @@ const GemsButton = () => {
     if(!token){
       return;
     }
-      let response : ContractCallResponse = await approve(walletProvider,isConnected,token,ethers.MaxUint256)
+      let response : ContractCallResponse = await approve(chainId,walletProvider,isConnected,token,ethers.MaxUint256)
       console.log(response);
   }
 
@@ -150,7 +149,7 @@ const BalanceEntry = ({ balanceEntry }: { balanceEntry: BalanceInfo }) => {
   const [token,setToken] = useState<Token | null>(null)
 
   useEffect(()=>{
-    setToken(getTokenByAddress(balanceEntry.token))
+    setToken(getTokenByAddress(chainId,balanceEntry.token))
   },[balanceEntry])
   return(<div className='w-full bg-black/20 hover:bg-black/60 rounded-lg border border-1 border-black/90 p-2 flex flex-row gap-2 items-center justify-between'>
          <User name={token?.symbol}

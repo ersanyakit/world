@@ -3,7 +3,6 @@ import { Avatar, Button, form, Input, Modal, ModalBody, ModalContent, ModalFoote
 import { useCallback, useEffect, useRef, useState } from 'react'
 import useMapContext from '../../Map/useMapContext'
 import L from 'leaflet'
-import { approve, contribute, getContributionInfoByToken } from '#src/utils/web3/util'
 import { useAppKitAccount, useAppKitProvider, useAppKit, useAppKitNetwork } from '@reown/appkit/react'
 import { Contribution, ContributionInfo } from '#src/types/Contribution'
 import { ethers, formatEther, formatUnits, parseEther, parseUnits } from 'ethers'
@@ -16,6 +15,7 @@ import { TWEET_HEAD, TWEETS } from '#src/constants/constants'
 import { Tokens } from '#src/constants/tokens'
 import { useContributionContext } from '#src/context/GlobalStateContext'
 import { ProfileTAB } from '#components/Map/ui/DrawerPanel/Tabs/Profile'
+import { useChainId } from '#src/context/ChainIdProvider'
 
 export interface ChipProps {
   token: Token
@@ -32,8 +32,8 @@ const SettingsButton = () => {
   const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
 
 
+   const chainId = useChainId()
  
-  const { chainId } = useAppKitNetwork()
 
   const handleClick = () => {
     onOpen()

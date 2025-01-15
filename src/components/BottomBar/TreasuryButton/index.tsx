@@ -3,7 +3,6 @@ import { Avatar, Button, form, Input, Modal, ModalBody, ModalContent, ModalFoote
 import { useCallback, useEffect, useRef, useState } from 'react'
 import useMapContext from '../../Map/useMapContext'
 import L from 'leaflet'
-import { approve, contribute, getContributionInfoByToken } from '#src/utils/web3/util'
 import { useAppKitAccount, useAppKitProvider, useAppKit, useAppKitNetwork } from '@reown/appkit/react'
 import { Contribution, ContributionInfo } from '#src/types/Contribution'
 import { ethers, formatEther, formatUnits, parseEther, parseUnits } from 'ethers'
@@ -15,6 +14,7 @@ import useInitContributors from '#src/hooks/useInitContributors'
 import { TWEET_HEAD, TWEETS } from '#src/constants/constants'
 import { Tokens } from '#src/constants/tokens'
 import { useContributionContext } from '#src/context/GlobalStateContext'
+import { useChainId } from '#src/context/ChainIdProvider'
 
 export interface ChipProps {
     token: Token
@@ -48,10 +48,10 @@ const TreasuryButton = () => {
     const { location, contributions, players, claims, assets, addLocation } = useContributionContext();
 
 
-    const { chainId } = useAppKitNetwork()
+   const chainId = useChainId()
 
 
-    useInitContributors(refreshTrigger);
+    useInitContributors(chainId,refreshTrigger);
 
 
     const handleClick = async () => {

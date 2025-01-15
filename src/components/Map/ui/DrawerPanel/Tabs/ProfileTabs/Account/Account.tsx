@@ -1,8 +1,9 @@
 import { encodeGeoHash } from "#lib/helper/geocoder";
+import { useChainId } from "#src/context/ChainIdProvider";
 import { useQueryContext } from "#src/context/GlobalQueryContext";
 import { useContributionContext } from "#src/context/GlobalStateContext";
+import { updateProfile } from "#src/hooks/useContractByName";
 import { Player } from "#src/types/Contribution";
-import { updateProfile } from "#src/utils/web3/util";
 import { Button, Input } from "@nextui-org/react"
 import { useAppKitAccount, useAppKitProvider } from "@reown/appkit/react";
 import { ethers } from "ethers";
@@ -19,6 +20,7 @@ export const AccountTAB = () => {
     const defaultLocation: LatLngExpression = [40.712776, -74.005974];  // Örneğin, New York
     const positionInfo: LatLngExpression = location ? [location.lat, location.lng] : defaultLocation;
 
+   const chainId = useChainId()
 
 
     const [newPlayer, setNewPlayer] = useState<Player>({
@@ -73,7 +75,7 @@ export const AccountTAB = () => {
 const handleUpdateProfile = async () => {
     setLoaded(true)
 
-    const updateInfo = await updateProfile(walletProvider,isConnected,newPlayer)
+    const updateInfo = await updateProfile(chainId,walletProvider,isConnected,newPlayer)
     console.log("updateInfo",updateInfo,newPlayer,player)
     setLoaded(false)
 

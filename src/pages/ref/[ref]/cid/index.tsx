@@ -2,12 +2,11 @@ import Head from 'next/head'
 import Map from '#components/Map'
 import { Alert, Button } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { getAssets, getClaimHistory, getContributors, getPlayers } from '#src/utils/web3/util'
-import { useContributionContext } from '#src/context/GlobalStateContext'
 import useInitContributors from '#src/hooks/useInitContributors'
 import { useAppKitAccount } from '@reown/appkit/react'
 import { toast } from "sonner"
 import { Toaster } from '#components/ui/sonner'
+import { useChainId } from '#src/context/ChainIdProvider'
 
 
 const getRandomImage = () => {
@@ -25,10 +24,11 @@ const CidPage = () => {
   const { address, isConnected } = useAppKitAccount();
   const title = getTitle();
   const randomImage = getRandomImage(); // Get a random image URL
+   const chainId = useChainId()
 
   const [refreshTrigger, setRefreshTrigger] = useState(true);
 
-  useInitContributors(refreshTrigger);
+  useInitContributors(chainId,refreshTrigger);
 
   useEffect(() => {
     if (refreshTrigger) {
@@ -40,7 +40,7 @@ const CidPage = () => {
     if (isConnected) {
       setRefreshTrigger(!refreshTrigger)
     }
-  }, [isConnected, address])
+  }, [isConnected, address,chainId])
 
 
 

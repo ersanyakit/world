@@ -7,7 +7,8 @@ import '#src/globals.css';
 import { Web3Provider } from '#src/context/web3modal';
 import { ContributionProvider } from '#src/context/GlobalStateContext';
 import { QueryProvider } from '#src/context/GlobalQueryContext'; // Adjust the path as necessary
-import React from 'react';
+import React, { useEffect } from 'react';
+import { ChainIdProvider } from '#src/context/ChainIdProvider';
 
 
 
@@ -16,13 +17,19 @@ const App = ({ Component, pageProps }: AppProps) => (
   <>
     <NextUIProvider>
       <QueryProvider>
-        <Web3Provider> {/* Daha üstte olması gerekebilir */}
-          <ContributionProvider>
-            <main className={`text-base`}>
-              <Component {...pageProps} />
-            </main>
-          </ContributionProvider>
+
+        <Web3Provider>
+          <ChainIdProvider>
+
+            <ContributionProvider>
+              <main className={`text-base`}>
+                <Component {...pageProps} />
+              </main>
+            </ContributionProvider>
+          </ChainIdProvider>
+
         </Web3Provider>
+
       </QueryProvider>
     </NextUIProvider>
   </>

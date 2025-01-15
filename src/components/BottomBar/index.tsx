@@ -10,6 +10,7 @@ import HealthButton from './HealthButton';
 import GemsButton from './GemsButton';
 import { Settings } from 'lucide-react';
 import SettingsButton from './SettingsButton';
+import { useChainId } from '#src/context/ChainIdProvider';
 
 const TokenChip = dynamic(() => import('./TokenChip'), {
   ssr: false, // Disable SSR for TokenChip component
@@ -17,7 +18,7 @@ const TokenChip = dynamic(() => import('./TokenChip'), {
 
 const BottomBar = () =>  {
 
-  const {chainId} = useAppKitNetwork()
+   const chainId = useChainId()
 
   useEffect(()=>{
 

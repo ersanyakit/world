@@ -3,16 +3,19 @@ import {  useAppKit, useAppKitAccount, useAppKitNetwork } from '@reown/appkit/re
 import { FormatAddressDesign, generateTweetIntentByContribution, generateTweetIntentURL, getTokenByAddress, TimestampDetails, unixToTimestampDetails } from '#src/utils/helpers';
 import React, { useEffect, useState } from 'react';
 import { Unicon } from '#components/Unicon';
-import { ExternalLink, Globe, Twitter } from 'lucide-react';
+import { ExternalLink, Globe, Bird } from 'lucide-react';
 import { useContributionContext } from '#src/context/GlobalStateContext';
 import { Contribution } from '#src/types/Contribution';
 import { formatUnits } from 'ethers';
 import { Token } from '#src/types/web3.types';
+import { useChainId } from '#src/context/ChainIdProvider';
 
 
 const ContributionCard = ({ contribution }: { contribution: Contribution }) => {
     const [dateTimeDetails,setDateTimeDetails] = useState<TimestampDetails | null>(unixToTimestampDetails(contribution.timestamp))
-    const [tokenInfo,setTokenInfo] = useState<Token | null>(getTokenByAddress(contribution.token))
+      const chainId = useChainId()
+    
+    const [tokenInfo,setTokenInfo] = useState<Token | null>(getTokenByAddress(chainId, contribution.token))
     const { address, isConnected } = useAppKitAccount();
 
     return(<>
@@ -124,7 +127,7 @@ const ContributionCard = ({ contribution }: { contribution: Contribution }) => {
                                     <div className="flex gap-2 w-full items-center">
                                         <Tooltip placement="right" className="font-sans text-xs" delay={10} color={"primary"}  content={"You will earn a 30% commission from every user who joins through your referral."}>
                                         <Button className="text-white" target="_blank" href={generateTweetIntentByContribution(contribution) } as={Link} variant="shadow" color="success" fullWidth startContent={
-                                            <Twitter />
+                                            <Bird />
                                         } endContent={
                                             <ExternalLink />
                                         }

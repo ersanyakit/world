@@ -11,12 +11,13 @@ import { useEffect, useRef, useState } from 'react'
 import { formatEther } from 'viem'
 import { ethers } from 'ethers'
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
-import { claim, getContributionInfo } from '#src/utils/web3/util'
 import { generateTweetIntentByContribution, generateTweetIntentURL, getAvatar, getTokenByAddress } from '#src/utils/helpers'
 import { Unicon } from '#components/Unicon'
 import { useContributionContext } from '#src/context/GlobalStateContext'
 import { decodeTweetId, extractTweetId, isContribution, packTweetAndContributionIds, unpackTweetAndContributionIds } from '#lib/utils'
 import { ContractCallResponse, TweetIdComponents } from '#src/types/web3.types'
+import { claim, getContributionInfo } from '#src/hooks/useContractByName'
+import { useChainId } from '#src/context/ChainIdProvider'
 
 
 interface LeafletPopupProps extends PopupProps {
@@ -43,6 +44,7 @@ const LeafletPopup = ({
   const { address, isConnected } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider('eip155');
   const [contributionInfo, setContributionInfo] = useState<ContributionInfo | null>(null);
+   const chainId = useChainId()
 
   const { player } = useContributionContext();
 
@@ -63,7 +65,7 @@ const LeafletPopup = ({
 
 
   const loadContributionInfo = async (place: Contribution) => {
-    const _contributionInfo = await getContributionInfo(place, walletProvider, isConnected, address)
+    const _contributionInfo = await getContributionInfo(chainId,place, walletProvider, isConnected, address)
     setContributionInfo(_contributionInfo)
     console.log("getContributionInfo", _contributionInfo);
     if (_contributionInfo) {
@@ -161,7 +163,7 @@ const LeafletPopup = ({
       setStatusText("Please wait...")
       if (isConnected) {
         try {
-          response = await claim(walletProvider, isConnected, address, contributionIndex);
+          response = await claim(chainId,walletProvider, isConnected, address, contributionIndex);
 
           if (response.success) {
             setStatusText("Claimed.")
@@ -178,206 +180,202 @@ const LeafletPopup = ({
       setClaimLoading(false)
     }
     return (
-      <>
-        <Tabs color='success' variant='light'>
-          <Tab key={"info"} title={"Task"}>
-            <div className='w-full p-0 flex flex-col gap-2'>
-              <div className='w-full flex flex-col gap-2 rounded-lg '>
-                {
-                  contribution?.index < ethers.MaxUint256 && <>
-                    <div className='mt-2 w-full grid grid-cols-3 gap-2 text-xs py-2 rounded-lg p-2' >
-                      <div className='w-full flex flex-col'>
-                        <span className='font-bold text-lime-500'>Total Claims</span>
-                        <span className='text-purple-500 text-xs  text-center'>{Number(contribution.claims)}</span>
-                      </div>
-                      <div className='w-full flex flex-col'>
-                        <span className='font-bold text-lime-500'>Maximum Claims</span>
-                        <span className='text-purple-500 text-xs text-center'>{Number(contribution.limit)}</span>
-                      </div>
-                      <div className='w-full flex flex-col'>
-                        <span className='font-bold text-lime-500'>Total Contribution</span>
-                        <span className='text-purple-500 text-xs  text-center'>{contributionInfo ? ethers.formatUnits(contributionInfo?.totalContribution, getTokenByAddress(contribution.token)?.decimals) : ""}</span>
-                      </div>
-
-
-                    </div>
-
-                  </>
-                }
-
-
-
-                <div className='w-full p-2 gap-2 flex flex-col'>
-
-                  <Textarea
-                    maxRows={3}
-                    classNames={{
-                      label: "text-black/50 dark:text-white/90",
-                      input: [
-                        "bg-transparent",
-                        "text-black/90 dark:text-white/90",
-                        "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                      ],
-                      innerWrapper: "bg-transparent",
-                      inputWrapper: [
-                        "shadow-sm",
-                        "bg-default-200/50",
-                        "dark:bg-default/60",
-                        "backdrop-blur-xl",
-                        "backdrop-saturate-200",
-                        "hover:bg-default-200/70",
-                        "dark:hover:bg-default/70",
-                        "group-data-[focus=true]:bg-default-200/50",
-                        "dark:group-data-[focus=true]:bg-default/60",
-                        "!cursor-text",
-                      ],
-                    }}
-                    isReadOnly={true} label="Task" value={contribution.description} endContent={
-                      <Button
-                        isLoading={isShareLoading}
-                        className="text-white"
-                        variant="shadow"
-                        size='sm'
-                        color="danger"
-                        onPress={handleShare}
-                      >
-                        {isShareLoading ? "Verifying..." : "Send Tweet"}
-                      </Button>
-                    } />
-
-
-
-
-                  <Input
-                    size='lg'
-                    classNames={{
-                      label: "text-black/50 dark:text-white/90",
-                      input: [
-                        "bg-transparent",
-                        "text-black/90 dark:text-white/90",
-                        "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                      ],
-                      innerWrapper: "bg-transparent",
-                      inputWrapper: [
-                        "shadow-sm",
-                        "bg-default-200/50",
-                        "dark:bg-default/60",
-                        "backdrop-blur-xl",
-                        "backdrop-saturate-200",
-                        "hover:bg-default-200/70",
-                        "dark:hover:bg-default/70",
-                        "group-data-[focus=true]:bg-default-200/50",
-                        "dark:group-data-[focus=true]:bg-default/60",
-                        "!cursor-text",
-                      ],
-                    }}
-                    startContent={<Bird />} label="Tweet URL" placeholder="Enter tweet URL" value={tweetURL} onValueChange={setTweetURL} />
-
-
-
-
-                  <div className='w-full flex flex-row gap-2 items-center justify-between'>
-                    <div className='w-full flex flex-col gap-2'>
-                      <span className='text-lime-500 text-xs'>{extractTweetId(tweetURL)}</span>
-                      <div className='w-full flex  flex-col gap-2'>
-                        <span className='text-danger text-xs'>Status:</span>
-                        <span className='text-success text-xs'>{statusText}</span>
-                      </div>
-                      <div className='w-full flex flex-col gap-2 hidden'>
-                        <div className='w-full flex  flex-col gap-2'>
-                          <span className='text-danger text-xs'>Tweet:</span>
-                          <span className='text-success text-xs'>{decodedTweet?.tweetId.toString()}</span>
-                        </div>
-                        <div className='w-full flex  flex-col gap-2'>
-                          <span className='text-danger text-xs'>Timestamp:</span>
-                          <span className='text-success text-xs'>{decodedTweet?.timestamp}</span>
-                        </div>
-                        <div className='w-full flex  flex-col gap-2'>
-                          <span className='text-danger text-xs'>sequence:</span>
-                          <span className='text-success text-xs'>{decodedTweet?.sequence}</span>
-                        </div>
-                        <div className='w-full flex  flex-col gap-2'>
-                          <span className='text-danger text-xs'>machineId:</span>
-                          <span className='text-success text-xs'>{decodedTweet?.machineId}</span>
-                        </div>
-
-                        <div className='w-full flex  flex-col gap-2'>
-                          <span className='text-danger text-xs'>packedData: Tweet{Number(contribution.index)}</span>
-                          {
-                            decodedTweet && <span className='text-success text-xs'>{packTweetAndContributionIds(decodedTweet?.tweetId, contribution.index).toString()}</span>
-                          }
-                          <span className='text-danger text-xs'>unpacked CID:</span>
-                          {
-                            decodedTweet && <span className='text-success text-xs'>{unpackTweetAndContributionIds(packTweetAndContributionIds(decodedTweet?.tweetId, contribution.index)).claimId.toString()}</span>
-                          }
-                          <span className='text-danger text-xs'>unpacked TweetID:</span>
-                          {
-                            decodedTweet && <span className='text-success text-xs'>{unpackTweetAndContributionIds(packTweetAndContributionIds(decodedTweet?.tweetId, contribution.index)).tweetId.toString()}</span>
-                          }
-                        </div>
-
-                      </div>
-                    </div>
-
-
-                    <Button
-                      size='md'
-
-                      isDisabled={extractTweetId(tweetURL).length == 0}
-                      isLoading={isClaimLoading}
-                      className="text-white min-w-[120px]"
-                      variant="shadow"
-                      color="success"
-                      onPress={handleClaim}
-                    >
-                      Claim Reward
-                    </Button>
+      <Tabs color='success' variant='light'>
+      <Tab key={"info"} title={"Task"}>
+        <div className='w-full p-0 flex flex-col gap-2'>
+          <div className='w-full flex flex-col gap-2 rounded-lg '>
+            {
+              contribution?.index < ethers.MaxUint256 && <>
+                <div className='mt-2 w-full grid grid-cols-3 gap-2 text-xs py-2 rounded-lg p-2' >
+                  <div className='w-full flex flex-col'>
+                    <span className='font-bold text-lime-500'>Total Claims</span>
+                    <span className='text-purple-500 text-xs  text-center'>{Number(contribution.claims)}</span>
+                  </div>
+                  <div className='w-full flex flex-col'>
+                    <span className='font-bold text-lime-500'>Maximum Claims</span>
+                    <span className='text-purple-500 text-xs text-center'>{Number(contribution.limit)}</span>
+                  </div>
+                  <div className='w-full flex flex-col'>
+                    <span className='font-bold text-lime-500'>Total Contribution</span>
+                    <span className='text-purple-500 text-xs  text-center'>{contributionInfo ? ethers.formatUnits(contributionInfo?.totalContribution, getTokenByAddress(chainId,contribution.token)?.decimals) : ""}</span>
                   </div>
 
 
                 </div>
 
+              </>
+            }
+
+
+
+            <div className='w-full p-2 gap-2 flex flex-col'>
+
+              <Textarea
+                maxRows={3}
+                classNames={{
+                  label: "text-black/50 dark:text-white/90",
+                  input: [
+                    "bg-transparent",
+                    "text-black/90 dark:text-white/90",
+                    "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                  ],
+                  innerWrapper: "bg-transparent",
+                  inputWrapper: [
+                    "shadow-sm",
+                    "bg-default-200/50",
+                    "dark:bg-default/60",
+                    "backdrop-blur-xl",
+                    "backdrop-saturate-200",
+                    "hover:bg-default-200/70",
+                    "dark:hover:bg-default/70",
+                    "group-data-[focus=true]:bg-default-200/50",
+                    "dark:group-data-[focus=true]:bg-default/60",
+                    "!cursor-text",
+                  ],
+                }}
+                isReadOnly={true} label="Task" value={contribution.description} endContent={
+                  <Button
+                    isLoading={isShareLoading}
+                    className="text-white"
+                    variant="shadow"
+                    size='sm'
+                    color="danger"
+                    onPress={handleShare}
+                  >
+                    {isShareLoading ? "Verifying..." : "Send Tweet"}
+                  </Button>
+                } />
+
+
+
+
+              <Input
+                size='lg'
+                classNames={{
+                  label: "text-black/50 dark:text-white/90",
+                  input: [
+                    "bg-transparent",
+                    "text-black/90 dark:text-white/90",
+                    "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                  ],
+                  innerWrapper: "bg-transparent",
+                  inputWrapper: [
+                    "shadow-sm",
+                    "bg-default-200/50",
+                    "dark:bg-default/60",
+                    "backdrop-blur-xl",
+                    "backdrop-saturate-200",
+                    "hover:bg-default-200/70",
+                    "dark:hover:bg-default/70",
+                    "group-data-[focus=true]:bg-default-200/50",
+                    "dark:group-data-[focus=true]:bg-default/60",
+                    "!cursor-text",
+                  ],
+                }}
+                startContent={<Bird />} label="Tweet URL" placeholder="Enter tweet URL" value={tweetURL} onValueChange={setTweetURL} />
+
+
+
+
+              <div className='w-full flex flex-row gap-2 items-center justify-between'>
+                <div className='w-full flex flex-col gap-2'>
+                  <span className='text-lime-500 text-xs'>{extractTweetId(tweetURL)}</span>
+                  <div className='w-full flex  flex-col gap-2'>
+                    <span className='text-danger text-xs'>Status:</span>
+                    <span className='text-success text-xs'>{statusText}</span>
+                  </div>
+                  <div className='w-full flex flex-col gap-2 hidden'>
+                    <div className='w-full flex  flex-col gap-2'>
+                      <span className='text-danger text-xs'>Tweet:</span>
+                      <span className='text-success text-xs'>{decodedTweet?.tweetId.toString()}</span>
+                    </div>
+                    <div className='w-full flex  flex-col gap-2'>
+                      <span className='text-danger text-xs'>Timestamp:</span>
+                      <span className='text-success text-xs'>{decodedTweet?.timestamp}</span>
+                    </div>
+                    <div className='w-full flex  flex-col gap-2'>
+                      <span className='text-danger text-xs'>sequence:</span>
+                      <span className='text-success text-xs'>{decodedTweet?.sequence}</span>
+                    </div>
+                    <div className='w-full flex  flex-col gap-2'>
+                      <span className='text-danger text-xs'>machineId:</span>
+                      <span className='text-success text-xs'>{decodedTweet?.machineId}</span>
+                    </div>
+
+                    <div className='w-full flex  flex-col gap-2'>
+                      <span className='text-danger text-xs'>packedData: Tweet{Number(contribution.index)}</span>
+                      {
+                        decodedTweet && <span className='text-success text-xs'>{packTweetAndContributionIds(decodedTweet?.tweetId, contribution.index).toString()}</span>
+                      }
+                      <span className='text-danger text-xs'>unpacked CID:</span>
+                      {
+                        decodedTweet && <span className='text-success text-xs'>{unpackTweetAndContributionIds(packTweetAndContributionIds(decodedTweet?.tweetId, contribution.index)).claimId.toString()}</span>
+                      }
+                      <span className='text-danger text-xs'>unpacked TweetID:</span>
+                      {
+                        decodedTweet && <span className='text-success text-xs'>{unpackTweetAndContributionIds(packTweetAndContributionIds(decodedTweet?.tweetId, contribution.index)).tweetId.toString()}</span>
+                      }
+                    </div>
+
+                  </div>
+                </div>
+
+
+                <Button
+                  size='md'
+
+                  isDisabled={extractTweetId(tweetURL).length == 0}
+                  isLoading={isClaimLoading}
+                  className="text-white min-w-[120px]"
+                  variant="shadow"
+                  color="success"
+                  onPress={handleClaim}
+                >
+                  Claim Reward
+                </Button>
               </div>
 
+
             </div>
 
-          </Tab>
-          <Tab key={"claims"} title={"Claims"}>
-            <div className='w-full flex flex-col gap-2 rounded-lg p-2'>
-              <span className='w-full text-lime-500'>Claimers</span>
+          </div>
 
-              <ScrollShadow className='max-h-[200px]' hideScrollBar={true}>
-                <div className='flex flex-col gap-2 p-2'>
-                  {contribution.claimers.map((claimer, index) => (
-                    <div className='w-full flex flex-row gap-2 items-center justify-center bg-black p-2 rounded-lg' key={`claim${index}`}>
-                      <div className="w-full flex flex-row gap-2 items-center justify-start">
-                        <div className="animate-spin bg-black/20 shadow-small border-1 border-success-100 rounded-full p-2">
-                          <Unicon size={24} address={claimer} randomSeed={Number(index)} />
-                        </div>
-                        <div className="w-full flex flex-col gap-1">
-                          <span className='text-sm font-bold text-lime-500'>{"Millionarie"}</span>
-                          <span className='text-xs font-sans  text-fuchsia-400'>{claimer}</span>
-                        </div>
+        </div>
 
-                      </div>
+      </Tab>
+      <Tab key={"claims"} title={"Claims"}>
+        <div className='w-full flex flex-col gap-2 rounded-lg p-2'>
+          <span className='w-full text-lime-500'>Claimers</span>
+
+          <ScrollShadow className='max-h-[200px]' hideScrollBar={true}>
+            <div className='flex flex-col gap-2 p-2'>
+              {contribution.claimers.map((claimer, index) => (
+                <div className='w-full flex flex-row gap-2 items-center justify-center bg-black p-2 rounded-lg' key={`claim${index}`}>
+                  <div className="w-full flex flex-row gap-2 items-center justify-start">
+                    <div className="animate-spin bg-black/20 shadow-small border-1 border-success-100 rounded-full p-2">
+                      <Unicon size={24} address={claimer} randomSeed={Number(index)} />
                     </div>
-                  ))}
+                    <div className="w-full flex flex-col gap-1">
+                      <span className='text-sm font-bold text-lime-500'>{"Millionarie"}</span>
+                      <span className='text-xs font-sans  text-fuchsia-400'>{claimer}</span>
+                    </div>
+
+                  </div>
                 </div>
-              </ScrollShadow>
-
+              ))}
             </div>
-          </Tab>
-        </Tabs>
+          </ScrollShadow>
 
-
-      </>
+        </div>
+      </Tab>
+    </Tabs>
     )
   }
 
 
 
   return (
-    <Modal scrollBehavior='inside' className='bg-black/50' ref={targetRef} size='lg' backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange}>
+    <Modal  scrollBehavior='inside' className='bg-black/50' ref={targetRef} size='full' backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
         {(onClose) => (
           <>

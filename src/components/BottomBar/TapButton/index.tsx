@@ -3,7 +3,6 @@ import { Avatar, Button, form, Input, Modal, ModalBody, ModalContent, ModalFoote
 import { useCallback, useEffect, useRef, useState } from 'react'
 import useMapContext from '../../Map/useMapContext'
 import L from 'leaflet'
-import { approve, contribute, getContributionInfoByToken } from '#src/utils/web3/util'
 import { useAppKitAccount, useAppKitProvider, useAppKit, useAppKitNetwork } from '@reown/appkit/react'
 import { Contribution, ContributionInfo } from '#src/types/Contribution'
 import { ethers, formatEther, formatUnits, parseEther, parseUnits } from 'ethers'
@@ -16,6 +15,8 @@ import { EMOJIS, TWEET_HEAD, TWEETS, TWITTER_USERS } from '#src/constants/consta
 import { Tokens } from '#src/constants/tokens'
 import TokenChip from '../TokenChip'
 import { useContributionContext } from '#src/context/GlobalStateContext'
+import { approve, contribute, getContributionInfoByToken } from '#src/hooks/useContractByName'
+import { useChainId } from '#src/context/ChainIdProvider'
 
 export interface ChipProps {
   token: Token
@@ -37,7 +38,7 @@ const TapButton = () => {
   const [error, setError] = useState<any>(null)
   const [isLoading, setLoaded] = useState<boolean>(false)
 
-
+   const chainId = useChainId()
 
   const [title, setTitle] = useState(TWEET_HEAD[Math.floor(Math.random() * TWEET_HEAD.length)]);
   const [description, setDescription] = useState(TWEETS[Math.floor(Math.random() * TWEETS.length)])
@@ -49,10 +50,9 @@ const TapButton = () => {
   const { location, contributions, players, claims, assets, addLocation } = useContributionContext();
 
 
-  const { chainId } = useAppKitNetwork()
 
 
-  useInitContributors(refreshTrigger);
+  useInitContributors(chainId,refreshTrigger);
 
 
 
@@ -93,7 +93,7 @@ const TapButton = () => {
 
     let playerAllowance: bigint = contributionInfo ? contributionInfo.playerAllowance : BigInt(0)
     if (contribution.deposit > playerAllowance) {
-      let approvalResponse = await approve(walletProvider, isConnected, token, ethers.MaxUint256)
+      let approvalResponse = await approve(chainId,walletProvider, isConnected, token, ethers.MaxUint256)
       if (!approvalResponse.success) {
         setError(approvalResponse.error)
         setLoaded(false)
@@ -102,7 +102,7 @@ const TapButton = () => {
     }
 
 
-    let contributeResponse = await contribute(walletProvider, isConnected, address, contribution)
+    let contributeResponse = await contribute(chainId,walletProvider, isConnected, address, contribution)
     if (!contributeResponse.success) {
       setError(contributeResponse.error)
       setLoaded(false)
@@ -132,7 +132,7 @@ const TapButton = () => {
   }
 
   const fetchContributionData = async (_token: Token) => {
-    const _contributionInfo = await getContributionInfoByToken(_token, walletProvider, isConnected, address)
+    const _contributionInfo = await getContributionInfoByToken(chainId,_token, walletProvider, isConnected, address)
     setContributionInfo(_contributionInfo)
     console.log("getContributionInfoByToken", _contributionInfo, _token, isConnected, address)
   }
@@ -141,7 +141,7 @@ const TapButton = () => {
     if (!token) {
       return;
     }
-    let response: ContractCallResponse = await approve(walletProvider, isConnected, token, ethers.MaxUint256)
+    let response: ContractCallResponse = await approve(chainId,walletProvider, isConnected, token, ethers.MaxUint256)
     console.log(response);
   }
 

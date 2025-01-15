@@ -13,7 +13,6 @@ import { Contribution, ContributionInfo, Player } from '#src/types/Contribution'
 import Geohash from 'ngeohash';
 import { LatLngExpression } from 'leaflet';
 import { decodeGeoHash } from '#lib/helper/geocoder';
-import { claim, getContributionInfo } from '#src/utils/web3/util';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 
 import LeafletDivIcon from '../LeafletDivIcon';

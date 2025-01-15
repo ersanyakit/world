@@ -1,4 +1,5 @@
 import { Unicon } from "#components/Unicon";
+import { useChainId } from "#src/context/ChainIdProvider";
 import { useContributionContext } from "#src/context/GlobalStateContext";
 import { Claim } from "#src/types/Contribution"
 import { Token } from "#src/types/web3.types";
@@ -10,7 +11,9 @@ export const ClaimTAB = () => {
     const { contributions, players, claims, assets } = useContributionContext();
 
     const ClaimCard = ({ claim,index }: { index:number, claim: Claim }) => {
-        const [token,setToken] = useState<Token | null>(getTokenByAddress(claim.token))
+          const chainId = useChainId()
+    
+        const [token,setToken] = useState<Token | null>(getTokenByAddress(chainId, claim.token))
         return (
             <div className="w-full rounded-lg bg-black/30 hover:bg-black/50 p-2 flex flex-col gap-2">
 

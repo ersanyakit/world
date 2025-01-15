@@ -1,9 +1,10 @@
 import { Unicon } from "#components/Unicon";
+import { useChainId } from "#src/context/ChainIdProvider";
 import { useQueryContext } from "#src/context/GlobalQueryContext";
 import { useContributionContext } from "#src/context/GlobalStateContext";
+import { register } from "#src/hooks/useContractByName";
 import useInitContributors from "#src/hooks/useInitContributors";
 import { ContractCallResponse } from "#src/types/web3.types";
-import { register } from "#src/utils/web3/util";
 import { Button, Input } from "@nextui-org/react"
 import { useAppKitAccount, useAppKitProvider } from "@reown/appkit/react";
 import { ethers } from "ethers";
@@ -17,11 +18,13 @@ export const RegisterTAB = () => {
   const { walletProvider } = useAppKitProvider('eip155');
   const [isLoading,setLoading] = useState<boolean>(false)
   const [refreshTrigger, setRefreshTrigger] = useState(false);
-  useInitContributors(refreshTrigger);
+     const chainId = useChainId()
+  
+  useInitContributors(chainId,refreshTrigger);
 
     const handleRegister = async() => {
         setLoading(true)
-        const registerResponse : ContractCallResponse= await register(walletProvider,isConnected,ref,registrationFee);
+        const registerResponse : ContractCallResponse= await register(chainId,walletProvider,isConnected,ref,registrationFee);
         console.log(registerResponse)
         setLoading(false)
         if(registerResponse.success){
