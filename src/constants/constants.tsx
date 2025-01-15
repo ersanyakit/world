@@ -26,7 +26,6 @@ export const TWITTER_USERS = [
   "FelixTradeCap",
   "lord_of_crypto_",
   "AytuncYildizli",
-  "AvalancheFDN",
   "avax",
   "profesorishere",
   "finderexglobal",
