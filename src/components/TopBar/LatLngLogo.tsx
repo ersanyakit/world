@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 
 import useMapContext from '#components/Map/useMapContext'
 import { useContributionContext } from '#src/context/GlobalStateContext'
-import { useChainId } from '#src/context/ChainIdProvider'
 
 const LatLngLogo = () => {
   const { map } = useMapContext()
@@ -12,7 +11,6 @@ const LatLngLogo = () => {
   const lat = location?.lat.toFixed(4)
   const lng = location?.lng.toFixed(4)
 
-const chainId = useChainId()
 
   useEffect(() => {
     if (!map) return undefined
