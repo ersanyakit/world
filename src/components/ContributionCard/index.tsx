@@ -9,13 +9,24 @@ import { Contribution } from '#src/types/Contribution';
 import { formatUnits } from 'ethers';
 import { Token } from '#src/types/web3.types';
 import { useChainId } from '#src/context/ChainIdProvider';
+import useMapContext from '#components/Map/useMapContext';
+import { decodeGeoHash } from '#lib/helper/geocoder';
+import { LatLngExpression } from 'leaflet';
 
 
 const ContributionCard = ({ contribution }: { contribution: Contribution }) => {
     const [dateTimeDetails,setDateTimeDetails] = useState<TimestampDetails | null>(unixToTimestampDetails(contribution.timestamp))
       const chainId = useChainId()
+      const { map } = useMapContext()
     
     const [tokenInfo,setTokenInfo] = useState<Token | null>(getTokenByAddress(chainId, contribution.token))
+
+    const handleFly = async () => {
+        let markerPosition : LatLngExpression = decodeGeoHash(contribution.geohash)
+        if (map) {
+            map.setView(markerPosition, map.getZoom(), { animate: false });
+        }
+    }
 
     return(
        <Card shadow="sm"  className='w-full cursor-pointer border border-1 border-black/50 bg-primary/5 hover:bg-black/50 transition-colors duration-200' key={Number(contribution.index)}>
@@ -92,14 +103,16 @@ const ContributionCard = ({ contribution }: { contribution: Contribution }) => {
                                     </span>
                                     <div className="flex gap-2 w-full items-center">
                                         <Tooltip placement="right" className="font-sans text-xs" delay={10} color={"primary"}  content={"You will earn a 30% commission from every user who joins through your referral."}>
-                                        <Button className="text-white" target="_blank" href={generateTweetIntentByContribution(contribution) } as={Link} variant="shadow" color="success" fullWidth startContent={
+                                        <Button onPress={()=>{
+                                            handleFly()
+                                        }} className="text-white" target="_blank" variant="shadow" color="success" fullWidth startContent={
                                             <Bird />
                                         } endContent={
                                             <ExternalLink />
                                         }
                                         >
                                             <span className="w-full">
-                                        Tweet and Earn a 30% Referral Fee
+                                        Find Egg & Claim
                                         </span>
                                         </Button>
                                         </Tooltip>
