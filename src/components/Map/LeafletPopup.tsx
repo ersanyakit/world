@@ -238,7 +238,7 @@ const LeafletPopup = ({
                     isLoading={isShareLoading}
                     className="text-white"
                     variant="shadow"
-                    size='sm'
+                    size='md'
                     color="danger"
                     onPress={handleShare}
                   >
