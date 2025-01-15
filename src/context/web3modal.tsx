@@ -11,7 +11,7 @@ const metadata = {
   name: 'MillionarMap',
   description: 'MillionarMap Dapp on Blockchain 🌐 Users leave tokens on the map 🗺️ Discoverers can claim the tokens 💰',
   url: 'https://millionarmap.com',
-  icons: ['https://www.millionarmap.com/assets/map.svg'],
+  icons: ['/assets/map.svg'],
 };
 
 createAppKit({
@@ -19,6 +19,9 @@ createAppKit({
   metadata:metadata,
   networks: [avalanche,chiliz],
   defaultNetwork: avalanche,
+  chainImages:{
+    88888:"/assets/chains/chz.svg"
+  },
   projectId,
   themeMode:"dark",
   features: {
