@@ -48,3 +48,10 @@ export interface ContractCallResponse{
   error:any;
   transaction:any;
 }
+
+export interface TweetIdComponents {
+  timestamp: number;
+  machineId: number;
+  sequence: number;
+  tweetId:bigint;
+}

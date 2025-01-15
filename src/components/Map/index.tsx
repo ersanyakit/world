@@ -69,7 +69,7 @@ const LeafletMapInner = () => {
     refreshRate: 600,
   });
 
-  const locations = [...contributions, ...players]; // contributions ve players birleştirildi
+  const locations = [...contributions]; // contributions ve players birleştirildi
 
   const { clustersByCategory, allMarkersBoundCenter } = useMarkerData({
     locations: locations,
@@ -140,7 +140,7 @@ const LeafletMapInner = () => {
                     key={`cluster${item.category}${index}`}
                     icon={MarkerCategories[item.category as Category].icon}
                     color={MarkerCategories[item.category as Category].color}
-                    chunkedLoading={false}
+                    chunkedLoading={true}
                   
                   >
                     {item.markers.map((marker,markerIndex) => (

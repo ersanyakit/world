@@ -8,6 +8,7 @@ import useInitContributors from '#src/hooks/useInitContributors'
 import { useAppKitAccount } from '@reown/appkit/react'
 import { toast } from "sonner"
 import { Toaster } from '#components/ui/sonner'
+import { decodeTweetId } from '#lib/utils'
 
 
 
@@ -40,6 +41,8 @@ const MapPage = () => {
     if (isConnected) {
       setRefreshTrigger(!refreshTrigger)
     }
+
+    console.log("decode",decodeTweetId("1878747844687036447"))
   }, [isConnected, address])
 
 
