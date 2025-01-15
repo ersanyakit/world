@@ -107,11 +107,11 @@ body {
   width: 100vw !important;
   height: 100vh !important;
   overflow: none !important;
-  /* -webkit-touch-callout: none;
+   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none; */
+  user-select: none; 
   padding: 0 !important;
   margin: 0 !important;
 
