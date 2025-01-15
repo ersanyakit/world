@@ -132,6 +132,30 @@ import { Token } from "#src/types/web3.types";
             "logoURI": "/assets/chains/avax.svg"
         },
         {
+            "chainId": 43114,
+            "address": "0x420FcA0121DC28039145009570975747295f2329",
+            "name": "COQINU",
+            "symbol": "COQ",
+            "decimals": 18,
+            "logoURI": "/assets/tokens/avax/coq.png"
+        },
+        {
+            "chainId": 43114,
+            "address": "0xAcFb898Cff266E53278cC0124fC2C7C94C8cB9a5",
+            "name": "AVAX HAS NO CHILL",
+            "symbol": "NOCHILL",
+            "decimals": 18,
+            "logoURI": "/assets/tokens/avax/nochill.png"
+        },
+        {
+            "chainId": 43114,
+            "address": "0xB8d7710f7d8349A506b75dD184F05777c82dAd0C",
+            "name": "ARENA",
+            "symbol": "ARENA",
+            "decimals": 18,
+            "logoURI": "/assets/tokens/avax/arena.png"
+        },
+        {
             "chainId": 31337,
             "address": "0x0000000000000000000000000000000000000000",
             "name": "Hardhat",
