@@ -180,7 +180,7 @@ const TapButton = () => {
                     {
                       !token && <div className='w-full grid grid-cols-3 gap-2 items-center justify-center'>
                         {Tokens.map((token, index) => (
-                          token.chainId == chainId && <>
+                          token.chainId == chainId && 
                             <div key={`token${index}`} className='w-full flex items-center justify-center'>
 
                               <Button
@@ -200,7 +200,7 @@ const TapButton = () => {
                                 />
                               </Button>
                             </div>
-                          </>
+                        
                         ))}
                       </div>
                     }
