@@ -42,7 +42,7 @@ const MapPage = () => {
     if (isConnected) {
       setRefreshTrigger(!refreshTrigger)
     }
-    console.log("ChainDegisti:",chainId)
+    console.log("tokentokentoken:ChainDegisti:",chainId)
 
   }, [isConnected, address,chainId])
 

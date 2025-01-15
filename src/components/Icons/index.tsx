@@ -5,9 +5,9 @@ import { ethers } from 'ethers';
 import { getAvatar, getTokenByAddress } from '#src/utils/helpers';
 import { generateLogo } from '#lib/helper/geocoder';
 import { isContribution } from '#lib/utils';
-import { useChainId } from '#src/context/ChainIdProvider';
-
+ 
 interface IconProps {
+  chainId:number;
   player?: Player | null;
   contribution?: Contribution | Player | null;
   width?: number;
@@ -16,14 +16,14 @@ interface IconProps {
 
 // MapIcon FunctionComponent olarak tanımlandı
 export const MapIcon: FunctionComponent<IconProps> = ({
+  chainId,
   contribution,
   player,
   width = 24,
   height = 24,
 }) => {
   // Contribution index değerine göre bir ikon indexi hesaplar
-  const chainId = useChainId()
-  
+   
   const calculateIconIndex = (): string => {
     const totalIcons = 33;
     const contributionIndex = Number(contribution?.index || 0);
@@ -33,6 +33,10 @@ export const MapIcon: FunctionComponent<IconProps> = ({
   // Verilen adres için token logosunu döndürür
   const getTokenLogoByAddress = (address: string): string => {
     const token = getTokenByAddress(chainId, address);
+    if(!token){
+      console.log("tokentokentoken",chainId,token,address)
+
+    }
     return token?.logoURI || "/assets/chains/error.svg";  // logoURI varsa döner, yoksa varsayılan logo döner
   };
 

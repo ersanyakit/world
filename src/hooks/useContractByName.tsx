@@ -31,13 +31,13 @@ const ContractList: MultiContractConfig = {
         abi: ERC20ABI.abi,
         contracts: {
             88888: {
-                address: "0xTokenMainnetAddress",
+                address: "0x570e91fe0D25D46C5e0C83aF6bc95afB0072C321",
             },
             43114: {
-                address: DiamondAddress,
+                address: "0x570e91fe0D25D46C5e0C83aF6bc95afB0072C321",
             },
             31337: {
-                address: "0xTokenMainnetAddress",
+                address: "0x570e91fe0D25D46C5e0C83aF6bc95afB0072C321",
             },
         },
     },

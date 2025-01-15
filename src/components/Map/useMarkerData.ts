@@ -30,7 +30,7 @@ const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMap
     centerPos: AppConfig.baseCenterAvax,
   })
   const { leafletLib } = useMapContext()
-
+  const chainId = useChainId()
  
   // get bounds of all markers
   const allMarkerBounds = useMemo(() => {
@@ -110,7 +110,7 @@ const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMap
     } catch (error) {
       console.error("Error in map or bounds handling:", error);
     }
-  }, [allMarkerBounds, map,viewportWidth, viewportHeight]);
+  }, [allMarkerBounds, map,viewportWidth, viewportHeight,chainId]);
 
   return { clustersByCategory, allMarkersBoundCenter }
 }

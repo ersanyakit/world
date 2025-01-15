@@ -25,10 +25,11 @@ const LeafletPopup = dynamic(() => import('../LeafletPopup'));
 
 
 export interface CustomMarkerProps {
+  chainId:number;
   place: Contribution | Player;
 }
 
-export const CustomMarker = ({ place }: CustomMarkerProps) => {
+export const CustomMarker = ({ place,chainId }: CustomMarkerProps) => {
   const { map } = useMapContext();
   const { player } = useContributionContext();
 
@@ -63,6 +64,7 @@ export const CustomMarker = ({ place }: CustomMarkerProps) => {
       icon={LeafletDivIcon({
         source: (
           <MarkerIconWrapper
+          chainId={chainId}
             color={generateAlphaColorFromIndex(place.index)}
             contribution={place}
             player={player}

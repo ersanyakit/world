@@ -380,7 +380,7 @@ const LeafletPopup = ({
         {(onClose) => (
           <>
             <ModalHeader  {...moveProps} className="flex flex-row items-center justify-start gap-1 text-lime-500">
-              <MapIcon player={null} contribution={contribution} width={64} height={86} />
+              <MapIcon chainId={chainId} player={null} contribution={contribution} width={64} height={86} />
 
 
               <span>{contribution.name}</span>

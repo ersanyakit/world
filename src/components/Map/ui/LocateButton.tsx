@@ -12,13 +12,14 @@ import { encodeGeoHash } from '#lib/helper/geocoder'
 import { ethers, parseEther } from 'ethers'
 import { useAppKitAccount } from '@reown/appkit/react'
 import { useContributionContext } from '#src/context/GlobalStateContext'
+import { useChainId } from '#src/context/ChainIdProvider'
 
 export const LocateButton = () => {
   const { map } = useMapContext()
   const [userPosition, setUserPosition] = useState<LatLngExpression | undefined>(undefined)
   const { address, isConnected } = useAppKitAccount();
   const {player, balances, location, contributions, players, claims, assets,addLocation } = useContributionContext();
-
+  const chainId = useChainId()
   const handleClick = useCallback(() => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(position => {
@@ -51,6 +52,7 @@ export const LocateButton = () => {
       </Button>
       {userPosition && player && (
         <CustomMarker
+        chainId={chainId}
           place={player}
         />
       )}

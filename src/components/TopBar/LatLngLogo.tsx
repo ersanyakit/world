@@ -4,12 +4,15 @@ import { useEffect, useState } from 'react'
 
 import useMapContext from '#components/Map/useMapContext'
 import { useContributionContext } from '#src/context/GlobalStateContext'
+import { useChainId } from '#src/context/ChainIdProvider'
 
 const LatLngLogo = () => {
   const { map } = useMapContext()
   const {location, contributions, players, claims, assets,addLocation } = useContributionContext();
   const lat = location?.lat.toFixed(4)
   const lng = location?.lng.toFixed(4)
+
+const chainId = useChainId()
 
   useEffect(() => {
     if (!map) return undefined
@@ -29,7 +32,7 @@ const LatLngLogo = () => {
         <Compass size={24} className="text-lime-500 " />
       </div>
       <div className="flex items-center text-lime-500">
-        {lat}<span>,</span>{lng}
+        {lat}<span>,</span>{lng} {chainId}
       </div>
     </div>
   )

@@ -12,6 +12,15 @@ import { Token } from "#src/types/web3.types";
         },
         {
             "chainId": 88888,
+            "address": "0x570e91fe0D25D46C5e0C83aF6bc95afB0072C321",
+            "name": "MM Wrapper",
+            "symbol": "MM",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/kewlexchange/assets/main/chiliz/tokens/0x677f7e16c7dd57be1d4c8ad1244883214953dc47/logo.svg"
+        },
+        
+        {
+            "chainId": 88888,
             "address": "0xEd5740209FcF6974d6f3a5F11e295b5E468aC27c",
             "name": "KEWL EXCHANGE",
             "symbol": "KWL",
@@ -114,7 +123,14 @@ import { Token } from "#src/types/web3.types";
             "decimals": 18,
             "logoURI": "/assets/tokens/avax/sfid.svg"
         },
-        
+        {
+            "chainId": 43114,
+            "address": "0x570e91fe0D25D46C5e0C83aF6bc95afB0072C321",
+            "name": "MM Wrapper",
+            "symbol": "MM",
+            "decimals": 18,
+            "logoURI": "/assets/chains/avax.svg"
+        },
         {
             "chainId": 31337,
             "address": "0x0000000000000000000000000000000000000000",
