@@ -32,7 +32,7 @@ const chainId = useChainId()
         <Compass size={24} className="text-lime-500 " />
       </div>
       <div className="flex items-center text-lime-500">
-        {lat}<span>,</span>{lng} {chainId}
+        {lat}<span>,</span>{lng} 
       </div>
     </div>
   )
