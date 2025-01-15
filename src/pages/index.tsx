@@ -43,7 +43,7 @@ const MapPage = () => {
       setRefreshTrigger(!refreshTrigger)
     }
 
-  }, [isConnected, address])
+  }, [isConnected, address,chainId])
 
 
 
