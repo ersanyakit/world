@@ -138,7 +138,7 @@ const LeafletPopup = ({
 
 
     const isTweetExpired = (timestamp: any) => {
-      const fiveMinutesInMs = 5 * 60 * 1000; // 5 minutes in milliseconds
+      const fiveMinutesInMs = 1 * 60 * 1000; // 5 minutes in milliseconds
       const currentTime = Date.now(); // Current time in milliseconds
       return currentTime - timestamp > fiveMinutesInMs; // Check if tweet is older than 5 minutes
     };
