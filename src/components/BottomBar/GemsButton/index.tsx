@@ -16,6 +16,7 @@ import { Tokens } from '#src/constants/tokens'
 import { useContributionContext } from '#src/context/GlobalStateContext'
 import { approve, contribute, getContributionInfoByToken } from '#src/hooks/useContractByName'
 import { useChainId } from '#src/context/ChainIdProvider'
+import NoItemAvailable from '#components/NoItemAvailable'
 
 export interface ChipProps {
   token: Token
@@ -183,18 +184,21 @@ const BalanceEntry = ({ balanceEntry }: { balanceEntry: BalanceInfo }) => {
                   }} />
               </ModalHeader>
               <ModalBody>
-                <ScrollShadow hideScrollBar={true} className=' h-[400px]'>
+                {
+                  isConnected ?  <ScrollShadow hideScrollBar={true} className=' h-[400px]'>
             
-                      <div className='w-full flex flex-col gap-2  items-center justify-center'>
-                        {balances.map((balanceItem : BalanceInfo, index) => (
-                          
-                              <BalanceEntry key={`balance${index}`}  balanceEntry={balanceItem}/>
+                  <div className='w-full flex flex-col gap-2  items-center justify-center'>
+                    {  balances.map((balanceItem : BalanceInfo, index) => (
+                      
+                          <BalanceEntry key={`balance${index}`}  balanceEntry={balanceItem}/>
 
-             
-                        
-                        ))}
-                      </div>
-                      </ScrollShadow>
+         
+                    
+                    ))}
+                  </div>
+                  </ScrollShadow> : <NoItemAvailable title='Not connected!' icon='/assets/gemstone.png' description='You are not connected!'/>
+                }
+               
  
 
             
