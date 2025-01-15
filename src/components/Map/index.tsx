@@ -10,6 +10,7 @@ import DrawerPanel from './ui/DrawerPanel';
 import useMapContext from './useMapContext';
 import useMarkerData from './useMarkerData';
 import { useContributionContext } from '#src/context/GlobalStateContext';
+import { useChainId } from '#src/context/ChainIdProvider';
 
 const LeafletCluster = dynamic(
   async () => (await import('./LeafletCluster')).LeafletCluster(),

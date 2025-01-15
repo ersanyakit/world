@@ -9,6 +9,8 @@ import { Contribution, Player } from '#src/types/Contribution'
 import { isContribution } from '#lib/utils';
 import { decodeGeoHash } from '#lib/helper/geocoder';
 import { Category } from '#lib/MarkerCategories';
+import { useChainId } from '#src/context/ChainIdProvider';
+import { chiliz } from 'viem/chains';
 
 interface useMapDataValues {
   locations?: (Contribution | Player)[];
@@ -23,12 +25,14 @@ interface allMarkerPosValues {
 }
 
 const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMapDataValues) => {
+  const chainId =  useChainId()
   const [allMarkersBoundCenter, setAllMarkersBoundCenter] = useState<allMarkerPosValues>({
     minZoom: AppConfig.maxZoom,//AppConfig.minZoom > 5 ? AppConfig.minZoom - 5 : AppConfig.minZoom,
-    centerPos: AppConfig.baseCenter,
+    centerPos: AppConfig.baseCenterAvax,
   })
   const { leafletLib } = useMapContext()
 
+ 
   // get bounds of all markers
   const allMarkerBounds = useMemo(() => {
     if (!locations || !leafletLib) return undefined
@@ -107,7 +111,7 @@ const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMap
     } catch (error) {
       console.error("Error in map or bounds handling:", error);
     }
-  }, [allMarkerBounds, map,viewportWidth, viewportHeight]);
+  }, [chainId,allMarkerBounds, map,viewportWidth, viewportHeight]);
 
   return { clustersByCategory, allMarkersBoundCenter }
 }
