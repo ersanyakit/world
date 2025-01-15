@@ -92,8 +92,11 @@ const TapButton = () => {
 
 
     let playerAllowance: bigint = contributionInfo ? contributionInfo.playerAllowance : BigInt(0)
+    console.log("playerAllowance,",playerAllowance,chainId)
     if (contribution.deposit > playerAllowance) {
       let approvalResponse = await approve(chainId,walletProvider, isConnected, token, ethers.MaxUint256)
+      console.log("playerAllowance,",playerAllowance,chainId,approvalResponse)
+
       if (!approvalResponse.success) {
         setError(approvalResponse.error)
         setLoaded(false)

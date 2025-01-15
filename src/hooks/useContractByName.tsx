@@ -413,6 +413,7 @@ export const approve = async (chainId: number, walletProvider: any, isConnected:
         return callResponse;
     }
 
+
     let erc20ContractABI = getContractByName("TOKEN", selectedNetwork.network.chainId).abi;
     let diamondContract = getContractByName("DIAMOND", selectedNetwork.network.chainId);
 
@@ -422,6 +423,7 @@ export const approve = async (chainId: number, walletProvider: any, isConnected:
             abi: erc20ContractABI,
             rpcUrl: selectedNetwork.network.rpcUrl
         }
+
 
         const erc20Contract: any = GetContractAt(contractParams);
         const signer = await GetSigner(walletProvider);

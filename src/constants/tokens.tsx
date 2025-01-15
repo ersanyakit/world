@@ -107,6 +107,15 @@ import { Token } from "#src/types/web3.types";
             "logoURI": "/assets/chains/avax.svg"
         },
         {
+            "chainId": 43114,
+            "address": "0xf7fb95890aBd6Dc51936dB1d85AA93D7Ada9fb72",
+            "name": "SnowFlake",
+            "symbol": "SFID",
+            "decimals": 18,
+            "logoURI": "/assets/tokens/avax/sfid.svg"
+        },
+        
+        {
             "chainId": 31337,
             "address": "0x0000000000000000000000000000000000000000",
             "name": "Hardhat",

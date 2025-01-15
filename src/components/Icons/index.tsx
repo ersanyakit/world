@@ -2,9 +2,10 @@ import { FunctionComponent } from 'react';
 import { Contribution, Player } from '#src/types/Contribution';
 import {Image} from "@nextui-org/image";
 import { ethers } from 'ethers';
-import { getAvatar } from '#src/utils/helpers';
+import { getAvatar, getTokenByAddress } from '#src/utils/helpers';
 import { generateLogo } from '#lib/helper/geocoder';
 import { isContribution } from '#lib/utils';
+import { useChainId } from '#src/context/ChainIdProvider';
 
 interface IconProps {
   player?: Player | null;
@@ -21,6 +22,8 @@ export const MapIcon: FunctionComponent<IconProps> = ({
   height = 24,
 }) => {
   // Contribution index değerine göre bir ikon indexi hesaplar
+  const chainId = useChainId()
+  
   const calculateIconIndex = (): string => {
     const totalIcons = 33;
     const contributionIndex = Number(contribution?.index || 0);
@@ -29,7 +32,8 @@ export const MapIcon: FunctionComponent<IconProps> = ({
 
   // Verilen adres için token logosunu döndürür
   const getTokenLogoByAddress = (address: string): string => {
-    return generateLogo(0, address);
+    const token = getTokenByAddress(chainId, address);
+    return token?.logoURI || "/assets/chains/error.svg";  // logoURI varsa döner, yoksa varsayılan logo döner
   };
 
   // İkon URL'sini belirler
