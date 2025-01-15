@@ -25,7 +25,6 @@ interface allMarkerPosValues {
 }
 
 const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMapDataValues) => {
-  const chainId =  useChainId()
   const [allMarkersBoundCenter, setAllMarkersBoundCenter] = useState<allMarkerPosValues>({
     minZoom: AppConfig.maxZoom,//AppConfig.minZoom > 5 ? AppConfig.minZoom - 5 : AppConfig.minZoom,
     centerPos: AppConfig.baseCenterAvax,
@@ -111,7 +110,7 @@ const useMarkerData = ({ locations, map, viewportWidth, viewportHeight }: useMap
     } catch (error) {
       console.error("Error in map or bounds handling:", error);
     }
-  }, [chainId,allMarkerBounds, map,viewportWidth, viewportHeight]);
+  }, [allMarkerBounds, map,viewportWidth, viewportHeight]);
 
   return { clustersByCategory, allMarkersBoundCenter }
 }
