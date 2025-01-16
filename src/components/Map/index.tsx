@@ -11,6 +11,7 @@ import useMapContext from './useMapContext';
 import useMarkerData from './useMarkerData';
 import { useContributionContext } from '#src/context/GlobalStateContext';
 import { useChainId } from '#src/context/ChainIdProvider';
+import Swap from '#components/Swap';
 
 const LeafletCluster = dynamic(
   async () => (await import('./LeafletCluster')).LeafletCluster(),
@@ -104,8 +105,10 @@ const LeafletMapInner = () => {
     <div
       className="w-screen h-screen h-full  w-full overflow-hidden"
       ref={viewportRef}
-    >
+    >   
       <MapTopBar />
+      <Swap/>
+
 
       <div
         className={`w-screen h-screen z-20 absolute top-0 left-0 w-full transition-opacity `}

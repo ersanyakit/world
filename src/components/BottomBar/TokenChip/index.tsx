@@ -28,7 +28,7 @@ const TokenChip = ({ token }: ChipProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const targetRef = useRef(null);
   const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
-  const { address, isConnected } = useAppKitAccount();
+  const { address, isConnected} = useAppKitAccount();
   const { walletProvider } = useAppKitProvider('eip155');
   const [contributionInfo, setContributionInfo] = useState<ContributionInfo | null>(null);
 
