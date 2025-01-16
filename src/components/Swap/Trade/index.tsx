@@ -183,11 +183,13 @@ const Trade = () => {
             <Image src={pair.exchangeInfo.logo} className="min-w-10 min-h-10 w-10 h-10 border border-1 border-default p-1 rounded-full" />
             <div className="flex flex-col">
 
+              <div className="w-full flex flex-row gap-2 items-center justify-start">
               <span className="text-sm">{pair.exchangeInfo.dex}</span>
+              <span className="px-2 text-xs rounded-lg bg-danger-500 text-white">{pair.trade.priceImpact.toFixed(2)}%</span>
+              </div>
 
               <div className="w-full flex flex-row items-center justify-between gap-2">
-                <span className="px-2 text-xs rounded-lg bg-green-500/20 text-green-600 p-1">{pair.outputAmount} {quote?.symbol}</span>
-                <span className="px-2 text-xs rounded-lg bg-danger-500/20 text-danger-600">{pair.trade.priceImpact.toFixed(2)}%</span>
+                <span className="px-2 text-xs rounded-lg bg-green-500 text-white">{pair.outputAmount} {quote?.symbol}</span>
 
               </div>
             </div>
@@ -346,7 +348,11 @@ const Trade = () => {
                   let outputAmount = output.toFixed(6)
               
                 let exchangeInfo = getExchangeByRouterAndWETH(pair.router,pair.weth)
-                customPairs.push({pair:pair, isSelected: false, trade:_tradeInfo,baseLiqudity:_baseLiquidity,quoteLiquidity:_quoteLiquidity,exchangeInfo:exchangeInfo,outputAmount:outputAmount})
+
+                if(parseFloat(_tradeInfo.priceImpact.toFixed(2)) < 10){
+                  customPairs.push({pair:pair, isSelected: false, trade:_tradeInfo,baseLiqudity:_baseLiquidity,quoteLiquidity:_quoteLiquidity,exchangeInfo:exchangeInfo,outputAmount:outputAmount})
+
+                }
    
       
            }
