@@ -3,13 +3,13 @@ import { useChainId } from "#src/context/ChainIdProvider";
 import { useContributionContext } from "#src/context/GlobalStateContext";
 import { CHILIZWRAPPER, CurrencyAmount, Pair, Route, Token as TokenEntity,Trade as TradeEntity, WETH9 } from "#src/entities";
 import { DECENTRALIZED_EXCHANGES, DEFAULT_TOKEN_LOGO, TradeType } from "#src/entities/utils/misc";
-import { fetchPairs } from "#src/hooks/useContractByName";
+import { fetchPairs, getContractByName } from "#src/hooks/useContractByName";
 import { BalanceInfo, PairInfo, Router } from "#src/types/Contribution";
 import { Token } from "#src/types/web3.types";
 import { getTokenByAddress } from "#src/utils/helpers";
 import { Button, Card, CardBody, Image, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ScrollShadow, useDisclosure, User } from "@nextui-org/react"
 import { useAppKitNetwork } from "@reown/appkit/react";
-import { ethers, formatUnits } from "ethers";
+import { ethers, formatUnits, getAddress } from "ethers";
 import JSBI from "jsbi";
 import { ChevronsRight, CircleArrowOutDownLeft, CircleArrowOutDownRight, CircleArrowOutUpLeft, GitCompareArrows, Mouse, MousePointerClick, RedoDot, RefreshCcwDot, Repeat, Shuffle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -57,7 +57,11 @@ const Trade = () => {
         const token = tokens[balanceItem.token];
 
         // Check if the current token is the disabled token
-        if (disabledToken && balanceItem.token === disabledToken.address) {
+
+        if((getAddress(balanceItem.token) ===  getAddress(getContractByName("TOKEN", chainId).address))){
+          return null
+        }
+        if ((disabledToken && balanceItem.token === disabledToken.address)) {
           return null; // Skip rendering this token
         }
 
