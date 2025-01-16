@@ -20,11 +20,13 @@ import DrawerPanel from '#components/Map/ui/DrawerPanel';
 import LatLngLogo from '#components/TopBar/LatLngLogo';
 import { useEffect, useState } from 'react';
 import Intro from '#components/Intro';
+import Swap from '#components/Swap';
 
 const MapTopBar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen:isOpenSwap,onClose:onSwapClose ,onOpen:onSwapOpen, onOpenChange:onOpenSwap, onOpenChange:onOpenSwapChange } = useDisclosure();
 
 
   useEffect(()=>{
@@ -39,7 +41,7 @@ const MapTopBar = () => {
         onClose={() => setIsDrawerOpen(false)}
       />
 
-
+    <Swap  isOpen={isOpenSwap}  onClose={onSwapClose} onOpen={onSwapOpen} onOpenChange={onOpenSwapChange}/>
       <Modal backdrop='blur' className='bg-black/50'  scrollBehavior={"inside"} size='lg' isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
@@ -75,7 +77,9 @@ const MapTopBar = () => {
           />
 
           <NavbarBrand>
-            <Image width={96} height={96} src="/assets/map.svg" />
+            <Image onClick={()=>{
+              onSwapOpen()
+            }} width={96} height={96} src="/assets/map.svg" />
             <p className="hidden font-bold text-inherit">MillionarMap</p>
 
           </NavbarBrand>

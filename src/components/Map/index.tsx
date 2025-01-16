@@ -107,7 +107,7 @@ const LeafletMapInner = () => {
       ref={viewportRef}
     >   
       <MapTopBar />
-      <Swap/>
+
 
 
       <div

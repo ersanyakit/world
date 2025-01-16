@@ -2,8 +2,14 @@ import { Button, Card, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader,
 import { useEffect, useRef } from "react";
 import Trade from "./Trade";
 
-const Swap = () => {
-    const {isOpen, onOpen, onClose} = useDisclosure();
+type SwapProps = {
+    isOpen: boolean;
+    onClose: () => void; // Define `onOpen` correctly as a function
+    onOpen: () => void; // Define `onOpen` correctly as a function
+    onOpenChange: (open: boolean) => void;
+  };
+
+const Swap: React.FC<SwapProps> = ({ isOpen,onOpen,onClose, onOpenChange }) => {
     const targetRef = useRef(null);
     const {moveProps} = useDraggable({targetRef, canOverflow: true, isDisabled: !isOpen});
 
@@ -13,21 +19,19 @@ const Swap = () => {
         }
       
     },[])
-    return( <Modal className='' size="lg" ref={targetRef}  isOpen={isOpen} onClose={onClose}>
+    return( <Modal className='bg-white/40 backdrop-blur-sm' size="lg" ref={targetRef}  isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader {...moveProps}  className="flex flex-col gap-1 text-lime-500">Swap</ModalHeader>
+              <ModalHeader {...moveProps}  className="flex flex-col gap-1 text-black">Swap</ModalHeader>
               <ModalBody>
                 <Trade/>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button color="danger" variant="flat" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
-                </Button>
+              
               </ModalFooter>
             </>
           )}
