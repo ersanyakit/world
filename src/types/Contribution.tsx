@@ -78,3 +78,40 @@ export interface BalanceInfo {
   balance: bigint;    // Solidity'deki uint256 tipi büyük sayılar içerdiği için string olarak saklanması önerilir
   decimals: bigint;   // uint256 tipindeki decimals'ı number olarak alıyoruz
 }
+
+export interface SwapParam {
+  amountIn: number;
+  amountOut: number;
+  weth9: string; // Address type represented as a string
+  wrapper: string;
+  pair: string;
+  input: string;
+}
+
+export interface Router {
+  router: string; // Address type
+  weth: string;   // Address type
+}
+
+export interface PairInfo {
+  valid: boolean;
+  reserve0: bigint;
+  reserve1: bigint;
+  amount0Out: bigint;
+  amount1Out: bigint;
+  token0Decimals: bigint;
+  token1Decimals: bigint;
+  token0: string; // Address type or a reference to an IERC20 interface
+  token1: string; // Address type or a reference to an IERC20 interface
+  pair: string;   // Address type or a reference to an IPAIR interface
+  router: string; // Address type
+  weth: string;   // Address type
+}
+
+export interface PairInput {
+  router: string; // Address type
+  pair: string;   // Address type
+  input: string;  // Address type
+  weth: string;   // Address type
+  amount: bigint;
+}

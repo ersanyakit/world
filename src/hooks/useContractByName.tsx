@@ -5,10 +5,11 @@ import WorldDiamondABI from "../constants/abi/WorldDiamond.json";
 import ERC20ABI from "../constants/abi/ERC20.json";
 import { BrowserProvider, Contract, ethers, isAddress, JsonRpcProvider } from 'ethers';
 import { createPublicClient, getContract, http } from 'viem';
-import { BalanceInfo, Contribution, ContributionInfo, Player } from '#src/types/Contribution';
+import { BalanceInfo, Contribution, ContributionInfo, PairInfo, Player, Router } from '#src/types/Contribution';
 import { AvaxMainnet, ChilizMainnet, ChilizSpicyTestNet, HardhatTestnet } from '#src/utils/web3/chains';
 import { avalanche, chiliz, hardhat, spicy } from 'viem/chains';
 import { getTokenAddressesByChainId } from '#src/utils/helpers';
+import { Trade } from '#src/entities';
 
 const DiamondAddress = '0x3B86091793D1f732BBfCCF1269e471d5DF4eb350';
 
@@ -772,3 +773,94 @@ export const fetchBalances = async (chainId: number, address: any): Promise<Bala
         return response;
     }
 }
+
+
+ 
+
+export const fetchPairs = async (chainId: number, routers: Router[],wrapper:string, base: Token, quote:Token, amount:bigint): Promise<PairInfo[]> => {
+    let selectedNetwork = getNetworkClient(chainId);
+    let response: PairInfo[] = [];
+    let contractInformation = getContractByName("DIAMOND", selectedNetwork.network.chainId)
+    try {
+        if (contractInformation) {
+            const contract = getContract({
+                address: contractInformation.address,
+                abi: contractInformation.abi,
+                client: {
+                    public: selectedNetwork.client,
+                },
+            });
+
+
+
+            const res: PairInfo[] | any = await contract.read.fetchPairs([routers,wrapper,base.address,quote.address,amount]);
+            console.log("fetchPairs", res)
+            response = res;
+        }
+        return response;
+    } catch (error) {
+        console.log('fetchPairs : ', error);
+        return response;
+    }
+}
+
+
+
+export const swap = async (chainId: number, walletProvider: any, isConnected: any, address: any, tradeInfo: any,wrapper:string, base: Token, quote:Token, amount:bigint,output:bigint): Promise<ContractCallResponse> => {
+    let selectedNetwork = getNetworkClient(chainId);
+    let callResponse: ContractCallResponse = { success: false, transaction: null, error: null }
+
+    if (!isConnected) {
+        callResponse.success = false;
+        callResponse.transaction = null;
+        callResponse.error = { message: "You are not connected." };
+        return callResponse;
+    }
+
+    if (amount == BigInt(0)) {
+        callResponse.success = false;
+        callResponse.transaction = null;
+        callResponse.error = { message: "Amount must greater than zero!" };
+        return callResponse;
+    }
+
+    if (output == BigInt(0)) {
+        callResponse.success = false;
+        callResponse.transaction = null;
+        callResponse.error = { message: "Output amount must greater than zero!" };
+        return callResponse;
+    }
+
+    let diamondContractParams = getContractByName("DIAMOND", selectedNetwork.network.chainId);
+
+    try {
+        let contractParams = {
+            address: ethers.getAddress(diamondContractParams.address) as any,
+            abi: diamondContractParams.abi,
+            rpcUrl: selectedNetwork.network.rpcUrl
+        }
+
+        const overrides = {
+            value: ethers.getAddress(base.address) == ethers.getAddress(ethers.ZeroAddress) ? amount : 0
+        }
+
+        const diamondContract: any = GetContractAt(contractParams);
+        const signer = await GetSigner(walletProvider);
+
+        const tx = await diamondContract
+            .connect(signer)
+            // @ts-ignore
+            .swap(contribution, overrides);
+
+        await tx.wait();
+        callResponse.success = true;
+        callResponse.error = null;
+        callResponse.transaction = tx;
+    }
+    catch (exception: any) {
+        callResponse.success = false;
+        callResponse.error = { message: "Swap Failed!", exception: exception };
+    }
+    return callResponse
+}
+

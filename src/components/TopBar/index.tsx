@@ -77,7 +77,7 @@ const MapTopBar = () => {
           />
 
           <NavbarBrand>
-            <Image className='cursor-pointer' onClick={()=>{
+            <Image className='cursor' onClick={()=>{
               onSwapOpen()
             }} width={96} height={96} src="/assets/map.svg" />
             <p className="hidden font-bold text-inherit">MillionarMap</p>
