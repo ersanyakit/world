@@ -7,7 +7,7 @@ import { getTokenByAddress } from "#src/utils/helpers";
 import { Button, Card, CardBody, Image, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure, User } from "@nextui-org/react"
 import { useAppKitNetwork } from "@reown/appkit/react";
 import { formatUnits } from "ethers";
-import { CircleArrowOutDownLeft, CircleArrowOutDownRight, CircleArrowOutUpLeft, Mouse, MousePointerClick, RefreshCcwDot, Repeat } from "lucide-react";
+import { CircleArrowOutDownLeft, CircleArrowOutDownRight, CircleArrowOutUpLeft, Mouse, MousePointerClick, RedoDot, RefreshCcwDot, Repeat, Shuffle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 const Trade = () => {
@@ -139,7 +139,32 @@ const TokenList: React.FC<TokenListProps> = ({ disabledToken, onSelect }) => {
             }} 
             label={`Input ${baseAsset ? baseAsset.symbol : ""}`}
            endContent={
-            <Image removeWrapper src={baseAsset ? baseAsset.logoURI : DEFAULT_TOKEN_LOGO}  radius="full" className="w-10 h-10 p-1 border border-2 border-default text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+            <div className="flex flex-row gap-2 items-center justify-center">    
+              <Button  onPress={()=>{
+                    setTokenSelector(prevState => ({
+                        ...prevState,
+                        showTokenSelector: true,
+                        side:TradeType.EXACT_INPUT
+                      }));
+                }} size="md" variant="light" isIconOnly radius="full">
+                <Image removeWrapper src={baseAsset ? baseAsset.logoURI : DEFAULT_TOKEN_LOGO}  radius="full" className="w-10 h-10 p-1 border border-2 border-default text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+              </Button>
+              <Button  onPress={()=>{
+                    handleSwapAssets()
+                }}  size="md" variant="light" isIconOnly radius="full">
+              <Shuffle className="text-red-500" />
+              </Button>
+              <Button onPress={()=>{
+                    setTokenSelector(prevState => ({
+                        ...prevState,
+                        showTokenSelector: true,
+                        side:TradeType.EXACT_OUTPUT
+                      }));
+                }}  size="md" variant="light" isIconOnly radius="full">
+                <Image removeWrapper src={quoteAsset ? quoteAsset.logoURI : DEFAULT_TOKEN_LOGO}  radius="full" className="w-10 h-10 p-1 border border-2 border-default text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+              </Button>
+
+            </div>
           }
             fullWidth variant="faded"
             radius="full"
@@ -168,65 +193,16 @@ const TokenList: React.FC<TokenListProps> = ({ disabledToken, onSelect }) => {
             size={"lg"} type="text" />
             <div className="absolute w-full flex flex-row top-[45px] z-[20] items-center flex flex-row gap-2 justify-center">
                 <div className="flex flex-row gap-2 items-center justify-center  rounded-full">
-                <Button onPress={()=>{
-                    setTokenSelector(prevState => ({
-                        ...prevState,
-                        showTokenSelector: true,
-                        side:TradeType.EXACT_INPUT
-                      }));
-                }} variant="faded" size="md" radius="full" isIconOnly>
-                <CircleArrowOutUpLeft  size={18} />
-                </Button>
-                <Button onPress={()=>{
-                    handleSwapAssets()
-                }} variant="faded" size="lg" radius="full" isIconOnly>
-                <RefreshCcwDot />
-                </Button>
-                <Button onPress={()=>{
-                    setTokenSelector(prevState => ({
-                        ...prevState,
-                        showTokenSelector: true,
-                        side:TradeType.EXACT_OUTPUT
-                      }));
-                }} variant="faded" size="md" radius="full" isIconOnly>
-                <CircleArrowOutDownRight size={18} />
-                </Button>
+                
                 </div>
             </div>
             {
-                tokenSelector.showTokenSelector && <div className="relative z-[999] bg-blur w-full flex flex-col gap-2 p-2 pt-10">
+                tokenSelector.showTokenSelector && <div className="relative z-[999] bg-blur w-full flex flex-col gap-2 p-2 pt-2">
                 <TokenList disabledToken={tokenSelector.side == TradeType.EXACT_INPUT ? quoteAsset : baseAsset} onSelect={handleSelectToken}/>
             </div>
             }
             
-            <Input 
-              value={quoteInputValue} onChange={(e) => {
-                setInputValue(e.target.value, TradeType.EXACT_OUTPUT)
-              }} 
-            classNames={{
-                label: "text-black/50 dark:text-white/90",
-                input: [
-                  "bg-transparent",
-                  "text-black/90 dark:text-white/90",
-                  "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                ],
-                innerWrapper: "bg-transparent",
-                inputWrapper: [
-                  "shadow-sm",
-                  "bg-default-200/50",
-                  "dark:bg-default/60",
-                  "backdrop-blur-xl",
-                  "backdrop-saturate-200",
-                  "hover:bg-default-200/70",
-                  "dark:hover:bg-default/70",
-                  "group-data-[focus=true]:bg-default-200/50",
-                  "dark:group-data-[focus=true]:bg-default/60",
-                  "!cursor-text",
-                ],
-              }}  endContent={
-            <Image removeWrapper radius="full" src={quoteAsset ? quoteAsset.logoURI : DEFAULT_TOKEN_LOGO} className="w-10 h-10 p-1 border border-2 border-default text-default-400 pointer-events-none flex-shrink-0" />
-          } radius="full" variant="faded" label={`Output ${quoteAsset ? quoteAsset.symbol : ""}`} size={"lg"} type="text" />
-
+           
 
         </div>
     )
