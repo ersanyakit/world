@@ -13,6 +13,9 @@ import { useEffect, useMemo, useState } from "react";
 const Trade = () => {
     const [baseAsset, setBaseAsset] = useState<Token | null>(null)
     const [quoteAsset, setQuoteAsset] = useState<Token | null>(null)
+    const [baseInputValue, setBaseInputValue] = useState("")
+    const [quoteInputValue, setQuoteInputValue] = useState("")
+
   const {balances, location, contributions, players, claims, assets,addLocation } = useContributionContext();
   const [tokenSelector, setTokenSelector] = useState<{ showTokenSelector: boolean, side: TradeType }>({
     showTokenSelector: false,
@@ -112,10 +115,28 @@ const TokenList: React.FC<TokenListProps> = ({ disabledToken, onSelect }) => {
       });
   }
 
+  const setInputValue = (e : any, side:TradeType) => {
+    const regex = /^[0-9]*\.?[0-9]*$/;
+    e = e.replace(",", ".")
+    if (regex.test(e)) {
+        if (side==TradeType.EXACT_INPUT) {
+            setBaseInputValue(e)
+        } else {
+            setQuoteInputValue(e)
+        }
+    }
+
+     
+}
+
+
     return (
         <div className="relative w-full flex flex-col gap-2">
 
             <Input
+             value={baseInputValue} onChange={(e) => {
+              setInputValue(e.target.value, TradeType.EXACT_INPUT)
+            }} 
             label={`Input ${baseAsset ? baseAsset.symbol : ""}`}
            endContent={
             <Image removeWrapper src={baseAsset ? baseAsset.logoURI : DEFAULT_TOKEN_LOGO}  radius="full" className="w-10 h-10 p-1 border border-2 border-default text-2xl text-default-400 pointer-events-none flex-shrink-0" />
@@ -179,6 +200,9 @@ const TokenList: React.FC<TokenListProps> = ({ disabledToken, onSelect }) => {
             }
             
             <Input 
+              value={quoteInputValue} onChange={(e) => {
+                setInputValue(e.target.value, TradeType.EXACT_OUTPUT)
+              }} 
             classNames={{
                 label: "text-black/50 dark:text-white/90",
                 input: [
