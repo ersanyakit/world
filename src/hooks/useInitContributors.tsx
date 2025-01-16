@@ -1,13 +1,17 @@
 import { useContributionContext } from '#src/context/GlobalStateContext';
 import { Player } from '#src/types/Contribution';
-import { useAppKitAccount } from '@reown/appkit/react';
+import { useAppKitAccount, useAppKitNetwork } from '@reown/appkit/react';
 import { ethers } from 'ethers';
 import { useEffect } from 'react';
 import { fetchBalances, getAssets, getClaimHistory, getContributors, getPlayer, getPlayerContributions, getPlayers, getRegistrationFee } from './useContractByName';
 
-const useInitContributors = (chainId:number, refreshTrigger: boolean) => {
+const useInitContributors = (chainIdInput:number, refreshTrigger: boolean) => {
   const { addContributions, addPlayers, addAssets, addClaims,addPlayer,addRegistrationFee,addPlayerContributions,addBalances } = useContributionContext();
-  const { address, isConnected } = useAppKitAccount();
+  const {address, isConnected } = useAppKitAccount();
+  const { chainId: chainIdProvider } = useAppKitNetwork();
+  
+  const chainId : number = chainIdProvider ? Number(chainIdProvider) : chainIdInput
+
   useEffect(() => {
     const initContributors = async () => {
       try {
