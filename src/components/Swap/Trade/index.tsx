@@ -215,8 +215,9 @@ const Trade = () => {
               </div>
             </div>
             <div className="w-full flex flex-row gap-2 items-center justify-end">
-              <div className="w-ful   flex flex-col items-end justify-end gap-2 p-2">
-                <span className="px-2 text-sm rounded-lg bg-green-500 text-white">{pair.outputAmount} {quote?.symbol}</span>
+              <div className="w-full  flex flex-col sm:flex-row items-center justify-end gap-2   rounded-lg p-2">
+                <span className="sm:text-sm text-xs ">{pair.outputAmount}</span>
+                <span className="sm:text-xs text-[8px]">{quote?.symbol}</span>
               </div>
               <Button onPress={() => {
                 handleSwap()
@@ -447,7 +448,7 @@ const Trade = () => {
 
     }
 
-    return (<ScrollShadow hideScrollBar className="max-h-[300px]">
+    return (<ScrollShadow hideScrollBar className="max-h-[500px]">
       <div className="w-full flex flex-col gap-2">
         {tradingPairs.length > 0 ? <>
           {
@@ -488,7 +489,7 @@ const Trade = () => {
   };
 
   return (
-    <div className="relative w-full flex flex-col gap-2">
+    <div className="relative w-full max-w-2xl flex flex-col gap-2">
 
       <div className="w-full">
         <Input
