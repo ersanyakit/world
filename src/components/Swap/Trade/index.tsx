@@ -13,13 +13,13 @@ import { useAppKitAccount, useAppKitNetwork, useAppKitProvider } from "@reown/ap
 import { ethers, formatUnits, getAddress, parseUnits } from "ethers";
 import JSBI from "jsbi";
 import { ChevronsRight, CircleArrowOutDownLeft, CircleArrowOutDownRight, CircleArrowOutUpLeft, CirclePercent, GitCompareArrows, Mouse, MousePointerClick, RedoDot, RefreshCcwDot, Repeat, ScanEye, ScanSearch, Shuffle } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import { chiliz } from "viem/chains";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import debounce from 'lodash.debounce';
 
 const Trade = () => {
 
   const { balances, baseBalance, quoteBalance, addBaseTokenBalance, addQuoteTokenBalance, addSwapInputValue, swapInputAmount, baseToken, quoteToken, addBaseToken, addQuoteToken } = useContributionContext();
-
+  const [swapInputValue,setSwapInputValue] = useState<string>("")
   const [quoteInputValue, setQuoteInputValue] = useState("")
   const { address, isConnected } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider('eip155');
@@ -133,9 +133,10 @@ const Trade = () => {
     e = e.replace(",", ".")
     if (regex.test(e)) {
       if (side == TradeType.EXACT_INPUT) {
-        addSwapInputValue(e)
+        setSwapInputValue(e)
+        //addSwapInputValue(e)
       } else {
-        setQuoteInputValue(e)
+        //setQuoteInputValue(e)
       }
     }
   }
@@ -208,7 +209,7 @@ const Trade = () => {
             <div className="w-full flex flex-row gap-2 items-center justify-end">
               <div className="w-full  flex flex-col sm:flex-row items-center justify-end gap-2   rounded-lg p-2">
                 <span className="sm:text-sm text-xs ">{pair.outputAmount}</span>
-                <span className="sm:text-xs text-[8px]">{baseToken?.symbol}</span>
+                <span className="sm:text-xs text-[8px]">{quoteToken?.symbol}</span>
               </div>
               <Button onPress={() => {
                 handleSwap()
@@ -276,6 +277,8 @@ const Trade = () => {
           exchange.weth.toLowerCase() === wethAddress.toLowerCase()
       );
     };
+
+   
 
     const handleFetchPairs = async () => {
       if (!baseToken) { return }
@@ -400,14 +403,16 @@ const Trade = () => {
 
       setTradingPairs(customPairs);
     }
-
-
-
-
     useEffect(() => {
-      handleFetchPairs()
+      const fetchPairsAsync = async () => {
+        await handleFetchPairs();
+      };
+      fetchPairsAsync();
+    }, [swapInputAmount,balances]);
 
-    }, [])
+
+
+    
 
     const handleSwapAll = async () => {
 
@@ -500,16 +505,25 @@ const Trade = () => {
     setInputValue(calculatedAmount, TradeType.EXACT_INPUT)
   };
 
+  const debouncedSetInputValue = useCallback(
+    debounce((val) => {
+      console.log('Input Value Debounced:', val);
+
+      addSwapInputValue(val)
+    }, 500), // Debounce süresi
+    [] // Bu hook'un yalnızca bir kez oluşturulmasını sağlıyoruz
+  );
+
   return (
     <div className="relative w-full max-w-2xl flex flex-col gap-2">
 
       <div className="w-full">
         <Input
-        onValueChange={(val)=>{
-          setInputValue(val, TradeType.EXACT_INPUT)
-
+        onChange={(val)=>{
+          setInputValue(val.target.value, TradeType.EXACT_INPUT)
+          debouncedSetInputValue(val.target.value)
         }}
-          value={swapInputAmount} 
+          value={swapInputValue} 
           label={`Input ${baseToken ? baseToken.symbol : ""}`}
           endContent={
             <div className="flex flex-row gap-2 items-center justify-center">

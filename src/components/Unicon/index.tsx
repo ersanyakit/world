@@ -1,3 +1,4 @@
+"use client"
 import React, { memo, useMemo } from 'react'
 
 import { blurs, UniconAttributeData, UniconAttributes, UniconAttributesToIndices } from './types'
