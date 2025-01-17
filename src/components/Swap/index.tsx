@@ -13,7 +13,7 @@ const Swap: React.FC<SwapProps> = ({ isOpen,onOpen,onClose, onOpenChange }) => {
     const targetRef = useRef(null);
     const {moveProps} = useDraggable({targetRef, canOverflow: true, isDisabled: !isOpen});
 
-    return( <Modal scrollBehavior="inside" className='bg-white/50 backdrop-blur-sm' size="full"  ref={targetRef}  isOpen={isOpen} onClose={onClose}>
+    return( <Modal scrollBehavior="inside" className='bg-white/70 backdrop-blur-lg' size="full"  ref={targetRef}  isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           {(onClose) => (
             <>
