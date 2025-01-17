@@ -8,6 +8,8 @@ import { Token } from '#src/types/web3.types';
 interface ContributionContextType {
   baseToken : Token | null;
   quoteToken:Token | null;
+  baseBalance:BalanceInfo | null
+  quoteBalance:BalanceInfo | null
   swapInputAmount:string;
 
   registrationFee:bigint;
@@ -37,6 +39,8 @@ interface ContributionContextType {
   addQuoteToken : (token:Token | null) => void
   addSwapInputValue:(amount:string) => void
 
+  addBaseTokenBalance : (token:BalanceInfo | null) => void
+  addQuoteTokenBalance : (token:BalanceInfo | null) => void
 }
 
 const ContributionContext = createContext<ContributionContextType | undefined>(undefined);
@@ -66,10 +70,14 @@ export const ContributionProvider: React.FC<ContributionProviderProps> = ({ chil
 
   const [baseToken, setBaseToken] =  useState<Token | null>(null);
   const [quoteToken, setQuoteToken] =  useState<Token | null>(null);
+
+  const [baseBalance, setBaseBalance] =  useState<BalanceInfo | null>(null);
+  const [quoteBalance, setQuoteBalance] =  useState<BalanceInfo | null>(null);
+
   const [swapInputAmount,setSwapInputAmount] = useState<string>("");
 
 
-
+ 
   const addContributions = (contributions: Contribution[]) => {
     setContributions(contributions);
   };
@@ -127,10 +135,18 @@ export const ContributionProvider: React.FC<ContributionProviderProps> = ({ chil
     setSwapInputAmount(_input)
   }
  
+  const addBaseTokenBalance = (_balance : BalanceInfo | null) => {
+    setBaseBalance(_balance)
+  }
+
+  const addQuoteTokenBalance = (_balance : BalanceInfo | null) => {
+    setQuoteBalance(_balance)
+  }
+
 
 
   return (
-    <ContributionContext.Provider value={{baseToken,quoteToken,swapInputAmount, balances,playerContributions,currentChainId,location,registrationFee, player, contributions,claims,players,assets,storeChainData,addRegistrationFee ,addPlayer,addContributions, addClaims, addPlayers,addAssets,addLocation,addPlayerContributions,addBalances,addBaseToken,addQuoteToken,addSwapInputValue }}>
+    <ContributionContext.Provider value={{baseBalance,quoteBalance,addBaseTokenBalance, addQuoteTokenBalance, baseToken,quoteToken,swapInputAmount, balances,playerContributions,currentChainId,location,registrationFee, player, contributions,claims,players,assets,storeChainData,addRegistrationFee ,addPlayer,addContributions, addClaims, addPlayers,addAssets,addLocation,addPlayerContributions,addBalances,addBaseToken,addQuoteToken,addSwapInputValue }}>
       {children}
     </ContributionContext.Provider>
   );

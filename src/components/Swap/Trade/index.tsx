@@ -17,10 +17,8 @@ import { useEffect, useMemo, useState } from "react";
 import { chiliz } from "viem/chains";
 
 const Trade = () => {
-  const [baseBalance, setBaseBalance] = useState<BalanceInfo | null>(null)
-  const [quoteBalance, setQuoteBalance] = useState<BalanceInfo | null>(null)
 
-  const {balances,addSwapInputValue,swapInputAmount,baseToken,quoteToken,addBaseToken,addQuoteToken } = useContributionContext();
+  const {balances,baseBalance,quoteBalance,addBaseTokenBalance,addQuoteTokenBalance,addSwapInputValue,swapInputAmount,baseToken,quoteToken,addBaseToken,addQuoteToken } = useContributionContext();
 
   const [quoteInputValue, setQuoteInputValue] = useState("")
   const { address, isConnected } = useAppKitAccount();
@@ -108,10 +106,10 @@ const Trade = () => {
 
     if (tokenSelector.side == TradeType.EXACT_INPUT) {
       addBaseToken(token)
-      setBaseBalance(balanceInfo)
+      addBaseTokenBalance(balanceInfo)
     } else if (tokenSelector.side == TradeType.EXACT_OUTPUT) {
       addQuoteToken(token)
-      setQuoteBalance(balanceInfo)
+      addQuoteTokenBalance(balanceInfo)
     }
     setTokenSelector(prevState => ({
       ...prevState,
@@ -125,10 +123,9 @@ const Trade = () => {
     addBaseToken(quoteToken);  // quote token'ı base token olarak ayarla
     addQuoteToken(baseToken);  // base token'ı quote token olarak ayarla
 
-    setBaseBalance((prevBaseAssetBalance) => {
-      setQuoteBalance(prevBaseAssetBalance);
-      return quoteBalance; // Swap the base and quote assets
-    });
+    addBaseTokenBalance(quoteBalance)
+    addQuoteTokenBalance(baseBalance)
+    
   }
 
   const setInputValue = (e: any, side: TradeType) => {
