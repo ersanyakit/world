@@ -130,7 +130,4 @@ export interface TCustomPair  {
 };
 export interface TradeItemProps  {
   pair: TCustomPair,
-  base: Token | null
-  quote: Token | null
-  amount : string
 };

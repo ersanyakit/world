@@ -18,7 +18,7 @@ import { chiliz } from "viem/chains";
 
 const Trade = () => {
 
-  const {balances,baseBalance,quoteBalance,addBaseTokenBalance,addQuoteTokenBalance,addSwapInputValue,swapInputAmount,baseToken,quoteToken,addBaseToken,addQuoteToken } = useContributionContext();
+  const { balances, baseBalance, quoteBalance, addBaseTokenBalance, addQuoteTokenBalance, addSwapInputValue, swapInputAmount, baseToken, quoteToken, addBaseToken, addQuoteToken } = useContributionContext();
 
   const [quoteInputValue, setQuoteInputValue] = useState("")
   const { address, isConnected } = useAppKitAccount();
@@ -119,13 +119,13 @@ const Trade = () => {
   }
 
   const handleSwapAssets = () => {
- 
+
     addBaseToken(quoteToken);  // quote token'ı base token olarak ayarla
     addQuoteToken(baseToken);  // base token'ı quote token olarak ayarla
 
     addBaseTokenBalance(quoteBalance)
     addQuoteTokenBalance(baseBalance)
-    
+
   }
 
   const setInputValue = (e: any, side: TradeType) => {
@@ -143,12 +143,8 @@ const Trade = () => {
 
 
 
-  type TradeContainerProps = {
-    base: Token | null
-    quote: Token | null
-    amount: string
-  };
-  const TradeContainer: React.FC<TradeContainerProps> = ({ base, quote, amount }) => {
+
+  const TradeContainer = () => {
     const { chainId: chainIdProvider } = useAppKitNetwork();
     const chainIdInput = useChainId();
     const chainId: number = chainIdProvider ? Number(chainIdProvider) : chainIdInput;
@@ -156,8 +152,8 @@ const Trade = () => {
     const [tradingPairs, setTradingPairs] = useState<TCustomPair[]>([])
 
 
-    const TradeItem: React.FC<TradeItemProps> = ({ pair, base, quote, amount }) => {
-      const [expanded,setExpanded] = useState<boolean>(false)
+    const TradeItem: React.FC<TradeItemProps> = ({ pair }) => {
+      const [expanded, setExpanded] = useState<boolean>(false)
       const handleSwap = async () => {
 
         if (!baseToken) {
@@ -192,11 +188,11 @@ const Trade = () => {
         <div className=" w-full cursor-pointer  border-b-0 bg-white/30 group-hover:bg-white/50 border border-1 border-default group-hover:border-white rounded-full flex items-center justify-center p-2">
           <div className="w-full flex flex-row items-center justify-center gap-2">
             <div className="w-full flex flex-row gap-2 items-center justify-start">
-            <Button onPress={() => {
+              <Button onPress={() => {
                 setExpanded(!expanded)
-              }} color="default" 
-              className="border border-1 border-white/30 hover:border-white"
-              variant="light" radius="full" size="lg" isIconOnly>
+              }} color="default"
+                className="border border-1 border-white/30 hover:border-white"
+                variant="light" radius="full" size="lg" isIconOnly>
                 {expanded ? <ScanSearch /> : <ScanEye />}
               </Button>
               <Image src={pair.exchangeInfo.logo} className="min-w-10 min-h-10 w-10 h-10 border border-1 border-default p-1 rounded-full" />
@@ -212,7 +208,7 @@ const Trade = () => {
             <div className="w-full flex flex-row gap-2 items-center justify-end">
               <div className="w-full  flex flex-col sm:flex-row items-center justify-end gap-2   rounded-lg p-2">
                 <span className="sm:text-sm text-xs ">{pair.outputAmount}</span>
-                <span className="sm:text-xs text-[8px]">{quote?.symbol}</span>
+                <span className="sm:text-xs text-[8px]">{baseToken?.symbol}</span>
               </div>
               <Button onPress={() => {
                 handleSwap()
@@ -226,40 +222,40 @@ const Trade = () => {
         {
           expanded && <div className=" w-full bg-white/30 group-hover:bg-white/50  border-t-0 border border-1 border-default group-hover:border-white max-w-[80%] justify-center items-center rounded-b-lg text-sm  flex flex-col gap-2 p-2">
 
-          <div className="w-full flex flex-col gap-2 p-2">
-            <span className="text-sm">Price</span>
-            <div className="w-full grid grid-cols-2 items-center p-1">
+            <div className="w-full flex flex-col gap-2 p-2">
+              <span className="text-sm">Price</span>
+              <div className="w-full grid grid-cols-2 items-center p-1">
 
-              <div className="w-full flex flex-row items-center justify-start gap-2 ">
-                <img className="w-5 h-5" src={base?.logoURI} alt={base?.symbol} />
-                <small className="text-sm">{pair.trade.executionPrice.invert().toSignificant()} {base?.symbol} per {quote?.symbol}</small>
-              </div>
-              <div className="flex flex-row items-center justify-start gap-2">
-                <img className="w-5 h-5" src={quote?.logoURI} alt={quote?.symbol} />
-                <small className=" text-sm">{pair.trade.executionPrice.toSignificant()}  {quote?.symbol} per {base?.symbol}</small>
-              </div>
+                <div className="w-full flex flex-row items-center justify-start gap-2 ">
+                  <img className="w-5 h-5" src={baseToken?.logoURI} alt={baseToken?.symbol} />
+                  <small className="text-sm">{pair.trade.executionPrice.invert().toSignificant()} {baseToken?.symbol} per {quoteToken?.symbol}</small>
+                </div>
+                <div className="flex flex-row items-center justify-start gap-2">
+                  <img className="w-5 h-5" src={quoteToken?.logoURI} alt={quoteToken?.symbol} />
+                  <small className=" text-sm">{pair.trade.executionPrice.toSignificant()}  {quoteToken?.symbol} per {baseToken?.symbol}</small>
+                </div>
 
-            </div>
-          </div>
-
-
-          <div className="w-full flex flex-col gap-2 p-2">
-            <span className="text-sm">Liquidity</span>
-            <div className="w-full grid grid-cols-2 items-center justify-center">
-              <div className="flex flex-row gap-2">
-                <Image src={base?.logoURI} className="w-5 h-5 border border-1 border-default  rounded-full" />
-                <span className="text-sm">{pair.baseLiqudity} {base?.symbol}</span>
-              </div>
-              <div className="flex flex-row gap-2">
-                <Image src={quote?.logoURI} className="w-5 h-5 border border-1 border-default rounded-full" />
-                <span className="text-sm">{pair.quoteLiquidity} {quote?.symbol} </span>
               </div>
             </div>
-          </div>
 
-        </div>
+
+            <div className="w-full flex flex-col gap-2 p-2">
+              <span className="text-sm">Liquidity</span>
+              <div className="w-full grid grid-cols-2 items-center justify-center">
+                <div className="flex flex-row gap-2">
+                  <Image src={baseToken?.logoURI} className="w-5 h-5 border border-1 border-default  rounded-full" />
+                  <span className="text-sm">{pair.baseLiqudity} {baseToken?.symbol}</span>
+                </div>
+                <div className="flex flex-row gap-2">
+                  <Image src={quoteToken?.logoURI} className="w-5 h-5 border border-1 border-default rounded-full" />
+                  <span className="text-sm">{pair.quoteLiquidity} {quoteToken?.symbol} </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
         }
-        
+
       </div>)
     }
 
@@ -282,24 +278,25 @@ const Trade = () => {
     };
 
     const handleFetchPairs = async () => {
-      if (!base) { return }
-      if (!quote) { return }
-      if (!amount) { return }
+      if (!baseToken) { return }
+      if (!quoteToken) { return }
+      if (!swapInputAmount) { return }
 
 
       const routers = getRoutersByChainId(chainId);
-      const depositAmount = ethers.parseUnits(amount, base?.decimals)
+      const depositAmount = ethers.parseUnits(swapInputAmount, baseToken.decimals)
 
       const tokenBase: Token = {
-        ...base,
-        address: base.address === ethers.ZeroAddress ? WETH9[chainId].address : base.address,
+        ...baseToken,
+        address: baseToken.address === ethers.ZeroAddress ? WETH9[chainId].address : baseToken.address,
       };
 
       const tokenQuote: Token = {
-        ...quote,
-        address: quote.address === ethers.ZeroAddress ? WETH9[chainId].address : quote.address,
+        ...quoteToken,
+        address: quoteToken.address === ethers.ZeroAddress ? WETH9[chainId].address : quoteToken.address,
       };
 
+      console.log("selectedBase","ChainId",chainId,depositAmount,baseToken,tokenBase,quoteToken,tokenQuote)
       const wrapper = CHILIZWRAPPER[chainId].address
       const _tradingPairs: PairInfo[] = await fetchPairs(chainId, routers, wrapper, tokenBase, tokenQuote, depositAmount)
 
@@ -325,8 +322,8 @@ const Trade = () => {
         }
 
 
-        let _selectedBaseAddress = base.address === ethers.ZeroAddress ? pair.weth : base.address
-        let _selectedQuoteAddress = quote.address === ethers.ZeroAddress ? pair.weth : quote.address
+        let _selectedBaseAddress = baseToken.address === ethers.ZeroAddress ? pair.weth : baseToken.address
+        let _selectedQuoteAddress = quoteToken.address === ethers.ZeroAddress ? pair.weth : quoteToken.address
         let selectedBase: any
         let selectedQuote: any
 
@@ -346,14 +343,14 @@ const Trade = () => {
 
         let _baseDecimals = Number(pair.token0 == _baseAddress ? pair.token0Decimals : pair.token1Decimals)
         let _quoteDecimals = Number(pair.token1 == _quoteAddress ? pair.token1Decimals : pair.token0Decimals)
-        const baseToken = new TokenEntity(base.chainId, _baseAddress, _baseDecimals, base.symbol)
-        const quoteToken = new TokenEntity(quote.chainId, _quoteAddress, _quoteDecimals, quote.symbol)
+        const baseTokenEntity = new TokenEntity(baseToken.chainId, _baseAddress, _baseDecimals, baseToken.symbol)
+        const quoteTokenEntity = new TokenEntity(quoteToken.chainId, _quoteAddress, _quoteDecimals, quoteToken.symbol)
         const [baseReserve, quoteReserve] = _baseAddress == pair.token0 ? [pair.reserve0, pair.reserve1] : [pair.reserve1, pair.reserve0]
 
 
 
-        let _checkBaseLiquidty = CurrencyAmount.fromRawAmount(baseToken, baseReserve.toString())
-        let _checkQuuteLiquidity = CurrencyAmount.fromRawAmount(quoteToken, quoteReserve.toString())
+        let _checkBaseLiquidty = CurrencyAmount.fromRawAmount(baseTokenEntity, baseReserve.toString())
+        let _checkQuuteLiquidity = CurrencyAmount.fromRawAmount(quoteTokenEntity, quoteReserve.toString())
 
 
         if (JSBI.lessThanOrEqual(_checkBaseLiquidty.quotient, MINIMUM_LIQUIDITY)) {
@@ -365,21 +362,21 @@ const Trade = () => {
         }
 
         const exchangePair = new Pair(
-          CurrencyAmount.fromRawAmount(baseToken, baseReserve.toString()),
-          CurrencyAmount.fromRawAmount(quoteToken, quoteReserve.toString()))
+          CurrencyAmount.fromRawAmount(baseTokenEntity, baseReserve.toString()),
+          CurrencyAmount.fromRawAmount(quoteTokenEntity, quoteReserve.toString()))
 
 
 
-        const baseAmount: CurrencyAmount<TokenEntity> = CurrencyAmount.fromRawAmount(baseToken, JSBI.BigInt(ethers.parseUnits(swapInputAmount, Number(_baseDecimals)).toString()));
+        const baseAmount: CurrencyAmount<TokenEntity> = CurrencyAmount.fromRawAmount(baseTokenEntity, JSBI.BigInt(ethers.parseUnits(swapInputAmount, Number(_baseDecimals)).toString()));
 
         let _tradeInfo = new TradeEntity(
-          new Route([exchangePair], baseToken, quoteToken),
-          CurrencyAmount.fromRawAmount(baseToken, baseAmount.quotient),
+          new Route([exchangePair], baseTokenEntity, quoteTokenEntity),
+          CurrencyAmount.fromRawAmount(baseTokenEntity, baseAmount.quotient),
           TradeType.EXACT_INPUT
         )
 
-        let _baseLiquidity = CurrencyAmount.fromRawAmount(baseToken, baseReserve.toString()).toSignificant(6)
-        let _quoteLiquidity = CurrencyAmount.fromRawAmount(quoteToken, quoteReserve.toString()).toSignificant(6)
+        let _baseLiquidity = CurrencyAmount.fromRawAmount(baseTokenEntity, baseReserve.toString()).toSignificant(6)
+        let _quoteLiquidity = CurrencyAmount.fromRawAmount(quoteTokenEntity, quoteReserve.toString()).toSignificant(6)
 
         const DEFAULT_ADD_SLIPPAGE_TOLERANCE = new Percent(INITIAL_ALLOWED_SLIPPAGE, 10_000)
         const amountOutSlippage = _tradeInfo.minimumAmountOut(DEFAULT_ADD_SLIPPAGE_TOLERANCE)
@@ -422,7 +419,7 @@ const Trade = () => {
         return
       }
 
-      let inputAmount = parseUnits(amount, baseToken.decimals);
+      let inputAmount = parseUnits(swapInputAmount, baseToken.decimals);
 
 
       let WRAPPER = CHILIZWRAPPER[chainId].address
@@ -445,19 +442,37 @@ const Trade = () => {
 
     return (<ScrollShadow hideScrollBar className="z-[999] max-h-[550px]">
       <div
-       
-         className="w-full flex flex-col gap-2">
-        {tradingPairs.length > 0 ? <>
-          {
-            tradingPairs.map((pair, index) => (
-              <TradeItem base={base} quote={quote} amount={amount} key={`pair${index}`} pair={pair} />
-            ))
-          }
-          <Button radius={"full"} onPress={handleSwapAll} fullWidth size="lg" color="danger">Swap All</Button>
+
+        className="w-full flex flex-col gap-2">
+
+        {tradingPairs.length > 0 && (
+          <>
+            {tradingPairs.map((pair, index) => (
+              <TradeItem
+                key={`pair${index}`}
+                pair={pair}
+              />
+            ))}
+            <Button
+              radius="full"
+              onPress={handleSwapAll}
+              fullWidth
+              size="lg"
+              color="danger"
+            >
+              Swap All
+            </Button>
+          </>
+        )}
 
 
 
-        </> :   <Cobe/>}
+
+
+        <div className={tradingPairs.length > 0 ? "hidden" : "w-full"}>
+          <Cobe />
+
+        </div>
       </div>
 
 
@@ -490,9 +505,11 @@ const Trade = () => {
 
       <div className="w-full">
         <Input
-          value={swapInputAmount} onChange={(e) => {
-            setInputValue(e.target.value, TradeType.EXACT_INPUT)
-          }}
+        onValueChange={(val)=>{
+          setInputValue(val, TradeType.EXACT_INPUT)
+
+        }}
+          value={swapInputAmount} 
           label={`Input ${baseToken ? baseToken.symbol : ""}`}
           endContent={
             <div className="flex flex-row gap-2 items-center justify-center">
@@ -647,7 +664,7 @@ const Trade = () => {
       }
 
       <div className="w-full flex flex-col gap-5">
-        {!tokenSelector.showTokenSelector && <TradeContainer base={baseToken} quote={quoteToken} amount={swapInputAmount} />}
+        {!tokenSelector.showTokenSelector && <TradeContainer />}
       </div>
 
 
