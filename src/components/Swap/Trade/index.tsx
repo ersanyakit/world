@@ -11,15 +11,15 @@ import { Badge, Button, Card, CardBody, Image, Input, Modal, ModalBody, ModalCon
 import { useAppKitAccount, useAppKitNetwork, useAppKitProvider } from "@reown/appkit/react";
 import { ethers, formatUnits, getAddress, parseUnits } from "ethers";
 import JSBI from "jsbi";
-import { ChevronsRight, CircleArrowOutDownLeft, CircleArrowOutDownRight, CircleArrowOutUpLeft, CirclePercent, GitCompareArrows, Mouse, MousePointerClick, RedoDot, RefreshCcwDot, Repeat, Shuffle } from "lucide-react";
+import { ChevronsRight, CircleArrowOutDownLeft, CircleArrowOutDownRight, CircleArrowOutUpLeft, CirclePercent, GitCompareArrows, Mouse, MousePointerClick, RedoDot, RefreshCcwDot, Repeat, ScanEye, ScanSearch, Shuffle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { chiliz } from "viem/chains";
 
 const Trade = () => {
   const [baseAsset, setBaseAsset] = useState<Token | null>(null)
   const [quoteAsset, setQuoteAsset] = useState<Token | null>(null)
-  const [baseBalance,setBaseBalance] = useState<BalanceInfo | null>(null)
-  const [quoteBalance,setQuoteBalance] = useState<BalanceInfo | null>(null)
+  const [baseBalance, setBaseBalance] = useState<BalanceInfo | null>(null)
+  const [quoteBalance, setQuoteBalance] = useState<BalanceInfo | null>(null)
 
   const [baseInputValue, setBaseInputValue] = useState("")
   const [quoteInputValue, setQuoteInputValue] = useState("")
@@ -162,7 +162,7 @@ const Trade = () => {
 
 
     const TradeItem: React.FC<TradeItemProps> = ({ pair, base, quote, amount }) => {
-
+      const [expanded,setExpanded] = useState<boolean>(false)
       const handleSwap = async () => {
 
         if (!baseAsset) {
@@ -192,65 +192,78 @@ const Trade = () => {
 
       }
 
-      return (<div className="relative w-full cursor-pointer  border-b-0 bg-white/30 hover:bg-white/50 border border-1 border-default hover:border-white rounded-full flex items-center justify-center p-2">
-        <div className="w-full flex flex-row items-start justify-center gap-2">
+      return (<div className=" group  flex flex-col items-center justify-center">
 
-
-          <div className="w-full flex flex-row gap-2 items-center justify-start">
-            <Image src={pair.exchangeInfo.logo} className="min-w-10 min-h-10 w-10 h-10 border border-1 border-default p-1 rounded-full" />
-            <div className="flex flex-col">
-
-              <div className="w-full flex flex-row gap-2 items-center justify-start">
-                <span className="text-sm">{pair.exchangeInfo.dex}</span>
-                <span className="px-2 text-xs rounded-lg bg-danger-500 text-white">{pair.trade.priceImpact.toFixed(2)}%</span>
-              </div>
-
-              <div className="w-full flex flex-row items-center justify-between gap-2">
-                <span className="px-2 text-xs rounded-lg bg-green-500 text-white">{pair.outputAmount} {quote?.symbol}</span>
-
-              </div>
-            </div>
-          </div>
-
-          <div className="w-full flex flex-row gap-2 items-center justify-center">
-            <div className="flex flex-col gap-0">
-              <span className="text-[9px]">Liquidity</span>
-              <div className="w-full flex flex-col">
-                <div className="flex flex-row gap-2">
-                  <Image src={base?.logoURI} className="w-3 h-3 border border-1 border-default  rounded-full" />
-                  <span className="text-[9px]">{pair.baseLiqudity} {base?.symbol}</span>
+        <div className=" w-full cursor-pointer  border-b-0 bg-white/30 group-hover:bg-white/50 border border-1 border-default group-hover:border-white rounded-full flex items-center justify-center p-2">
+          <div className="w-full flex flex-row items-center justify-center gap-2">
+            <div className="w-full flex flex-row gap-2 items-center justify-start">
+            <Button onPress={() => {
+                setExpanded(!expanded)
+              }} color="default" 
+              className="border border-1 border-white/30 hover:border-white"
+              variant="light" radius="full" size="lg" isIconOnly>
+                {expanded ? <ScanSearch /> : <ScanEye />}
+              </Button>
+              <Image src={pair.exchangeInfo.logo} className="min-w-10 min-h-10 w-10 h-10 border border-1 border-default p-1 rounded-full" />
+              <div className="flex flex-col items-center justify-start">
+                <div className="w-full flex flex-col items-start justify-center">
+                  <span className="text-sm">{pair.exchangeInfo.dex}</span>
+                  <span className="px-2 text-xs rounded-lg bg-danger-500 text-white">{pair.trade.priceImpact.toFixed(2)}%</span>
                 </div>
-                <div className="flex flex-row gap-2">
-                  <Image src={base?.logoURI} className="w-3 h-3 border border-1 border-default rounded-full" />
-                  <span className="text-[9px]">{pair.quoteLiquidity} {quote?.symbol} </span>
-                </div>
+
+
               </div>
             </div>
-          </div>
-
-          <Button onPress={() => {
-            handleSwap()
-          }} color="danger" variant="light" radius="full" size="lg" isIconOnly>
-            <ChevronsRight />
-          </Button>
-
-
-        </div>
-        <div className="absolute  top-[50px] w-full flex flex-col z-[99] max-w-[80%]">
-          <div className="w-full bg-white/80 grid grid-cols-2 items-center justify-start rounded-full text-sm p-1">
-
-            <div className="w-full flex flex-row items-center justify-start gap-2 ">
-              <img className="w-5 h-5" src={base?.logoURI} alt={base?.symbol} />
-              <small className="text-[8px]">{pair.trade.executionPrice.invert().toSignificant()} {base?.symbol} per {quote?.symbol}</small>
+            <div className="w-full flex flex-row gap-2 items-center justify-end">
+              <div className="w-ful   flex flex-col items-end justify-end gap-2 p-2">
+                <span className="px-2 text-sm rounded-lg bg-green-500 text-white">{pair.outputAmount} {quote?.symbol}</span>
+              </div>
+              <Button onPress={() => {
+                handleSwap()
+              }} color="danger" variant="light" radius="full" size="lg" isIconOnly>
+                <ChevronsRight />
+              </Button>
             </div>
-            <div className="flex flex-row items-center justify-start gap-2">
-              <img className="w-5 h-5" src={quote?.logoURI} alt={quote?.symbol} />
-              <small className=" text-[8px]">{pair.trade.executionPrice.toSignificant()}  {quote?.symbol} per {base?.symbol}</small>
-            </div>
+
           </div>
         </div>
+        {
+          expanded && <div className=" w-full bg-white/30 group-hover:bg-white/50  border-t-0 border border-1 border-default group-hover:border-white max-w-[90%] justify-center items-center rounded-b-lg text-sm  flex flex-col gap-2 p-2">
+
+          <div className="w-full flex flex-col gap-2 p-2">
+            <span className="text-sm">Price</span>
+            <div className="w-full grid grid-cols-2 items-center p-1">
+
+              <div className="w-full flex flex-row items-center justify-start gap-2 ">
+                <img className="w-5 h-5" src={base?.logoURI} alt={base?.symbol} />
+                <small className="text-sm">{pair.trade.executionPrice.invert().toSignificant()} {base?.symbol} per {quote?.symbol}</small>
+              </div>
+              <div className="flex flex-row items-center justify-start gap-2">
+                <img className="w-5 h-5" src={quote?.logoURI} alt={quote?.symbol} />
+                <small className=" text-sm">{pair.trade.executionPrice.toSignificant()}  {quote?.symbol} per {base?.symbol}</small>
+              </div>
+
+            </div>
+          </div>
 
 
+          <div className="w-full flex flex-col gap-2 p-2">
+            <span className="text-sm">Liquidity</span>
+            <div className="w-full grid grid-cols-2 items-center justify-center">
+              <div className="flex flex-row gap-2">
+                <Image src={base?.logoURI} className="w-5 h-5 border border-1 border-default  rounded-full" />
+                <span className="text-sm">{pair.baseLiqudity} {base?.symbol}</span>
+              </div>
+              <div className="flex flex-row gap-2">
+                <Image src={quote?.logoURI} className="w-5 h-5 border border-1 border-default rounded-full" />
+                <span className="text-sm">{pair.quoteLiquidity} {quote?.symbol} </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        }
+        
       </div>)
     }
 
@@ -434,8 +447,8 @@ const Trade = () => {
 
     }
 
-    return (<ScrollShadow hideScrollBar className="min-h-[450px]">
-      <div className="w-full flex flex-col gap-6">
+    return (<ScrollShadow hideScrollBar className="max-h-[300px]">
+      <div className="w-full flex flex-col gap-2">
         {tradingPairs.length > 0 ? <>
           {
             tradingPairs.map((pair, index) => (
@@ -460,18 +473,18 @@ const Trade = () => {
     let etherBalance: string = baseBalance
       ? formatUnits(baseBalance?.balance, baseBalance?.decimals)
       : "0.00";
-    
+
     // `parseFloat` sonucu kesin olarak `number` türünde
     let balance: number = parseFloat(etherBalance);
-  
+
     if (typeof balance !== "number" || isNaN(balance)) {
       console.error("Balance is not a valid number");
       return 0; // Hata durumunda güvenli bir değer döndürüyoruz
     }
-  
+
     // Yüzde hesaplaması
     let calculatedAmount = ((balance * percent) / 100).toFixed(4);
-    setInputValue(calculatedAmount,TradeType.EXACT_INPUT)
+    setInputValue(calculatedAmount, TradeType.EXACT_INPUT)
   };
 
   return (
@@ -542,15 +555,15 @@ const Trade = () => {
       <div className="w-full flex flex-col gap-2 p-2">
         <div className="grid grid-cols-2">
           <div className="w-full flex flex-row gap-2 items-center justify-start">
-            <Image className="w-8 h-8" src={baseAsset?.logoURI}/>
-            <span>{baseBalance ? parseFloat(formatUnits(baseBalance?.balance,baseBalance?.decimals)).toFixed(4) : ""} {baseAsset?.symbol}</span>
+            <Image className="w-8 h-8" src={baseAsset?.logoURI} />
+            <span>{baseBalance ? parseFloat(formatUnits(baseBalance?.balance, baseBalance?.decimals)).toFixed(4) : ""} {baseAsset?.symbol}</span>
           </div>
 
           <div className="w-full flex flex-row items-center justify-end gap-2">
 
 
 
-          <Badge isOneChar color="default" className="bg-white/60 border-1 border-white/30" content={<CirclePercent className="text-black/50" />} placement="top-right">
+            <Badge isOneChar color="default" className="bg-white/60 border-1 border-white/30" content={<CirclePercent className="text-black/50" />} placement="top-right">
 
               <Button
                 className="max-w-[40px] min-w-[40px] min-h-[40px] border border-1 border-white/30 hover:border-white"
