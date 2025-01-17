@@ -1,3 +1,5 @@
+import { Token } from "./web3.types";
+
 export interface Contribution {
   valid: boolean;
   index: bigint; // uint256 için bigint kullanılır
@@ -80,8 +82,8 @@ export interface BalanceInfo {
 }
 
 export interface SwapParam {
-  amountIn: number;
-  amountOut: number;
+  amountIn: bigint;
+  amountOut: bigint;
   weth9: string; // Address type represented as a string
   wrapper: string;
   pair: string;
@@ -115,3 +117,20 @@ export interface PairInput {
   weth: string;   // Address type
   amount: bigint;
 }
+
+
+export interface TCustomPair  {
+  pair: PairInfo; // Pair bilgileri
+  isSelected: boolean; // Seçim durumu
+  trade:any;
+  baseLiqudity:any;
+  quoteLiquidity:any
+  exchangeInfo:any;
+  outputAmount:string;
+};
+export interface TradeItemProps  {
+  pair: TCustomPair,
+  base: Token | null
+  quote: Token | null
+  amount : string
+};

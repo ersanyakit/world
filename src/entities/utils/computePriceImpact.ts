@@ -17,3 +17,7 @@ export function computePriceImpact<TBase extends Currency, TQuote extends Curren
   const priceImpact = quotedOutputAmount.subtract(outputAmount).divide(quotedOutputAmount)
   return new Percent(priceImpact.numerator, priceImpact.denominator)
 }
+
+export const toHex = (currencyAmount: CurrencyAmount<Currency>) => {
+  return `0x${currencyAmount.quotient.toString(16)}`
+}

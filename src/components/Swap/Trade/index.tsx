@@ -1,25 +1,27 @@
 import NoItemAvailable from "#components/NoItemAvailable";
 import { useChainId } from "#src/context/ChainIdProvider";
 import { useContributionContext } from "#src/context/GlobalStateContext";
-import { CHILIZWRAPPER, CurrencyAmount, Pair, Route, Token as TokenEntity,Trade as TradeEntity, WETH9 } from "#src/entities";
-import { DECENTRALIZED_EXCHANGES, DEFAULT_TOKEN_LOGO, TradeType } from "#src/entities/utils/misc";
-import { fetchPairs, getContractByName } from "#src/hooks/useContractByName";
-import { BalanceInfo, PairInfo, Router } from "#src/types/Contribution";
+import { CHILIZWRAPPER, Currency, CurrencyAmount, Pair, Percent, Route, Token as TokenEntity,Trade as TradeEntity, WETH9 } from "#src/entities";
+import { DECENTRALIZED_EXCHANGES, DEFAULT_TOKEN_LOGO, INITIAL_ALLOWED_SLIPPAGE, MINIMUM_LIQUIDITY, TradeType } from "#src/entities/utils/misc";
+import { approve, fetchPairs, getContractByName, swap, swapAll } from "#src/hooks/useContractByName";
+import { BalanceInfo, PairInfo, Router, TCustomPair, TradeItemProps } from "#src/types/Contribution";
 import { Token } from "#src/types/web3.types";
 import { getTokenByAddress } from "#src/utils/helpers";
 import { Button, Card, CardBody, Image, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ScrollShadow, useDisclosure, User } from "@nextui-org/react"
-import { useAppKitNetwork } from "@reown/appkit/react";
-import { ethers, formatUnits, getAddress } from "ethers";
+import { useAppKitAccount, useAppKitNetwork, useAppKitProvider } from "@reown/appkit/react";
+import { ethers, formatUnits, getAddress, parseUnits } from "ethers";
 import JSBI from "jsbi";
 import { ChevronsRight, CircleArrowOutDownLeft, CircleArrowOutDownRight, CircleArrowOutUpLeft, GitCompareArrows, Mouse, MousePointerClick, RedoDot, RefreshCcwDot, Repeat, Shuffle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { chiliz } from "viem/chains";
 
 const Trade = () => {
   const [baseAsset, setBaseAsset] = useState<Token | null>(null)
   const [quoteAsset, setQuoteAsset] = useState<Token | null>(null)
   const [baseInputValue, setBaseInputValue] = useState("")
   const [quoteInputValue, setQuoteInputValue] = useState("")
-
+  const { address, isConnected } = useAppKitAccount();
+  const { walletProvider } = useAppKitProvider('eip155');
   const { balances, location, contributions, players, claims, assets, addLocation } = useContributionContext();
   const [tokenSelector, setTokenSelector] = useState<{ showTokenSelector: boolean, side: TradeType }>({
     showTokenSelector: false,
@@ -147,30 +149,37 @@ const Trade = () => {
     const { chainId: chainIdProvider } = useAppKitNetwork();
     const chainIdInput = useChainId();
     const chainId: number = chainIdProvider ? Number(chainIdProvider) : chainIdInput;
-    type TCustomPair = {
-      pair: PairInfo; // Pair bilgileri
-      isSelected: boolean; // Seçim durumu
-      trade:any;
-      baseLiqudity:any;
-      quoteLiquidity:any
-      exchangeInfo:any;
-      outputAmount:string;
-    };
+
     const [tradingPairs, setTradingPairs] = useState<TCustomPair[]>([])
 
 
-
-    type TradeItemProps = {
-      pair: TCustomPair,
-      base: Token | null
-      quote: Token | null
-      amount : string
-    };
       const TradeItem: React.FC<TradeItemProps> = ({ pair,base,quote,amount }) => {
 
       const handleSwap = async () => {
 
+        if(!baseAsset){
+          return
+        }
 
+        if(!quoteAsset){
+          return
+        }
+            
+       let inputAmount = parseUnits(amount, baseAsset.decimals);
+       let outputAmount = parseUnits(pair.outputAmount,quoteAsset?.decimals)
+       let WRAPPER = CHILIZWRAPPER[chainId].address
+
+        if(baseAsset.address != ethers.ZeroAddress){
+             let approvalResponse = await approve(chainId,walletProvider, isConnected, baseAsset, ethers.MaxUint256)
+                if (!approvalResponse.success) {
+                 // return
+                }
+        }
+       
+           let swapResponse = await swap(chainId,walletProvider, isConnected, address, pair,WRAPPER,baseAsset,quoteAsset,inputAmount,outputAmount)
+            if (!swapResponse.success) {
+               return
+            }
 
 
       }
@@ -232,6 +241,7 @@ const Trade = () => {
                                         </div>
           </div>
         </div>
+
 
       </div>)
     }
@@ -323,12 +333,26 @@ const Trade = () => {
               const quoteToken = new TokenEntity(quote.chainId,_quoteAddress, _quoteDecimals, quote.symbol)
               const [baseReserve, quoteReserve] = _baseAddress == pair.token0 ? [pair.reserve0, pair.reserve1] : [pair.reserve1, pair.reserve0]
              
-               const exchangePair = new Pair(
-                CurrencyAmount.fromRawAmount(baseToken, baseReserve.toString()),
-                CurrencyAmount.fromRawAmount(quoteToken, quoteReserve.toString()))
-              
 
-  
+
+              let _checkBaseLiquidty = CurrencyAmount.fromRawAmount(baseToken, baseReserve.toString())
+              let _checkQuuteLiquidity = CurrencyAmount.fromRawAmount(quoteToken, quoteReserve.toString())
+
+
+                if (JSBI.lessThanOrEqual(_checkBaseLiquidty.quotient, MINIMUM_LIQUIDITY)) {
+                  continue;
+                }
+
+                if (JSBI.lessThanOrEqual(_checkQuuteLiquidity.quotient, MINIMUM_LIQUIDITY)) {
+                  continue;
+                }
+
+                 const exchangePair = new Pair(
+                  CurrencyAmount.fromRawAmount(baseToken, baseReserve.toString()),
+                  CurrencyAmount.fromRawAmount(quoteToken, quoteReserve.toString()))
+            
+           
+              
                 const baseAmount: CurrencyAmount<TokenEntity> = CurrencyAmount.fromRawAmount(baseToken, JSBI.BigInt(ethers.parseUnits(baseInputValue, Number(_baseDecimals)).toString()));
   
                 let _tradeInfo = new TradeEntity(
@@ -340,12 +364,15 @@ const Trade = () => {
                 let _baseLiquidity = CurrencyAmount.fromRawAmount(baseToken, baseReserve.toString()).toSignificant(6)
                 let _quoteLiquidity = CurrencyAmount.fromRawAmount(quoteToken, quoteReserve.toString()).toSignificant(6)
 
-
+                const DEFAULT_ADD_SLIPPAGE_TOLERANCE = new Percent(INITIAL_ALLOWED_SLIPPAGE, 10_000)
+                const amountOutSlippage = _tradeInfo.minimumAmountOut(DEFAULT_ADD_SLIPPAGE_TOLERANCE)
+            
+        
                   var output = 0 
                   let price = parseFloat(_tradeInfo.executionPrice.toSignificant());
                   let baseInput = parseFloat(baseInputValue);
                   output = price * baseInput
-                  let outputAmount = output.toFixed(6)
+                  let outputAmount = amountOutSlippage.toSignificant(6)
               
                 let exchangeInfo = getExchangeByRouterAndWETH(pair.router,pair.weth)
 
@@ -359,17 +386,61 @@ const Trade = () => {
 
       setTradingPairs(customPairs);
     }
+
+
+   
+
     useEffect(()=>{
       handleFetchPairs()
 
     },[])
 
+    const handleSwapAll = async () => {
+
+      if(!baseAsset){
+        return
+      }
+
+      if(!quoteAsset){
+        return
+      }
+          
+     let inputAmount = parseUnits(amount, baseAsset.decimals);
+
+
+     let WRAPPER = CHILIZWRAPPER[chainId].address
+
+      if(baseAsset.address != ethers.ZeroAddress){
+           let approvalResponse = await approve(chainId,walletProvider, isConnected, baseAsset, ethers.MaxUint256)
+              if (!approvalResponse.success) {
+              }
+      }
+
+
+     
+         let swapResponse = await swapAll(chainId,walletProvider, isConnected, address, tradingPairs,WRAPPER,baseAsset,quoteAsset,inputAmount)
+          if (!swapResponse.success) {
+             return
+          }
+
+
+    }
+
     return (<ScrollShadow hideScrollBar className="min-h-[450px]">
       <div className="w-full flex flex-col gap-6">
-      {tradingPairs.length > 0 ? tradingPairs.map((pair, index) => (
-        <TradeItem base={base} quote={quote} amount={amount} key={`pair${index}`} pair={pair} />
-      )) : <NoItemAvailable imageClass="w-full" title={"Millionar Swap"} description={"Please select the base and quote assets you wish to swap, then enter the amount."} icon={"/assets/swap.png"}/>}
+      {tradingPairs.length > 0 ? <>
+      {
+        tradingPairs.map((pair, index) => (
+          <TradeItem base={base} quote={quote} amount={amount} key={`pair${index}`} pair={pair} />
+        )) 
+      }
+              <Button onPress={handleSwapAll} fullWidth size="lg" color="danger">Swap All</Button>
+
+      
+      
+      </> : <NoItemAvailable imageClass="w-full" title={"Millionar Swap"} description={"Please select the base and quote assets you wish to swap, then enter the amount."} icon={"/assets/swap.png"}/>}
       </div>
+
     
 
 
@@ -449,6 +520,8 @@ const Trade = () => {
       <div className="w-full flex flex-col gap-5">
         {!tokenSelector.showTokenSelector && <TradeContainer base={baseAsset} quote={quoteAsset} amount={baseInputValue} />}
       </div>
+
+  
 
 
 

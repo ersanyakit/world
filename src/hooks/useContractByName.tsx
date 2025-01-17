@@ -4,12 +4,13 @@ import { TCustomContract, MultiContractConfig, ContractCallResponse, Token, Netw
 import WorldDiamondABI from "../constants/abi/WorldDiamond.json";
 import ERC20ABI from "../constants/abi/ERC20.json";
 import { BrowserProvider, Contract, ethers, isAddress, JsonRpcProvider } from 'ethers';
-import { createPublicClient, getContract, http } from 'viem';
-import { BalanceInfo, Contribution, ContributionInfo, PairInfo, Player, Router } from '#src/types/Contribution';
+import { createPublicClient, getContract, http, parseEther, parseUnits } from 'viem';
+import { BalanceInfo, Contribution, ContributionInfo, PairInfo, Player, Router, SwapParam, TCustomPair } from '#src/types/Contribution';
 import { AvaxMainnet, ChilizMainnet, ChilizSpicyTestNet, HardhatTestnet } from '#src/utils/web3/chains';
 import { avalanche, chiliz, hardhat, spicy } from 'viem/chains';
 import { getTokenAddressesByChainId } from '#src/utils/helpers';
-import { Trade } from '#src/entities';
+import { Percent, Trade } from '#src/entities';
+import { INITIAL_ALLOWED_SLIPPAGE } from '#src/entities/utils/misc';
 
 const DiamondAddress = '0x3B86091793D1f732BBfCCF1269e471d5DF4eb350';
 
@@ -806,7 +807,7 @@ export const fetchPairs = async (chainId: number, routers: Router[],wrapper:stri
 
 
 
-export const swap = async (chainId: number, walletProvider: any, isConnected: any, address: any, tradeInfo: any,wrapper:string, base: Token, quote:Token, amount:bigint,output:bigint): Promise<ContractCallResponse> => {
+export const swap = async (chainId: number, walletProvider: any, isConnected: any, address: any, tradeInfo: TCustomPair,wrapper:string, base: Token, quote:Token, amountIn:bigint,amountOut:bigint): Promise<ContractCallResponse> => {
     let selectedNetwork = getNetworkClient(chainId);
     let callResponse: ContractCallResponse = { success: false, transaction: null, error: null }
 
@@ -817,14 +818,14 @@ export const swap = async (chainId: number, walletProvider: any, isConnected: an
         return callResponse;
     }
 
-    if (amount == BigInt(0)) {
+    if (amountIn == BigInt(0)) {
         callResponse.success = false;
         callResponse.transaction = null;
         callResponse.error = { message: "Amount must greater than zero!" };
         return callResponse;
     }
 
-    if (output == BigInt(0)) {
+    if (amountOut == BigInt(0)) {
         callResponse.success = false;
         callResponse.transaction = null;
         callResponse.error = { message: "Output amount must greater than zero!" };
@@ -840,9 +841,25 @@ export const swap = async (chainId: number, walletProvider: any, isConnected: an
             rpcUrl: selectedNetwork.network.rpcUrl
         }
 
-        const overrides = {
-            value: ethers.getAddress(base.address) == ethers.getAddress(ethers.ZeroAddress) ? amount : 0
-        }
+        let IS_NATIVE =  ethers.getAddress(base.address) == ethers.getAddress(ethers.ZeroAddress)
+        let INPUT_TOKEN = IS_NATIVE ? tradeInfo.pair.weth : base.address;
+
+              
+        let swapParam: SwapParam = {
+            amountIn: amountIn,
+            amountOut: amountOut,
+            weth9: tradeInfo.pair.weth,
+            wrapper: wrapper,
+            pair: tradeInfo.pair.pair,
+            input: INPUT_TOKEN
+        };
+              
+               const overrides = {
+                   value:IS_NATIVE ? amountIn : 0
+               }
+
+               console.log('swapParam',address,wrapper,swapParam)
+ 
 
         const diamondContract: any = GetContractAt(contractParams);
         const signer = await GetSigner(walletProvider);
@@ -850,7 +867,7 @@ export const swap = async (chainId: number, walletProvider: any, isConnected: an
         const tx = await diamondContract
             .connect(signer)
             // @ts-ignore
-            .swap(contribution, overrides);
+            .swap(swapParam, overrides);
 
         await tx.wait();
         callResponse.success = true;
@@ -863,4 +880,83 @@ export const swap = async (chainId: number, walletProvider: any, isConnected: an
     }
     return callResponse
 }
+
+export const swapAll = async (chainId: number, walletProvider: any, isConnected: any, address: any, tradeInfo: TCustomPair[],wrapper:string, base: Token, quote:Token, amountIn:bigint): Promise<ContractCallResponse> => {
+    let selectedNetwork = getNetworkClient(chainId);
+    let callResponse: ContractCallResponse = { success: false, transaction: null, error: null }
+
+    if (!isConnected) {
+        callResponse.success = false;
+        callResponse.transaction = null;
+        callResponse.error = { message: "You are not connected." };
+        return callResponse;
+    }
+
+    if (amountIn == BigInt(0)) {
+        callResponse.success = false;
+        callResponse.transaction = null;
+        callResponse.error = { message: "Amount must greater than zero!" };
+        return callResponse;
+    }
+
+
+    let diamondContractParams = getContractByName("DIAMOND", selectedNetwork.network.chainId);
+
+    try {
+        let contractParams = {
+            address: ethers.getAddress(diamondContractParams.address) as any,
+            abi: diamondContractParams.abi,
+            rpcUrl: selectedNetwork.network.rpcUrl
+        }
+
+        let IS_NATIVE =  ethers.getAddress(base.address) == ethers.getAddress(ethers.ZeroAddress)
+
+        let swapParams : SwapParam[] = []
+
+        let depositAmount = parseEther("0")
+        for(let i = 0; i < tradeInfo.length;i++){
+            let trade = tradeInfo[i];
+            let INPUT_TOKEN = IS_NATIVE ? trade.pair.weth : base.address;
+
+            let amountOut = parseUnits(trade.outputAmount,quote.decimals)
+            let swapParam: SwapParam = {
+                amountIn: amountIn,
+                amountOut: amountOut,
+                weth9: trade.pair.weth,
+                wrapper: wrapper,
+                pair: trade.pair.pair,
+                input: INPUT_TOKEN
+            };
+            depositAmount = depositAmount+amountIn
+            swapParams.push(swapParam)
+        }
+        
+        const overrides = {
+            value:IS_NATIVE ? depositAmount : 0
+        }
+
+               console.log('swapParam',address,wrapper,swapParams)
+ 
+
+        const diamondContract: any = GetContractAt(contractParams);
+        const signer = await GetSigner(walletProvider);
+
+        const tx = await diamondContract
+            .connect(signer)
+            // @ts-ignore
+            .swapAll(swapParams, overrides);
+
+        await tx.wait();
+        callResponse.success = true;
+        callResponse.error = null;
+        callResponse.transaction = tx;
+    }
+    catch (exception: any) {
+        callResponse.success = false;
+        callResponse.error = { message: "Swap Failed!", exception: exception };
+    }
+    return callResponse
+}
+
+
 
