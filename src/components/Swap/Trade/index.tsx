@@ -164,7 +164,7 @@ const Trade = () => {
           return
         }
 
-        let inputAmount = parseUnits(amount, baseToken.decimals);
+        let inputAmount = parseUnits(swapInputAmount, baseToken.decimals);
         let outputAmount = parseUnits(pair.outputAmount, quoteToken?.decimals)
         let WRAPPER = CHILIZWRAPPER[chainId].address
 

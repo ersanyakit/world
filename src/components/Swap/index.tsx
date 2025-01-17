@@ -10,7 +10,6 @@ type SwapProps = {
   };
 
 const Swap: React.FC<SwapProps> = ({ isOpen,onOpen,onClose, onOpenChange }) => {
-
     return( <Modal scrollBehavior="inside" className='bg-white/70 backdrop-blur-lg' size="full"  isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           {(onClose) => (
