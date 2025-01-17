@@ -100,7 +100,7 @@ const Trade = () => {
       });
     }, [balances, tokens, disabledToken]);
 
-    return <div className="w-full grid grid-cols-3 gap-2">{memoizedBalances}</div>;
+    return <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-2">{memoizedBalances}</div>;
   };
   const handleSelectToken = (token: Token | null, balanceInfo: BalanceInfo) => {
     if (!token) {
