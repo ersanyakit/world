@@ -1,3 +1,4 @@
+import { Cobe } from "#components/Cobe";
 import NoItemAvailable from "#components/NoItemAvailable";
 import { useChainId } from "#src/context/ChainIdProvider";
 import { useContributionContext } from "#src/context/GlobalStateContext";
@@ -448,8 +449,10 @@ const Trade = () => {
 
     }
 
-    return (<ScrollShadow hideScrollBar className="max-h-[550px]">
-      <div className="w-full flex flex-col gap-2">
+    return (<ScrollShadow hideScrollBar className="z-[999] max-h-[550px]">
+      <div
+       
+         className="w-full flex flex-col gap-2">
         {tradingPairs.length > 0 ? <>
           {
             tradingPairs.map((pair, index) => (
@@ -460,7 +463,7 @@ const Trade = () => {
 
 
 
-        </> : <NoItemAvailable imageClass="w-full" title={"Millionar Swap"} description={"Please select the base and quote assets you wish to swap, then enter the amount."} icon={"/assets/swap.png"} />}
+        </> :   <Cobe/>}
       </div>
 
 
