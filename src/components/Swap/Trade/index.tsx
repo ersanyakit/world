@@ -511,7 +511,7 @@ const Trade = () => {
               <Button onPress={() => {
                 handleSwapAssets()
               }} size="md" variant="light" isIconOnly radius="full">
-                <GitCompareArrows className="text-red-500" />
+                <GitCompareArrows />
               </Button>
               <Button onPress={() => {
                 setTokenSelector(prevState => ({
