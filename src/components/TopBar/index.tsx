@@ -30,7 +30,7 @@ const MapTopBar = () => {
 
 
   useEffect(()=>{
-    //onOpen();
+    onSwapOpen();
   },[])
   
   return (
