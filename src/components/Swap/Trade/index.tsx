@@ -229,7 +229,7 @@ const Trade = () => {
           </div>
         </div>
         {
-          expanded && <div className=" w-full bg-white/30 group-hover:bg-white/50  border-t-0 border border-1 border-default group-hover:border-white max-w-[90%] justify-center items-center rounded-b-lg text-sm  flex flex-col gap-2 p-2">
+          expanded && <div className=" w-full bg-white/30 group-hover:bg-white/50  border-t-0 border border-1 border-default group-hover:border-white max-w-[80%] justify-center items-center rounded-b-lg text-sm  flex flex-col gap-2 p-2">
 
           <div className="w-full flex flex-col gap-2 p-2">
             <span className="text-sm">Price</span>
@@ -448,7 +448,7 @@ const Trade = () => {
 
     }
 
-    return (<ScrollShadow hideScrollBar className="max-h-[500px]">
+    return (<ScrollShadow hideScrollBar className="max-h-[550px]">
       <div className="w-full flex flex-col gap-2">
         {tradingPairs.length > 0 ? <>
           {
