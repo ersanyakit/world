@@ -17,16 +17,14 @@ import { useEffect, useMemo, useState } from "react";
 import { chiliz } from "viem/chains";
 
 const Trade = () => {
-  const [baseAsset, setBaseAsset] = useState<Token | null>(null)
-  const [quoteAsset, setQuoteAsset] = useState<Token | null>(null)
   const [baseBalance, setBaseBalance] = useState<BalanceInfo | null>(null)
   const [quoteBalance, setQuoteBalance] = useState<BalanceInfo | null>(null)
 
-  const [baseInputValue, setBaseInputValue] = useState("")
+  const {balances,addSwapInputValue,swapInputAmount,baseToken,quoteToken,addBaseToken,addQuoteToken } = useContributionContext();
+
   const [quoteInputValue, setQuoteInputValue] = useState("")
   const { address, isConnected } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider('eip155');
-  const { balances, location, contributions, players, claims, assets, addLocation } = useContributionContext();
   const [tokenSelector, setTokenSelector] = useState<{ showTokenSelector: boolean, side: TradeType }>({
     showTokenSelector: false,
     side: TradeType.EXACT_INPUT,
@@ -109,10 +107,10 @@ const Trade = () => {
     }
 
     if (tokenSelector.side == TradeType.EXACT_INPUT) {
-      setBaseAsset(token)
+      addBaseToken(token)
       setBaseBalance(balanceInfo)
     } else if (tokenSelector.side == TradeType.EXACT_OUTPUT) {
-      setQuoteAsset(token)
+      addQuoteToken(token)
       setQuoteBalance(balanceInfo)
     }
     setTokenSelector(prevState => ({
@@ -123,10 +121,9 @@ const Trade = () => {
   }
 
   const handleSwapAssets = () => {
-    setBaseAsset((prevBaseAsset) => {
-      setQuoteAsset(prevBaseAsset);
-      return quoteAsset; // Swap the base and quote assets
-    });
+ 
+    addBaseToken(quoteToken);  // quote token'ı base token olarak ayarla
+    addQuoteToken(baseToken);  // base token'ı quote token olarak ayarla
 
     setBaseBalance((prevBaseAssetBalance) => {
       setQuoteBalance(prevBaseAssetBalance);
@@ -139,7 +136,7 @@ const Trade = () => {
     e = e.replace(",", ".")
     if (regex.test(e)) {
       if (side == TradeType.EXACT_INPUT) {
-        setBaseInputValue(e)
+        addSwapInputValue(e)
       } else {
         setQuoteInputValue(e)
       }
@@ -166,26 +163,26 @@ const Trade = () => {
       const [expanded,setExpanded] = useState<boolean>(false)
       const handleSwap = async () => {
 
-        if (!baseAsset) {
+        if (!baseToken) {
           return
         }
 
-        if (!quoteAsset) {
+        if (!quoteToken) {
           return
         }
 
-        let inputAmount = parseUnits(amount, baseAsset.decimals);
-        let outputAmount = parseUnits(pair.outputAmount, quoteAsset?.decimals)
+        let inputAmount = parseUnits(amount, baseToken.decimals);
+        let outputAmount = parseUnits(pair.outputAmount, quoteToken?.decimals)
         let WRAPPER = CHILIZWRAPPER[chainId].address
 
-        if (baseAsset.address != ethers.ZeroAddress) {
-          let approvalResponse = await approve(chainId, walletProvider, isConnected, baseAsset, ethers.MaxUint256)
+        if (baseToken.address != ethers.ZeroAddress) {
+          let approvalResponse = await approve(chainId, walletProvider, isConnected, baseToken, ethers.MaxUint256)
           if (!approvalResponse.success) {
             // return
           }
         }
 
-        let swapResponse = await swap(chainId, walletProvider, isConnected, address, pair, WRAPPER, baseAsset, quoteAsset, inputAmount, outputAmount)
+        let swapResponse = await swap(chainId, walletProvider, isConnected, address, pair, WRAPPER, baseToken, quoteToken, inputAmount, outputAmount)
         if (!swapResponse.success) {
           return
         }
@@ -376,7 +373,7 @@ const Trade = () => {
 
 
 
-        const baseAmount: CurrencyAmount<TokenEntity> = CurrencyAmount.fromRawAmount(baseToken, JSBI.BigInt(ethers.parseUnits(baseInputValue, Number(_baseDecimals)).toString()));
+        const baseAmount: CurrencyAmount<TokenEntity> = CurrencyAmount.fromRawAmount(baseToken, JSBI.BigInt(ethers.parseUnits(swapInputAmount, Number(_baseDecimals)).toString()));
 
         let _tradeInfo = new TradeEntity(
           new Route([exchangePair], baseToken, quoteToken),
@@ -393,7 +390,7 @@ const Trade = () => {
 
         var output = 0
         let price = parseFloat(_tradeInfo.executionPrice.toSignificant());
-        let baseInput = parseFloat(baseInputValue);
+        let baseInput = parseFloat(swapInputAmount);
         output = price * baseInput
         let outputAmount = amountOutSlippage.toSignificant(6)
 
@@ -420,28 +417,28 @@ const Trade = () => {
 
     const handleSwapAll = async () => {
 
-      if (!baseAsset) {
+      if (!baseToken) {
         return
       }
 
-      if (!quoteAsset) {
+      if (!quoteToken) {
         return
       }
 
-      let inputAmount = parseUnits(amount, baseAsset.decimals);
+      let inputAmount = parseUnits(amount, baseToken.decimals);
 
 
       let WRAPPER = CHILIZWRAPPER[chainId].address
 
-      if (baseAsset.address != ethers.ZeroAddress) {
-        let approvalResponse = await approve(chainId, walletProvider, isConnected, baseAsset, ethers.MaxUint256)
+      if (baseToken.address != ethers.ZeroAddress) {
+        let approvalResponse = await approve(chainId, walletProvider, isConnected, baseToken, ethers.MaxUint256)
         if (!approvalResponse.success) {
         }
       }
 
 
 
-      let swapResponse = await swapAll(chainId, walletProvider, isConnected, address, tradingPairs, WRAPPER, baseAsset, quoteAsset, inputAmount)
+      let swapResponse = await swapAll(chainId, walletProvider, isConnected, address, tradingPairs, WRAPPER, baseToken, quoteToken, inputAmount)
       if (!swapResponse.success) {
         return
       }
@@ -496,10 +493,10 @@ const Trade = () => {
 
       <div className="w-full">
         <Input
-          value={baseInputValue} onChange={(e) => {
+          value={swapInputAmount} onChange={(e) => {
             setInputValue(e.target.value, TradeType.EXACT_INPUT)
           }}
-          label={`Input ${baseAsset ? baseAsset.symbol : ""}`}
+          label={`Input ${baseToken ? baseToken.symbol : ""}`}
           endContent={
             <div className="flex flex-row gap-2 items-center justify-center">
               <Button onPress={() => {
@@ -509,7 +506,7 @@ const Trade = () => {
                   side: TradeType.EXACT_INPUT
                 }));
               }} size="md" variant="light" isIconOnly radius="full">
-                <Image removeWrapper src={baseAsset ? baseAsset.logoURI : DEFAULT_TOKEN_LOGO} radius="full" className="w-10 h-10 p-1 border border-2 border-default text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                <Image removeWrapper src={baseToken ? baseToken.logoURI : DEFAULT_TOKEN_LOGO} radius="full" className="w-10 h-10 p-1 border border-2 border-default text-2xl text-default-400 pointer-events-none flex-shrink-0" />
               </Button>
               <Button onPress={() => {
                 handleSwapAssets()
@@ -523,7 +520,7 @@ const Trade = () => {
                   side: TradeType.EXACT_OUTPUT
                 }));
               }} size="md" variant="light" isIconOnly radius="full">
-                <Image removeWrapper src={quoteAsset ? quoteAsset.logoURI : DEFAULT_TOKEN_LOGO} radius="full" className="w-10 h-10 p-1 border border-2 border-default text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                <Image removeWrapper src={quoteToken ? quoteToken.logoURI : DEFAULT_TOKEN_LOGO} radius="full" className="w-10 h-10 p-1 border border-2 border-default text-2xl text-default-400 pointer-events-none flex-shrink-0" />
               </Button>
 
             </div>
@@ -559,8 +556,8 @@ const Trade = () => {
       <div className="w-full flex flex-col gap-2 p-2">
         <div className="grid grid-cols-2">
           <div className="w-full flex flex-row gap-2 items-center justify-start">
-            <Image className="w-8 h-8" src={baseAsset?.logoURI} />
-            <span>{baseBalance ? parseFloat(formatUnits(baseBalance?.balance, baseBalance?.decimals)).toFixed(4) : ""} {baseAsset?.symbol}</span>
+            <Image className="w-8 h-8" src={baseToken?.logoURI} />
+            <span>{baseBalance ? parseFloat(formatUnits(baseBalance?.balance, baseBalance?.decimals)).toFixed(4) : ""} {baseToken?.symbol}</span>
           </div>
 
           <div className="w-full flex flex-row items-center justify-end gap-2">
@@ -648,12 +645,12 @@ const Trade = () => {
       </div>
       {
         tokenSelector.showTokenSelector && <div className="relative z-[999] bg-blur w-full flex flex-col gap-2 p-2 pt-2">
-          <TokenList disabledToken={tokenSelector.side == TradeType.EXACT_INPUT ? quoteAsset : baseAsset} onSelect={handleSelectToken} />
+          <TokenList disabledToken={tokenSelector.side == TradeType.EXACT_INPUT ? quoteToken : baseToken} onSelect={handleSelectToken} />
         </div>
       }
 
       <div className="w-full flex flex-col gap-5">
-        {!tokenSelector.showTokenSelector && <TradeContainer base={baseAsset} quote={quoteAsset} amount={baseInputValue} />}
+        {!tokenSelector.showTokenSelector && <TradeContainer base={baseToken} quote={quoteToken} amount={swapInputAmount} />}
       </div>
 
 
