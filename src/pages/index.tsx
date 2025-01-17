@@ -9,6 +9,7 @@ import { toast } from "sonner"
 import { Toaster } from '#components/ui/sonner'
 import { decodeTweetId } from '#lib/utils'
 import { useChainId } from '#src/context/ChainIdProvider'
+import MapTopBar from '#components/TopBar'
 
 
 
@@ -73,11 +74,9 @@ const MapPage = () => {
         <meta name="twitter:image" content={randomImage} />
         <meta name="twitter:url" content="https://millionarmap.com" />
     </Head>
-      <div>
         <div className="w-full">
            <Map /> 
         </div>
-      </div>
        <Toaster visibleToasts={5} className='!bottom-[120px] !z-1' expand={false} position='bottom-left' richColors={true} /> 
 
     </>

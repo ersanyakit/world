@@ -1,8 +1,8 @@
 import createGlobe from "cobe";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSpring } from "react-spring";
 
-export function Cobe() {
+const Cobe: React.FC = React.memo(() => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const pointerInteracting = useRef<number | null>(null);
   const pointerInteractionMovement = useRef<number>(0);
@@ -147,4 +147,6 @@ export function Cobe() {
       />
     </div>
   );
-}
+});
+
+export default Cobe;

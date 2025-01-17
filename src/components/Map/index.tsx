@@ -82,8 +82,7 @@ const LeafletMapInner = () => {
   });
 
   const isLoading = !map || !viewportWidth || !viewportHeight;
-
-  /** watch position & zoom of all markers */
+/* 
   useEffect(() => {
     if (!allMarkersBoundCenter || !map) return;
 
@@ -99,7 +98,7 @@ const LeafletMapInner = () => {
       );
       map.once('moveend', moveEnd);
     } catch (e) {}
-  }, [allMarkersBoundCenter, map]);
+  }, [allMarkersBoundCenter, map]); */
 
   return (
     <div

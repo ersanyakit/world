@@ -1,4 +1,4 @@
-import { Cobe } from "#components/Cobe";
+import Cobe from "#components/Cobe";
 import NoItemAvailable from "#components/NoItemAvailable";
 import { useChainId } from "#src/context/ChainIdProvider";
 import { useContributionContext } from "#src/context/GlobalStateContext";
