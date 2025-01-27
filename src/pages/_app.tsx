@@ -9,6 +9,7 @@ import { ContributionProvider } from '#src/context/GlobalStateContext';
 import { QueryProvider } from '#src/context/GlobalQueryContext'; // Adjust the path as necessary
 import React, { useEffect } from 'react';
 import { ChainIdProvider } from '#src/context/ChainIdProvider';
+import { FirebaseProvider } from '#src/context/FirebaseProvider';
 
 
 
@@ -16,6 +17,8 @@ import { ChainIdProvider } from '#src/context/ChainIdProvider';
 const App = ({ Component, pageProps }: AppProps) => (
   <>
     <NextUIProvider>
+    <FirebaseProvider>
+
       <QueryProvider>
 
         <Web3Provider>
@@ -31,6 +34,7 @@ const App = ({ Component, pageProps }: AppProps) => (
         </Web3Provider>
 
       </QueryProvider>
+      </FirebaseProvider>
     </NextUIProvider>
   </>
 );

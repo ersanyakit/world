@@ -31,6 +31,7 @@
     "cobe": "^0.6.3",
     "decimal.js-light": "^2.5.0",
     "ethers": "^6.13.4",
+    "firebase": "^11.2.0",
     "framer-motion": "^11.15.0",
     "jsbi": "^3.1.4",
     "leaflet": "^1.9.3",
@@ -56,6 +57,7 @@
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.2.0",
     "@types/big.js": "^4.0.5",
+    "@types/firebase": "^3.2.3",
     "@types/leaflet": "^1.9.1",
     "@types/leaflet.markercluster": "^1.5.1",
     "@types/node": "18.13.0",
