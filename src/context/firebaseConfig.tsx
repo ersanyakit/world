@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getMessaging, onMessage } from "firebase/messaging";
 
 // Firebase yapılandırması (Firebase konsolundan alın)
 const firebaseConfig = {
@@ -13,8 +14,14 @@ const firebaseConfig = {
   measurementId: "G-9FZ9ZDQY32"
 };
 // Firebase Uygulamasını Başlat
-const app = initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
 
 // Firebase Modüllerini Başlat
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+export const auth = getAuth(firebaseApp);
+export const db = getFirestore(firebaseApp);
+export const messaging = getMessaging(firebaseApp);
+
+// Bildirimleri dinleme
+onMessage(messaging, (payload) => {
+  console.log("Message received. ", payload);
+});
