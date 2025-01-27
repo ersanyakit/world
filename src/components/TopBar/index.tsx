@@ -22,22 +22,18 @@ import LatLngLogo from '#components/TopBar/LatLngLogo';
 import { useEffect, useState } from 'react';
 import Intro from '#components/Intro';
 import Swap from '#components/Swap';
-import useFCM from '#src/hooks/useFCM';
-import { Token } from '#src/entities';
 
 const MapTopBar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { isOpen:isOpenSwap,onClose:onSwapClose ,onOpen:onSwapOpen, onOpenChange:onOpenSwap, onOpenChange:onOpenSwapChange } = useDisclosure();
-  const { messages, fcmToken } = useFCM();
 
 
   useEffect(()=>{
 
-    console.log("fcmToken",messages)
-    console.log("fcmToken",fcmToken)
-  },[fcmToken,messages.length])
+  
+  },[])
   
   return (
     <>
@@ -103,9 +99,6 @@ const MapTopBar = () => {
             <ConnectButton />
           </NavbarContent>
         </Navbar>
-      </div>
-      <div className='w-full bg-red-500 z-[9999999] fixed top-50 left-0'>
-     <Input fullWidth type='text' value={fcmToken ? fcmToken : ""}/>
       </div>
     </>
   );
