@@ -37,7 +37,7 @@ const MapTopBar = () => {
 
     console.log("fcmToken",messages)
     console.log("fcmToken",fcmToken)
-  },[fcmToken])
+  },[fcmToken,messages.length])
   
   return (
     <>
