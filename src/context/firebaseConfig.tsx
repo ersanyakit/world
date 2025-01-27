@@ -19,9 +19,14 @@ const firebaseApp = initializeApp(firebaseConfig);
 // Firebase Modüllerini Başlat
 export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
-export const messaging = getMessaging(firebaseApp);
 
 // Bildirimleri dinleme
-onMessage(messaging, (payload) => {
-  console.log("Message received. ", payload);
-});
+export const messaging = 
+  typeof window !== "undefined" ? getMessaging(firebaseApp) : null;
+
+// Tarayıcıda bildirimleri dinle
+if (typeof window !== "undefined" && messaging) {
+  onMessage(messaging, (payload) => {
+    console.log("Message received: ", payload);
+  });
+}
