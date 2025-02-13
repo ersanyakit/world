@@ -28,13 +28,17 @@ module.exports = {
 			'spin-slow': {
 			  '0%': { transform: 'rotate(0deg)' },
 			  '100%': { transform: 'rotate(-360deg)' }
-			}
+			},
+			shimmer: {
+			  '100%': { transform: 'translateX(100%)' },
+			},
 		  },
 		  animation: {
 			wiggle: 'wiggle 1s ease-in-out infinite',
 			'slow-spin': 'slow-spin 20s linear infinite',
 			'orbit': 'orbit 20s linear infinite',
 			'spin-slow': 'spin-slow 30s linear infinite',
+			shimmer: 'shimmer 2s infinite',
 		  },
   		fontSize: {
   			base: [

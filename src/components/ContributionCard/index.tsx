@@ -81,15 +81,23 @@ const ContributionCard: React.FC<ContributionCardProps> = ({ contribution, class
   return (
     <Card
       shadow="lg"
-      className={`w-full cursor-pointer border border-success-500/20 bg-black/40 
+      className={`w-full border border-success-500/20 bg-black/40 
         hover:bg-black/70 hover:border-success-500/40 transition-all duration-300 
         backdrop-blur-sm hover:scale-[1.02] ${className}`}
       key={Number(contribution.index)}
-      isPressable
-      onPress={toggleExpand}
     >
       <CardBody className="p-5">
-        <div className="flex flex-col gap-4">
+        <div 
+          className="flex flex-col gap-4 cursor-pointer" 
+          onClick={toggleExpand}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              toggleExpand();
+            }
+          }}
+        >
           <ContributorInfo 
             contribution={contribution} 
             formattedDeposit={formattedDeposit}
@@ -167,24 +175,34 @@ const ContributorInfo = memo(({
         Haritada Göster
       </Button>
     </div>
-  </div>
+  </div>    
 ));
 
-const ClaimProgress = memo(({ claims, limit }: { claims: number; limit: number }) => (
-  <div className="flex flex-1 justify-start items-center gap-3">
-    <div className="w-32 h-2 bg-success-500/20 rounded-full overflow-hidden">
-      <div 
-        className="h-full bg-success-500 rounded-full transition-all duration-300"
-        style={{ width: `${(claims / limit) * 100}%` }}
-      />
+const ClaimProgress = memo(({ claims, limit }: { claims: number; limit: number }) => {
+  const percentage = (claims / limit) * 100;
+  
+  return (
+    <div className="flex flex-1 justify-start items-center gap-3">
+      <div className="relative w-32 h-3 bg-success-500/10 rounded-lg overflow-hidden">
+        {/* Gradient background */}
+        <div 
+          className="absolute inset-0 bg-gradient-to-r from-success-600 to-success-400 rounded-lg transition-all duration-300 ease-out"
+          style={{ width: `${percentage}%` }}
+        />
+        {/* Shine effect */}
+        <div 
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-shimmer"
+          style={{ width: `${percentage}%` }}
+        />
+      </div>
+      <Tooltip content={`${claims} kişi talep etmiş, ${limit} kişi talep edebilir`}>
+        <span className="text-white/90 whitespace-nowrap text-sm bg-success-500/20 px-4 py-1.5 rounded-full font-medium hover:bg-success-500/30 transition-colors">
+          {claims} / {limit}
+        </span>
+      </Tooltip>
     </div>
-    <Tooltip content={`${claims} kişi talep etmiş, ${limit} kişi talep edebilir`}>
-      <span className="text-white/90 whitespace-nowrap text-sm bg-success-500/20 px-4 py-1.5 rounded-full font-medium hover:bg-success-500/30 transition-colors">
-        {claims} / {limit}
-      </span>
-    </Tooltip>
-  </div>
-));
+  );
+});
 
 interface ExpandedContentProps {
   description: string;

@@ -38,12 +38,10 @@ export const PlayerTAB = () => {
 
         return (
             <Card
-                shadow="sm"
-                className={`group w-full transform transition-all duration-300
-                    border ${mainCardStyles.border} hover:${mainCardStyles.hoverBorder}
-                    bg-gradient-to-br ${mainCardStyles.bg} ${mainCardStyles.hover}
-                    rounded-xl overflow-hidden backdrop-blur-sm ${mainCardStyles.glow}
-                    hover:scale-[1.01]`}
+                shadow="lg"
+                className={`w-full cursor-pointer border border-success-500/20 bg-black/40 
+                  hover:bg-black/70 hover:border-success-500/40 transition-all duration-300 
+                  backdrop-blur-sm hover:scale-[1.02]`}
                 key={Number(player.index)}
             >
                 <div className="p-3">
