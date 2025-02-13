@@ -1,7 +1,7 @@
 import { Button, Card, CardBody, Link, Tooltip } from '@nextui-org/react';
 import {  useAppKit, useAppKitAccount, useAppKitNetwork } from '@reown/appkit/react';
 import { FormatAddressDesign, generateTweetIntentByContribution, generateTweetIntentURL, getTokenByAddress, TimestampDetails, unixToTimestampDetails } from '#src/utils/helpers';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { Unicon } from '#components/Unicon';
 import { ExternalLink, Globe, Bird, Navigation, ArrowUpRight, MapPin } from 'lucide-react';
 import { useContributionContext } from '#src/context/GlobalStateContext';
@@ -13,131 +13,195 @@ import useMapContext from '#components/Map/useMapContext';
 import { decodeGeoHash } from '#lib/helper/geocoder';
 import { LatLngExpression } from 'leaflet';
 import { toast } from 'sonner';
+import { memo } from 'react';
 
-
-const ContributionCard = ({ contribution }: { contribution: Contribution }) => {
-    const [dateTimeDetails,setDateTimeDetails] = useState<TimestampDetails | null>(unixToTimestampDetails(contribution.timestamp))
-      const chainId = useChainId()
-      const { map } = useMapContext()
-      const {player} = useContributionContext()
-    
-    const [tokenInfo,setTokenInfo] = useState<Token | null>(getTokenByAddress(chainId, contribution.token))
-
-    const handleFly = async () => {
-        if(!player){
-            return;
-        }
-        if(player?.contributions.length > 20){
-            let markerPosition : LatLngExpression = decodeGeoHash(contribution.geohash)
-            if (map) {
-                map.setView(markerPosition, map.getZoom(), { animate: false });
-            }
-        }else{
-            toast.error('You need to make at least 20 contributions to use this feature.')
-
-
-        }
-   
-    }
-
-    return(
-       <Card shadow="sm"  className='w-full cursor-pointer border border-1 border-black/50 bg-primary/5 hover:bg-black/50 transition-colors duration-200' key={Number(contribution.index)}>
-                    <CardBody>
-                    <div className="flex flex-col gap-2">
-                                <div className="flex gap-3 items-center">
-                                    <div className="flex-none border-1 border-white/5  rounded-small text-center w-11 overflow-hidden">
-                                        <div className="text-tiny bg-black py-0.5 text-white">
-                                            {dateTimeDetails?.month}
-                                        </div>
-                                        <div className="flex items-center justify-center font-semibold text-medium h-6 text-default-500">
-                                            {dateTimeDetails?.dayNumber}
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col items-start gap-0.5">
-                                        <div className="flex flex-row gap-2 items-center justify-center">
-                                        <p className="text-medium text-lime-500 font-medium">
-                                           {dateTimeDetails?.date}
-                                        </p>
-                                        <p className="text-small text-lime-600">
-                                            {dateTimeDetails?.hour}
-                                        </p>
-                                        </div>
-                                        <div className="w-full text-white">
-                                            <span>{formatUnits(contribution.deposit, tokenInfo ? tokenInfo.decimals : 18)}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex flex-row gap-3 items-start">
-                                    <div className="flex items-center justify-center flex-none border-1 border-white/5 rounded-small w-11 min-w-11 h-11">
-                                    <MapPin className='text-danger-500' />
-                                    </div>
-                                    <div className="w-full flex flex-col gap-0.5">
-                                        
-                                        <Link
-                                            isExternal
-                                            showAnchorIcon
-                                            anchorIcon={
-                                                <ArrowUpRight />
-                                            }
-                                            className="group gap-x-0.5 text-medium text-lime-500 font-medium"
-                                            href={contribution.url}
-                                            rel="noreferrer noopener"
-                                        >
-                                        {contribution.name}
-                                        </Link>
-                                        <div className="w-full">
-                                        <p className="text-small text-white">
-                                        {contribution.description}
-                                        </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="flex flex-col mt-4 gap-3 items-start">
-                                    <span className="text-small text-lime-500">
-                                        Pinned By
-                                    </span>
-                                    <div className="flex gap-2 items-center">
-                                        
-                                    <div className="animate-spin bg-black/20 shadow-small border-1 border-success-100 rounded-full p-2">
-                                  
-                                        <Unicon size={24} address={contribution.contributor} randomSeed={Number(contribution.index)}/>
-                                                  
-                                        </div>
-                                        <span className="text-xs font-sans text-fuchsia-500">
-                                           {contribution.contributor}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="w-full flex flex-col mt-4 gap-2 items-start">
-                                    <span className="w-full text-small text-lime-500">
-                                        {Number(contribution.claims)} /  {Number(contribution.limit)} Claimed Users
-                                    </span>
-                                    <div className="flex gap-2 w-full items-center">
-                                        <Tooltip placement="right" className="font-sans text-xs" delay={10} color={"primary"}  content={"You will earn a 30% commission from every user who joins through your referral."}>
-                                        <Button onPress={()=>{
-                                            handleFly()
-                                        }} className="text-white" target="_blank" variant="shadow" color="success" fullWidth startContent={
-                                            <Bird />
-                                        } endContent={
-                                            <ExternalLink />
-                                        }
-                                        >
-                                            <span className="w-full">
-                                        Find Egg & Claim
-                                        </span>
-                                        </Button>
-                                        </Tooltip>
-                                      
-                                    </div>
-                                </div>
-                            </div>
-
-                    </CardBody>
-
-
-                </Card>
-    )
+interface ContributionCardProps {
+  contribution: Contribution;
+  className?: string;
 }
 
-export default ContributionCard;
+const ContributionCard: React.FC<ContributionCardProps> = ({ contribution, className }) => {
+  const chainId = useChainId();
+  const { map } = useMapContext();
+  const { player } = useContributionContext();
+  
+  const [state, setState] = useState({
+    isLoading: false,
+    isExpanded: false,
+  });
+
+  const dateTimeDetails = useMemo<TimestampDetails>(() => 
+    unixToTimestampDetails(contribution.timestamp),
+    [contribution.timestamp]
+  );
+
+  const tokenInfo = useMemo<Token | null>(() => 
+    getTokenByAddress(chainId, contribution.token),
+    [chainId, contribution.token]
+  );
+
+  const MIN_CONTRIBUTIONS_REQUIRED = 20;
+  const ANIMATION_DURATION = 1;
+
+  const formattedDeposit = useMemo(() => 
+    formatUnits(contribution.deposit, tokenInfo?.decimals ?? 18),
+    [contribution.deposit, tokenInfo]
+  );
+
+  const markerPosition = useMemo<LatLngExpression>(() => 
+    decodeGeoHash(contribution.geohash),
+    [contribution.geohash]
+  );
+
+  const handleFly = useCallback(async () => {
+    if (!player || !map) return;
+
+    if (player.contributions.length < MIN_CONTRIBUTIONS_REQUIRED) {
+      toast.error(`En az ${MIN_CONTRIBUTIONS_REQUIRED} katkı yapmanız gerekiyor.`);
+      return;
+    }
+
+    setState(prev => ({ ...prev, isLoading: true }));
+    try {
+      await map.setView(markerPosition, map.getZoom(), { 
+        animate: true,
+        duration: ANIMATION_DURATION
+      });
+    } catch (error) {
+      toast.error('Harita konumuna giderken bir hata oluştu.');
+    } finally {
+      setState(prev => ({ ...prev, isLoading: false }));
+    }
+  }, [player, map, markerPosition]);
+
+  const toggleExpand = useCallback(() => {
+    setState(prev => ({ ...prev, isExpanded: !prev.isExpanded }));
+  }, []);
+
+  return (
+    <Card
+      shadow="lg"
+      className={`w-full cursor-pointer border border-success-500/20 bg-black/40 
+        hover:bg-black/70 hover:border-success-500/40 transition-all duration-300 
+        backdrop-blur-sm hover:scale-[1.02] ${className}`}
+      key={Number(contribution.index)}
+      isPressable
+      onPress={toggleExpand}
+    >
+      <CardBody className="p-5">
+        <div className="flex flex-col gap-4">
+          <ContributorInfo 
+            contribution={contribution} 
+            formattedDeposit={formattedDeposit}
+            tokenInfo={tokenInfo}
+            dateTimeDetails={dateTimeDetails}
+            onFly={handleFly}
+            isLoading={state.isLoading}
+          />
+
+          {state.isExpanded && (
+            <ExpandedContent 
+              description={contribution.description}
+              claims={Number(contribution.claims)}
+              limit={Number(contribution.limit)}
+            />
+          )}
+        </div>
+      </CardBody>
+    </Card>
+  );
+};
+
+interface ContributorInfoProps {
+  contribution: Contribution;
+  formattedDeposit: string;
+  tokenInfo: Token | null;
+  dateTimeDetails: TimestampDetails;
+  onFly: () => Promise<void>;
+  isLoading: boolean;
+}
+
+const ContributorInfo = memo(({ 
+  contribution, 
+  formattedDeposit, 
+  tokenInfo, 
+  dateTimeDetails, 
+  onFly, 
+  isLoading 
+}: ContributorInfoProps) => (
+  <div className="flex flex-col gap-4">
+    <div className="flex justify-between items-start">
+      <div className="flex items-center gap-4">
+        <div className="relative">
+          <Unicon 
+            size={40}
+            address={contribution.contributor} 
+            randomSeed={Number(contribution.index)}
+          />
+        </div>
+        <div className="space-y-1">
+          <p className="text-success-400 font-semibold text-lg">{contribution.name}</p>
+          <p className="text-sm text-white/60 font-medium">
+            {FormatAddressDesign(contribution.contributor)}
+          </p>
+        </div>
+      </div>
+      <div className="text-right">
+        <p className="text-success-400 font-bold text-lg">
+          {formattedDeposit} {tokenInfo?.symbol}
+        </p>
+        <p className="text-sm text-white/50 font-medium">{dateTimeDetails?.date}</p>
+      </div>
+    </div>
+    <div className="flex justify-between items-center gap-4">
+      <ClaimProgress claims={Number(contribution.claims)} limit={Number(contribution.limit)} />
+      <Button
+        onPress={onFly}
+        size="sm"
+        color="success"
+        variant="flat"
+        isLoading={isLoading}
+        className="font-medium text-sm px-4 min-w-[130px] h-9"
+        startContent={<MapPin className="w-4 h-4" />}
+      >
+        Haritada Göster
+      </Button>
+    </div>
+  </div>
+));
+
+const ClaimProgress = memo(({ claims, limit }: { claims: number; limit: number }) => (
+  <div className="flex flex-1 justify-start items-center gap-3">
+    <div className="w-32 h-2 bg-success-500/20 rounded-full overflow-hidden">
+      <div 
+        className="h-full bg-success-500 rounded-full transition-all duration-300"
+        style={{ width: `${(claims / limit) * 100}%` }}
+      />
+    </div>
+    <Tooltip content={`${claims} kişi talep etmiş, ${limit} kişi talep edebilir`}>
+      <span className="text-white/90 whitespace-nowrap text-sm bg-success-500/20 px-4 py-1.5 rounded-full font-medium hover:bg-success-500/30 transition-colors">
+        {claims} / {limit}
+      </span>
+    </Tooltip>
+  </div>
+));
+
+interface ExpandedContentProps {
+  description: string;
+  claims: number;
+  limit: number;
+}
+
+const ExpandedContent = memo(({ 
+  description, 
+  claims, 
+  limit 
+}: ExpandedContentProps) => (
+  <div className="space-y-3 mt-2">
+    <p className="text-sm text-white/80 leading-relaxed border-l-2 border-success-500/30 pl-4">
+      {description}
+    </p>
+  </div>
+));
+
+export default memo(ContributionCard);

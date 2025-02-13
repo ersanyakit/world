@@ -17,9 +17,24 @@ module.exports = {
 			  '0%, 100%': { transform: 'rotate(-60deg)  scale(0.9)' },
 			  '50%': { transform: 'rotate(80deg)  scale(1.1)' },
 			},
+			'slow-spin': {
+			  'from': { transform: 'rotate(0deg)' },
+			  'to': { transform: 'rotate(360deg)' },
+			},
+			'orbit': {
+			  '0%': { transform: 'rotate(0deg) translateX(40px) rotate(0deg)' },
+			  '100%': { transform: 'rotate(360deg) translateX(40px) rotate(-360deg)' }
+			},
+			'spin-slow': {
+			  '0%': { transform: 'rotate(0deg)' },
+			  '100%': { transform: 'rotate(-360deg)' }
+			}
 		  },
 		  animation: {
 			wiggle: 'wiggle 1s ease-in-out infinite',
+			'slow-spin': 'slow-spin 20s linear infinite',
+			'orbit': 'orbit 20s linear infinite',
+			'spin-slow': 'spin-slow 30s linear infinite',
 		  },
   		fontSize: {
   			base: [

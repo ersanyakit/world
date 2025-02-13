@@ -41,15 +41,22 @@ export function FormatAddressDesign(
   address: string | `0x${string}`,
   startChars = 6,
   endChars = 4
-) {
-  if (address.length <= startChars + endChars) {
-    return address;
+): string {
+  // Input validation
+  if (!address || typeof address !== 'string') {
+    return '';
+  }
+
+  const addressStr = String(address);
+  
+  if (addressStr.length <= startChars + endChars) {
+    return addressStr;
   }
 
   const visiblePart =
-    address.substring(0, startChars) +
+    addressStr.substring(0, startChars) +
     '...' +
-    address.substring(address.length - endChars);
+    addressStr.substring(addressStr.length - endChars);
   return visiblePart;
 }
 
